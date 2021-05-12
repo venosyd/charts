@@ -29,7 +29,7 @@ class MockAxis extends Mock implements Axis<String> {}
 
 class FakeCartesianChart extends CartesianChart<String> {
   @override
-  Rectangle<int> drawAreaBounds;
+  Rectangle<int>? drawAreaBounds;
 
   void callFireOnPostprocess(List<MutableSeries<String>> seriesList) {
     fireOnPostprocess(seriesList);
@@ -40,11 +40,11 @@ class FakeCartesianChart extends CartesianChart<String> {
 }
 
 void main() {
-  FakeCartesianChart chart;
-  DomainA11yExploreBehavior<String> behavior;
-  MockAxis domainAxis;
+  late FakeCartesianChart chart;
+  late DomainA11yExploreBehavior<String> behavior;
+  late MockAxis domainAxis;
 
-  MutableSeries<String> _series1;
+  late MutableSeries<String> _series1;
   final _s1D1 = MyRow('s1d1', 11, 'a11yd1');
   final _s1D2 = MyRow('s1d2', 12, 'a11yd2');
   final _s1D3 = MyRow('s1d3', 13, 'a11yd3');
@@ -57,11 +57,11 @@ void main() {
     behavior.attachTo(chart);
 
     domainAxis = MockAxis();
-    _series1 = MutableSeries(Series<MyRow, String>(
+    _series1 = MutableSeries(Series<MyRow?, String>(
       id: 's1',
       data: [_s1D1, _s1D2, _s1D3],
-      domainFn: (MyRow row, _) => row.campaign,
-      measureFn: (MyRow row, _) => row.count,
+      domainFn: (MyRow? row, _) => row!.campaign,
+      measureFn: (MyRow? row, _) => row!.count,
     ))
       ..setAttr(domainAxisKey, domainAxis);
   });
@@ -188,11 +188,11 @@ void main() {
     when(domainAxis.getLocation('s1d2')).thenReturn(125.0);
     when(domainAxis.getLocation('s1d3')).thenReturn(175.0);
     // Create a series with a missing domain
-    final seriesWithMissingDomain = MutableSeries(Series<MyRow, String>(
+    final seriesWithMissingDomain = MutableSeries(Series<MyRow?, String>(
       id: 'm1',
       data: [_s1D1, _s1D3],
-      domainFn: (MyRow row, _) => row.campaign,
-      measureFn: (MyRow row, _) => row.count,
+      domainFn: (MyRow? row, _) => row!.campaign,
+      measureFn: (MyRow? row, _) => row!.count,
     ))
       ..setAttr(domainAxisKey, domainAxis);
 

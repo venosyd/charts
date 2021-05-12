@@ -18,16 +18,16 @@ import 'range_tick.dart' show RangeTick;
 
 class RangeAxisTicks<D> extends AxisTicks<D> {
   /// The value that this range tick starting point represents
-  final D rangeStartValue;
+  final D? rangeStartValue;
 
   /// Position of the range tick starting point.
-  double rangeStartLocationPx;
+  double? rangeStartLocationPx;
 
   /// The value that this range tick ending point represents.
-  final D rangeEndValue;
+  final D? rangeEndValue;
 
   /// Position of the range tick ending point.
-  double rangeEndLocationPx;
+  double? rangeEndLocationPx;
 
   RangeAxisTicks(RangeTick<D> tick)
       : rangeStartValue = tick.rangeStartValue,

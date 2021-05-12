@@ -31,20 +31,20 @@ import 'per_datum_legend_entry_generator.dart';
 /// TODO: Implement tap to hide individual data in the series.
 class DatumLegend<D> extends Legend<D> {
   /// Whether or not the series legend should show measures on datum selection.
-  bool _showMeasures;
+  bool? _showMeasures;
 
   DatumLegend({
-    SelectionModelType selectionModelType,
-    LegendEntryGenerator<D> legendEntryGenerator,
-    MeasureFormatter measureFormatter,
-    MeasureFormatter secondaryMeasureFormatter,
-    bool showMeasures,
-    LegendDefaultMeasure legendDefaultMeasure,
-    TextStyleSpec entryTextStyle,
+    SelectionModelType? selectionModelType,
+    LegendEntryGenerator<D>? legendEntryGenerator,
+    MeasureFormatter? measureFormatter,
+    MeasureFormatter? secondaryMeasureFormatter,
+    bool? showMeasures,
+    LegendDefaultMeasure? legendDefaultMeasure,
+    TextStyleSpec? entryTextStyle,
   }) : super(
             selectionModelType: selectionModelType ?? SelectionModelType.info,
-            legendEntryGenerator:
-                legendEntryGenerator ?? PerDatumLegendEntryGenerator(),
+            legendEntryGenerator: legendEntryGenerator ??
+                PerDatumLegendEntryGenerator() as LegendEntryGenerator<D?>?,
             entryTextStyle: entryTextStyle) {
     // Call the setters that include the setting for default.
     this.showMeasures = showMeasures;
@@ -61,9 +61,9 @@ class DatumLegend<D> extends Legend<D> {
   /// showing measures when there is no selection.
   ///
   /// If [showMeasure] is set to null, it is changed to the default of false.
-  bool get showMeasures => _showMeasures;
+  bool? get showMeasures => _showMeasures;
 
-  set showMeasures(bool showMeasures) {
+  set showMeasures(bool? showMeasures) {
     _showMeasures = showMeasures ?? false;
   }
 
@@ -74,11 +74,11 @@ class DatumLegend<D> extends Legend<D> {
   ///
   /// If [legendDefaultMeasure] is set to null, it is changed to the default of
   /// none.
-  LegendDefaultMeasure get legendDefaultMeasure =>
-      legendEntryGenerator.legendDefaultMeasure;
+  LegendDefaultMeasure? get legendDefaultMeasure =>
+      legendEntryGenerator!.legendDefaultMeasure;
 
-  set legendDefaultMeasure(LegendDefaultMeasure legendDefaultMeasure) {
-    legendEntryGenerator.legendDefaultMeasure =
+  set legendDefaultMeasure(LegendDefaultMeasure? legendDefaultMeasure) {
+    legendEntryGenerator!.legendDefaultMeasure =
         legendDefaultMeasure ?? LegendDefaultMeasure.none;
   }
 
@@ -87,8 +87,8 @@ class DatumLegend<D> extends Legend<D> {
   /// This is optional. The default formatter formats measure values with
   /// NumberFormat.decimalPattern. If the measure value is null, a dash is
   /// returned.
-  set measureFormatter(MeasureFormatter formatter) {
-    legendEntryGenerator.measureFormatter =
+  set measureFormatter(MeasureFormatter? formatter) {
+    legendEntryGenerator!.measureFormatter =
         formatter ?? defaultLegendMeasureFormatter;
   }
 
@@ -97,8 +97,8 @@ class DatumLegend<D> extends Legend<D> {
   /// This is optional. The default formatter formats measure values with
   /// NumberFormat.decimalPattern. If the measure value is null, a dash is
   /// returned.
-  set secondaryMeasureFormatter(MeasureFormatter formatter) {
-    legendEntryGenerator.secondaryMeasureFormatter =
+  set secondaryMeasureFormatter(MeasureFormatter? formatter) {
+    legendEntryGenerator!.secondaryMeasureFormatter =
         formatter ?? defaultLegendMeasureFormatter;
   }
 }

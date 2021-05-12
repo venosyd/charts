@@ -23,8 +23,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 /// Example of a stacked bar chart with three series, each rendered with
 /// different fill colors.
 class StackedFillColorBarChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   StackedFillColorBarChart(this.seriesList, {this.animate});
 
@@ -73,8 +73,8 @@ class StackedFillColorBarChart extends StatelessWidget {
       // Blue bars with a lighter center color.
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesData,
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         fillColorFn: (_, __) =>
@@ -84,16 +84,16 @@ class StackedFillColorBarChart extends StatelessWidget {
       // fillColorFn is configured.
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tableSalesData,
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
       ),
       // Hollow green bars.
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesData,
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         fillColorFn: (_, __) => charts.MaterialPalette.transparent,
@@ -140,8 +140,8 @@ class StackedFillColorBarChart extends StatelessWidget {
       // Blue bars with a lighter center color.
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesData,
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         fillColorFn: (_, __) =>
@@ -151,16 +151,16 @@ class StackedFillColorBarChart extends StatelessWidget {
       // fillColorFn is configured.
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet',
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tableSalesData,
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (OrdinalSales sales, _) => sales.year,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
       ),
       // Hollow green bars.
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesData,
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         fillColorFn: (_, __) => charts.MaterialPalette.transparent,

@@ -24,8 +24,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class TimeSeriesConfidenceInterval extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, DateTime>> seriesList;
+  final bool? animate;
 
   TimeSeriesConfidenceInterval(this.seriesList, {this.animate});
 
@@ -61,12 +61,12 @@ class TimeSeriesConfidenceInterval extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         // When the measureLowerBoundFn and measureUpperBoundFn is defined,
         // the line renderer will render the area around the bounds.
-        measureLowerBoundFn: (TimeSeriesSales sales, _) => sales.sales - 5,
-        measureUpperBoundFn: (TimeSeriesSales sales, _) => sales.sales + 5,
+        measureLowerBoundFn: (TimeSeriesSales? sales, _) => sales!.sales - 5,
+        measureUpperBoundFn: (TimeSeriesSales? sales, _) => sales!.sales + 5,
         data: data,
       )
     ];
@@ -98,12 +98,12 @@ class TimeSeriesConfidenceInterval extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         // When the measureLowerBoundFn and measureUpperBoundFn is defined,
         // the line renderer will render the area around the bounds.
-        measureLowerBoundFn: (TimeSeriesSales sales, _) => sales.sales - 5,
-        measureUpperBoundFn: (TimeSeriesSales sales, _) => sales.sales + 5,
+        measureLowerBoundFn: (TimeSeriesSales? sales, _) => sales!.sales - 5,
+        measureUpperBoundFn: (TimeSeriesSales? sales, _) => sales!.sales + 5,
         data: data,
       )
     ];

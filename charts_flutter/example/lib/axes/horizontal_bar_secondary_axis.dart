@@ -36,8 +36,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 /// RTL.flipAxisLocations is set.
 class HorizontalBarChartWithSecondaryAxis extends StatelessWidget {
   static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   HorizontalBarChartWithSecondaryAxis(this.seriesList, {this.animate});
 
@@ -78,14 +78,14 @@ class HorizontalBarChartWithSecondaryAxis extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Global Revenue',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: globalSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Los Angeles Revenue',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: losAngelesSalesData,
       )..setAttribute(charts.measureAxisIdKey, secondaryMeasureAxisId)
       // Set the 'Los Angeles Revenue' series to use the secondary measure axis.
@@ -134,14 +134,14 @@ class HorizontalBarChartWithSecondaryAxis extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Global Revenue',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: globalSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Los Angeles Revenue',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: losAngelesSalesData,
       )..setAttribute(charts.measureAxisIdKey, secondaryMeasureAxisId)
       // Set the 'Los Angeles Revenue' series to use the secondary measure axis.

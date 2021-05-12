@@ -43,7 +43,7 @@ class MockNumericScale extends Mock implements NumericScale {}
 ///
 /// Reports alternate rendering after tick count is greater than or equal to
 /// [alternateRenderingAfterTickCount].
-class FakeDrawStrategy extends BaseTickDrawStrategy<num> {
+class FakeDrawStrategy extends BaseTickDrawStrategy<num?> {
   final int collidesAfterTickCount;
   final int alternateRenderingAfterTickCount;
 
@@ -52,8 +52,8 @@ class FakeDrawStrategy extends BaseTickDrawStrategy<num> {
       : super(null, FakeGraphicsFactory());
 
   @override
-  CollisionReport collides(List<Tick<num>> ticks, _) {
-    final ticksCollide = ticks.length >= collidesAfterTickCount;
+  CollisionReport collides(List<Tick<num?>>? ticks, _) {
+    final ticksCollide = ticks!.length >= collidesAfterTickCount;
     final alternateTicksUsed = ticks.length >= alternateRenderingAfterTickCount;
 
     return CollisionReport(
@@ -63,12 +63,12 @@ class FakeDrawStrategy extends BaseTickDrawStrategy<num> {
   }
 
   @override
-  void draw(ChartCanvas canvas, Tick<num> tick,
-      {AxisOrientation orientation,
-      Rectangle<int> axisBounds,
-      Rectangle<int> drawAreaBounds,
-      bool isFirst,
-      bool isLast}) {}
+  void draw(ChartCanvas canvas, Tick<num?> tick,
+      {AxisOrientation? orientation,
+      Rectangle<int>? axisBounds,
+      Rectangle<int>? drawAreaBounds,
+      bool? isFirst,
+      bool? isLast}) {}
 }
 
 /// A fake [GraphicsFactory] that returns [MockTextStyle] and [MockTextElement].
@@ -77,7 +77,7 @@ class FakeGraphicsFactory extends GraphicsFactory {
   TextStyle createTextPaint() => MockTextStyle();
 
   @override
-  TextElement createTextElement(String text) => MockTextElement();
+  TextElement createTextElement(String? text) => MockTextElement();
 
   @override
   LineStyle createLinePaint() => MockLinePaint();
@@ -92,22 +92,22 @@ class MockLinePaint extends Mock implements LineStyle {}
 class MockChartContext extends Mock implements ChartContext {}
 
 /// A celsius to fahrenheit converter for testing axis with unit converter.
-class CelsiusToFahrenheitConverter implements UnitConverter<num, num> {
+class CelsiusToFahrenheitConverter implements UnitConverter<num?, num> {
   const CelsiusToFahrenheitConverter();
 
   @override
-  num convert(num value) => (value * 1.8) + 32.0;
+  num convert(num? value) => (value! * 1.8) + 32.0;
 
   @override
   num invert(num value) => (value - 32.0) / 1.8;
 }
 
 void main() {
-  FakeGraphicsFactory graphicsFactory;
-  MockNumericScale scale;
-  NumericTickProvider tickProvider;
-  TickFormatter<num> formatter;
-  ChartContext context;
+  late FakeGraphicsFactory graphicsFactory;
+  late MockNumericScale scale;
+  late NumericTickProvider tickProvider;
+  late TickFormatter<num> formatter;
+  late ChartContext context;
 
   setUp(() {
     graphicsFactory = FakeGraphicsFactory();
@@ -134,7 +134,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks, hasLength(4));
     expect(ticks[0].value, equals(0));
@@ -162,7 +162,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks, hasLength(5));
     expect(ticks[0].value, equals(0));
@@ -189,7 +189,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks, hasLength(3));
     expect(ticks[0].value, equals(0));
@@ -214,7 +214,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks, hasLength(3));
     expect(ticks[0].value, equals(0));
@@ -239,7 +239,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     final tickValues = ticks.map((tick) => tick.value).toList();
 
@@ -263,7 +263,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     final tickValues = ticks.map((tick) => tick.value).toList();
 
@@ -282,7 +282,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     final tickValues = ticks.map((tick) => tick.value).toList();
 
@@ -309,7 +309,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks[0].value, equals(0));
     expect(ticks[1].value, equals(1));
@@ -336,7 +336,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks[0].value, closeTo(-17.8, 0.1)); // 0 in axis units
     expect(ticks[1].value, closeTo(10, 0.1)); // 50 in axis units
@@ -361,7 +361,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks.length, equals(5));
     expect(ticks[0].value, equals(0));
@@ -389,7 +389,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks.length, equals(5));
     expect(ticks[0].value, equals(0));
@@ -418,7 +418,7 @@ void main() {
         formatter: formatter,
         formatterValueCache: <num, String>{},
         tickDrawStrategy: drawStrategy,
-        orientation: null);
+        orientation: null)!;
 
     expect(ticks.length, equals(5));
     expect(ticks[0].value, equals(101));
@@ -448,7 +448,7 @@ void main() {
       tickDrawStrategy: drawStrategy,
       orientation: null,
       tickHint: tickHint,
-    );
+    )!;
 
     // adjusted ticks for window 20 - 35
     // Should have ticks 22, 25, 28, 31, 34, 37
@@ -481,7 +481,7 @@ void main() {
       tickDrawStrategy: drawStrategy,
       orientation: null,
       tickHint: tickHint,
-    );
+    )!;
 
     // adjusted ticks for window -35 to -20
     // Should have ticks -34, -31, -28, -25, -22, -19

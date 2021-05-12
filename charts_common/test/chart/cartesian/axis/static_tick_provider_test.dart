@@ -35,7 +35,7 @@ class FakeNumericTickFormatter implements TickFormatter<num> {
 
   @override
   List<String> format(List<num> tickValues, Map<num, String> cache,
-      {num stepSize}) {
+      {num? stepSize}) {
     calledTimes += 1;
 
     return tickValues.map((value) => value.toString()).toList();
@@ -45,11 +45,11 @@ class FakeNumericTickFormatter implements TickFormatter<num> {
 class MockDrawStrategy extends Mock implements BaseTickDrawStrategy {}
 
 void main() {
-  ChartContext context;
-  GraphicsFactory graphicsFactory;
-  TickFormatter formatter;
-  BaseTickDrawStrategy drawStrategy;
-  LinearScale scale;
+  late ChartContext context;
+  late GraphicsFactory graphicsFactory;
+  late TickFormatter formatter;
+  late BaseTickDrawStrategy drawStrategy;
+  late LinearScale scale;
 
   setUp(() {
     context = MockChartContext();
@@ -61,7 +61,7 @@ void main() {
 
   group('scale is extended with static tick values', () {
     test('values extend existing domain values', () {
-      final tickProvider = StaticTickProvider<num>([
+      final tickProvider = StaticTickProvider<num?>([
         TickSpec<num>(50, label: '50'),
         TickSpec<num>(75, label: '75'),
         TickSpec<num>(100, label: '100'),
@@ -77,7 +77,7 @@ void main() {
           context: context,
           graphicsFactory: graphicsFactory,
           scale: scale,
-          formatter: formatter,
+          formatter: formatter as TickFormatter<num?>?,
           formatterValueCache: <num, String>{},
           tickDrawStrategy: drawStrategy,
           orientation: null);
@@ -87,7 +87,7 @@ void main() {
     });
 
     test('values within data extent', () {
-      final tickProvider = StaticTickProvider<num>([
+      final tickProvider = StaticTickProvider<num?>([
         TickSpec<num>(50, label: '50'),
         TickSpec<num>(75, label: '75'),
         TickSpec<num>(100, label: '100'),
@@ -103,7 +103,7 @@ void main() {
           context: context,
           graphicsFactory: graphicsFactory,
           scale: scale,
-          formatter: formatter,
+          formatter: formatter as TickFormatter<num?>?,
           formatterValueCache: <num, String>{},
           tickDrawStrategy: drawStrategy,
           orientation: null);
@@ -115,7 +115,7 @@ void main() {
 
   group('formatter', () {
     test('is not called when all ticks have labels', () {
-      final tickProvider = StaticTickProvider<num>([
+      final tickProvider = StaticTickProvider<num?>([
         TickSpec<num>(50, label: '50'),
         TickSpec<num>(75, label: '75'),
         TickSpec<num>(100, label: '100'),
@@ -136,7 +136,7 @@ void main() {
     });
 
     test('is called when one ticks does not have label', () {
-      final tickProvider = StaticTickProvider<num>([
+      final tickProvider = StaticTickProvider<num?>([
         TickSpec<num>(50, label: '50'),
         TickSpec<num>(75),
         TickSpec<num>(100, label: '100'),
@@ -157,7 +157,7 @@ void main() {
     });
 
     test('is called when all ticks do not have labels', () {
-      final tickProvider = StaticTickProvider<num>([
+      final tickProvider = StaticTickProvider<num?>([
         TickSpec<num>(50),
         TickSpec<num>(75),
         TickSpec<num>(100),

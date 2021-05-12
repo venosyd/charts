@@ -32,11 +32,11 @@ import 'tick_spec.dart' show TickSpec;
 
 /// [AxisSpec] specialized for ordinal/non-continuous axes typically for bars.
 @immutable
-class OrdinalAxisSpec extends AxisSpec<String> {
+class OrdinalAxisSpec extends AxisSpec<String?> {
   /// Sets viewport for this Axis.
   ///
   /// If pan / zoom behaviors are set, this is the initial viewport.
-  final OrdinalViewport viewport;
+  final OrdinalViewport? viewport;
 
   /// Creates a [AxisSpec] that specialized for ordinal domain charts.
   ///
@@ -49,11 +49,11 @@ class OrdinalAxisSpec extends AxisSpec<String> {
   ///     formatted.
   /// [showAxisLine] override to force the axis to draw the axis line.
   const OrdinalAxisSpec({
-    RenderSpec<String> renderSpec,
-    OrdinalTickProviderSpec tickProviderSpec,
-    OrdinalTickFormatterSpec tickFormatterSpec,
-    bool showAxisLine,
-    OrdinalScaleSpec scaleSpec,
+    RenderSpec<String>? renderSpec,
+    OrdinalTickProviderSpec? tickProviderSpec,
+    OrdinalTickFormatterSpec? tickFormatterSpec,
+    bool? showAxisLine,
+    OrdinalScaleSpec? scaleSpec,
     this.viewport,
   }) : super(
             renderSpec: renderSpec,
@@ -63,12 +63,12 @@ class OrdinalAxisSpec extends AxisSpec<String> {
             scaleSpec: scaleSpec);
 
   @override
-  void configure(Axis<String> axis, ChartContext context,
-      GraphicsFactory graphicsFactory) {
+  void configure(Axis<String?> axis, ChartContext? context,
+      GraphicsFactory? graphicsFactory) {
     super.configure(axis, context, graphicsFactory);
 
     if (axis is OrdinalAxis && viewport != null) {
-      axis.setScaleViewport(viewport);
+      axis.setScaleViewport(viewport!);
     }
   }
 
@@ -91,18 +91,18 @@ class OrdinalAxisSpec extends AxisSpec<String> {
   }
 }
 
-abstract class OrdinalTickProviderSpec extends TickProviderSpec<String> {}
+abstract class OrdinalTickProviderSpec extends TickProviderSpec<String?> {}
 
 abstract class OrdinalTickFormatterSpec extends TickFormatterSpec<String> {}
 
-abstract class OrdinalScaleSpec extends ScaleSpec<String> {}
+abstract class OrdinalScaleSpec extends ScaleSpec<String?> {}
 
 @immutable
 class BasicOrdinalTickProviderSpec implements OrdinalTickProviderSpec {
   const BasicOrdinalTickProviderSpec();
 
   @override
-  OrdinalTickProvider createTickProvider(ChartContext context) =>
+  OrdinalTickProvider createTickProvider(ChartContext? context) =>
       OrdinalTickProvider();
 
   @override
@@ -120,7 +120,7 @@ class StaticOrdinalTickProviderSpec implements OrdinalTickProviderSpec {
   const StaticOrdinalTickProviderSpec(this.tickSpecs);
 
   @override
-  StaticTickProvider<String> createTickProvider(ChartContext context) =>
+  StaticTickProvider<String> createTickProvider(ChartContext? context) =>
       StaticTickProvider<String>(tickSpecs);
 
   @override
@@ -139,7 +139,7 @@ class RangeOrdinalTickProviderSpec implements OrdinalTickProviderSpec {
   const RangeOrdinalTickProviderSpec(this.tickSpecs);
 
   @override
-  RangeTickProvider<String> createTickProvider(ChartContext context) =>
+  RangeTickProvider<String> createTickProvider(ChartContext? context) =>
       RangeTickProvider<String>(tickSpecs);
 
   @override
@@ -156,7 +156,7 @@ class BasicOrdinalTickFormatterSpec implements OrdinalTickFormatterSpec {
   const BasicOrdinalTickFormatterSpec();
 
   @override
-  OrdinalTickFormatter createTickFormatter(ChartContext context) =>
+  OrdinalTickFormatter createTickFormatter(ChartContext? context) =>
       OrdinalTickFormatter();
 
   @override

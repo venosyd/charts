@@ -19,21 +19,21 @@ import 'base_treemap_renderer.dart';
 import 'treemap_renderer_config.dart';
 
 /// A treemap renderer that renders a treemap with slice-and-dice layout.
-class SliceDiceTreeMapRenderer<D> extends BaseTreeMapRenderer<D> {
-  SliceDiceTreeMapRenderer({String rendererId, TreeMapRendererConfig config})
+class SliceDiceTreeMapRenderer<D> extends BaseTreeMapRenderer<D?> {
+  SliceDiceTreeMapRenderer({String? rendererId, TreeMapRendererConfig? config})
       : super(
-            config: config ??
+            config: config as TreeMapRendererConfig<D>? ??
                 TreeMapRendererConfig(tileType: TreeMapTileType.sliceDice),
             rendererId: rendererId ?? BaseTreeMapRenderer.defaultRendererId);
 
   /// Uses slice-and-dice as the tiling algorithm for this tree map.
   @override
-  void tile(TreeNode node) {
-    final children = node.children;
+  void tile(TreeNode? node) {
+    final children = node!.children;
     if (children.isNotEmpty) {
       final rect = availableLayoutBoundingRect(node);
       final measure = measureForTreeNode(node);
-      final scaleFactor = measure == 0 ? 0 : areaForRectangle(rect) / measure;
+      final scaleFactor = measure == 0 ? 0 : areaForRectangle(rect) / measure!;
       scaleArea(children, scaleFactor);
       position(children, rect, node.depth & 1 == 1 ? rect.height : rect.width,
           areaForRectangle(rect));

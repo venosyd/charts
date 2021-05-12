@@ -26,8 +26,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class BucketingAxisScatterPlotChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool? animate;
 
   BucketingAxisScatterPlotChart(this.seriesList, {this.animate});
 
@@ -101,51 +101,51 @@ class BucketingAxisScatterPlotChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
           id: 'Desktop',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeDesktopData),
       new charts.Series<LinearSales, int>(
           id: 'Tablet',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.red.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeTabletData),
       new charts.Series<LinearSales, int>(
           id: 'Mobile',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.green.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeMobileData),
       new charts.Series<LinearSales, int>(
           id: 'Chromebook',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.purple.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeChromebookData),
       new charts.Series<LinearSales, int>(
           id: 'Home',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.indigo.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeHomeData),
       new charts.Series<LinearSales, int>(
           id: 'Other',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.gray.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeOtherData),
     ];
   }
@@ -204,51 +204,51 @@ class BucketingAxisScatterPlotChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
           id: 'Desktop',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeDesktopData),
       new charts.Series<LinearSales, int>(
           id: 'Tablet',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.red.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeTabletData),
       new charts.Series<LinearSales, int>(
           id: 'Mobile',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.green.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeMobileData),
       new charts.Series<LinearSales, int>(
           id: 'Chromebook',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.purple.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeChromebookData),
       new charts.Series<LinearSales, int>(
           id: 'Home',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.indigo.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeHomeData),
       new charts.Series<LinearSales, int>(
           id: 'Other',
-          colorFn: (LinearSales sales, _) =>
+          colorFn: (LinearSales? sales, _) =>
               charts.MaterialPalette.gray.shadeDefault,
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.revenueShare,
-          radiusPxFn: (LinearSales sales, _) => sales.radius,
+          domainFn: (LinearSales? sales, _) => sales!.year,
+          measureFn: (LinearSales? sales, _) => sales!.revenueShare,
+          radiusPxFn: (LinearSales? sales, _) => sales!.radius,
           data: myFakeOtherData),
     ];
   }

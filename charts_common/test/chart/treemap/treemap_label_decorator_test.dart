@@ -44,7 +44,7 @@ class FakeGraphicsFactory extends GraphicsFactory {
   TextStyle createTextPaint() => FakeTextStyle();
 
   @override
-  TextElement createTextElement(String text) => FakeTextElement(text);
+  TextElement createTextElement(String? text) => FakeTextElement(text);
 
   @override
   LineStyle createLinePaint() => MockLinePaint();
@@ -53,66 +53,66 @@ class FakeGraphicsFactory extends GraphicsFactory {
 /// Stores [TextStyle] properties for test to verify.
 class FakeTextStyle implements TextStyle {
   @override
-  Color color;
+  Color? color;
 
   @override
-  int fontSize;
+  int? fontSize;
 
   @override
-  String fontFamily;
+  String? fontFamily;
 
   @override
-  double lineHeight;
+  double? lineHeight;
 }
 
 /// Fake [TextElement] which returns text length as [horizontalSliceWidth].
 ///
 /// Font size is returned for [verticalSliceWidth] and [baseline].
 class FakeTextElement implements TextElement {
-  final String _text;
+  final String? _text;
 
   @override
-  String get text {
+  String? get text {
     if (maxWidthStrategy == MaxWidthStrategy.ellipsize) {
-      var width = measureTextWidth(_text);
+      var width = measureTextWidth(_text!);
       var ellipsis = '…';
       var ellipsisWidth = measureTextWidth(ellipsis);
-      if (width <= maxWidth || width <= ellipsisWidth) {
+      if (width <= maxWidth! || width <= ellipsisWidth) {
         return _text;
       } else {
-        var len = _text.length;
+        var len = _text!.length;
         var ellipsizedText = _text;
-        while (width >= maxWidth - ellipsisWidth && len-- > 0) {
-          ellipsizedText = ellipsizedText.substring(0, len);
+        while (width >= maxWidth! - ellipsisWidth && len-- > 0) {
+          ellipsizedText = ellipsizedText!.substring(0, len);
           width = measureTextWidth(ellipsizedText);
         }
-        return ellipsizedText + ellipsis;
+        return ellipsizedText! + ellipsis;
       }
     }
     return _text;
   }
 
   @override
-  TextStyle textStyle;
+  TextStyle? textStyle;
 
   @override
-  int maxWidth;
+  int? maxWidth;
 
   @override
-  MaxWidthStrategy maxWidthStrategy;
+  MaxWidthStrategy? maxWidthStrategy;
 
   @override
-  TextDirection textDirection;
+  TextDirection? textDirection;
 
-  double opacity;
+  double? opacity;
 
   FakeTextElement(this._text);
 
   @override
   TextMeasurement get measurement => TextMeasurement(
-      horizontalSliceWidth: _text.length.toDouble(),
-      verticalSliceWidth: textStyle.fontSize.toDouble(),
-      baseline: textStyle.fontSize.toDouble());
+      horizontalSliceWidth: _text!.length.toDouble(),
+      verticalSliceWidth: textStyle!.fontSize!.toDouble(),
+      baseline: textStyle!.fontSize!.toDouble());
 
   double measureTextWidth(String text) {
     return text.length.toDouble();
@@ -123,11 +123,11 @@ class MockLinePaint extends Mock implements LineStyle {}
 
 class FakeTreeMapRendererElement extends TreeMapRendererElement<String> {
   final _series = MockImmutableSeries<String>();
-  final AccessorFn<String> labelAccessor;
+  final AccessorFn<String?> labelAccessor;
   final List<String> data;
 
   FakeTreeMapRendererElement(this.labelAccessor, this.data) {
-    when(_series.labelAccessorFn).thenReturn(labelAccessor);
+    when(_series.labelAccessorFn).thenReturn(labelAccessor as String Function(int?)?);
     when(_series.data).thenReturn(data);
   }
 
@@ -141,9 +141,9 @@ const _defaultLineHeight = 12.0;
 const _90DegreeClockwise = pi / 2;
 
 void main() {
-  ChartCanvas canvas;
-  GraphicsFactory graphicsFactory;
-  Rectangle<int> drawBounds;
+  ChartCanvas? canvas;
+  GraphicsFactory? graphicsFactory;
+  Rectangle<int>? drawBounds;
 
   setUpAll(() {
     canvas = MockCanvas();
@@ -164,11 +164,11 @@ void main() {
           drawBounds: drawBounds, animationPercent: 1.0);
 
       final captured =
-          verify(canvas.drawText(captureAny, captureAny, captureAny)).captured;
+          verify(canvas!.drawText(captureAny, captureAny, captureAny)).captured;
       expect(captured, hasLength(3));
       expect(captured[0].text, 'Region');
       expect(captured[0].maxWidth,
-          equals(drawBounds.width - decorator.labelPadding * 2));
+          equals(drawBounds!.width - decorator.labelPadding * 2));
       expect(captured[0].textDirection, equals(TextDirection.ltr));
       expect(captured[1], decorator.labelPadding);
       expect(captured[2], decorator.labelPadding);
@@ -187,13 +187,13 @@ void main() {
           drawBounds: drawBounds, animationPercent: 1.0, rtl: true);
 
       final captured =
-          verify(canvas.drawText(captureAny, captureAny, captureAny)).captured;
+          verify(canvas!.drawText(captureAny, captureAny, captureAny)).captured;
       expect(captured, hasLength(3));
       expect(captured[0].text, 'Region');
       expect(captured[0].maxWidth,
-          equals(drawBounds.width - decorator.labelPadding * 2));
+          equals(drawBounds!.width - decorator.labelPadding * 2));
       expect(captured[0].textDirection, equals(TextDirection.rtl));
-      expect(captured[1], drawBounds.width - decorator.labelPadding);
+      expect(captured[1], drawBounds!.width - decorator.labelPadding);
       expect(captured[2], decorator.labelPadding);
     });
 
@@ -211,17 +211,17 @@ void main() {
           animationPercent: 1.0,
           renderVertically: true);
 
-      final captured = verify(canvas.drawText(
+      final captured = verify(canvas!.drawText(
               captureAny, captureAny, captureAny,
               rotation: _90DegreeClockwise))
           .captured;
       expect(captured, hasLength(3));
       expect(captured[0].text, 'Region');
       expect(captured[0].maxWidth,
-          equals(drawBounds.height - decorator.labelPadding * 2));
+          equals(drawBounds!.height - decorator.labelPadding * 2));
       expect(captured[0].textDirection, equals(TextDirection.ltr));
       expect(captured[1],
-          drawBounds.right - decorator.labelPadding - 2 * _defaultFontSize);
+          drawBounds!.right - decorator.labelPadding - 2 * _defaultFontSize);
       expect(captured[2], decorator.labelPadding);
     });
 
@@ -240,21 +240,21 @@ void main() {
           rtl: true,
           renderVertically: true);
 
-      final captured = verify(canvas.drawText(
+      final captured = verify(canvas!.drawText(
               captureAny, captureAny, captureAny,
               rotation: _90DegreeClockwise))
           .captured;
       expect(captured, hasLength(3));
       expect(captured[0].text, 'Region');
       expect(captured[0].maxWidth,
-          equals(drawBounds.height - decorator.labelPadding * 2));
+          equals(drawBounds!.height - decorator.labelPadding * 2));
       expect(captured[0].textDirection, equals(TextDirection.rtl));
       expect(
           captured[1],
-          equals(drawBounds.right -
+          equals(drawBounds!.right -
               decorator.labelPadding -
               2 * _defaultFontSize));
-      expect(captured[2], equals(drawBounds.height - decorator.labelPadding));
+      expect(captured[2], equals(drawBounds!.height - decorator.labelPadding));
     });
 
     test('label can not fit in a new single line, no multiline', () {
@@ -274,11 +274,11 @@ void main() {
           drawBounds: drawBounds, animationPercent: 1.0);
 
       final captured =
-          verify(canvas.drawText(captureAny, captureAny, captureAny)).captured;
+          verify(canvas!.drawText(captureAny, captureAny, captureAny)).captured;
       expect(captured, hasLength(3));
       expect(captured[0].maxWidthStrategy, equals(MaxWidthStrategy.ellipsize));
       expect(captured[0].maxWidth,
-          equals(drawBounds.width - decorator.labelPadding * 2));
+          equals(drawBounds!.width - decorator.labelPadding * 2));
     });
 
     test(
@@ -302,7 +302,7 @@ void main() {
           renderMultiline: renderElement.isLeaf);
 
       final captured =
-          verify(canvas.drawText(captureAny, captureAny, captureAny)).captured;
+          verify(canvas!.drawText(captureAny, captureAny, captureAny)).captured;
       expect(captured, hasLength(6));
       // First line.
       expect(
@@ -341,18 +341,18 @@ void main() {
           renderMultiline: renderElement.isLeaf);
 
       final captured =
-          verify(canvas.drawText(captureAny, captureAny, captureAny)).captured;
+          verify(canvas!.drawText(captureAny, captureAny, captureAny)).captured;
       expect(captured, hasLength(6));
       // First line.
       expect(
           captured[0].text,
           'ThisLabelistoolongforasinglelinethereforeitwillbeellipsizedwithelli'
           'psisattheendofthenewtrunc');
-      expect(captured[1], equals(drawBounds.width - decorator.labelPadding));
+      expect(captured[1], equals(drawBounds!.width - decorator.labelPadding));
       expect(captured[2], equals(decorator.labelPadding));
       // Second line.
       expect(captured[3].text, 'ated label');
-      expect(captured[4], equals(drawBounds.width - decorator.labelPadding));
+      expect(captured[4], equals(drawBounds!.width - decorator.labelPadding));
       expect(captured[5],
           equals(decorator.labelPadding + _defaultLineHeight.toInt()));
     });
@@ -384,7 +384,7 @@ void main() {
           renderVertically: true,
           renderMultiline: renderElement.isLeaf);
 
-      final captured = verify(canvas.drawText(
+      final captured = verify(canvas!.drawText(
               captureAny, captureAny, captureAny,
               rotation: _90DegreeClockwise))
           .captured;
@@ -434,7 +434,7 @@ void main() {
           rtl: true,
           renderMultiline: renderElement.isLeaf);
 
-      final captured = verify(canvas.drawText(
+      final captured = verify(canvas!.drawText(
               captureAny, captureAny, captureAny,
               rotation: _90DegreeClockwise))
           .captured;
@@ -442,18 +442,18 @@ void main() {
       // First line.
       expect(
           captured[1],
-          equals(drawBounds.right -
+          equals(drawBounds!.right -
               decorator.labelPadding -
               2 * _defaultFontSize));
-      expect(captured[2], equals(drawBounds.height - decorator.labelPadding));
+      expect(captured[2], equals(drawBounds!.height - decorator.labelPadding));
       // Second line.
       expect(
           captured[4],
-          equals(drawBounds.right -
+          equals(drawBounds!.right -
               decorator.labelPadding -
               2 * _defaultFontSize -
               _defaultLineHeight));
-      expect(captured[5], equals(drawBounds.height - decorator.labelPadding));
+      expect(captured[5], equals(drawBounds!.height - decorator.labelPadding));
     });
   });
 
@@ -470,7 +470,7 @@ void main() {
       decorator.decorate(renderElement, canvas, graphicsFactory,
           drawBounds: drawBounds, animationPercent: 1.0);
 
-      verifyNever(canvas.drawText(any, any, any));
+      verifyNever(canvas!.drawText(any, any, any));
     });
 
     test('Skip label if label is empty', () {
@@ -485,7 +485,7 @@ void main() {
       decorator.decorate(renderElement, canvas, graphicsFactory,
           drawBounds: drawBounds, animationPercent: 1.0);
 
-      verifyNever(canvas.drawText(any, any, any));
+      verifyNever(canvas!.drawText(any, any, any));
     });
   });
 }

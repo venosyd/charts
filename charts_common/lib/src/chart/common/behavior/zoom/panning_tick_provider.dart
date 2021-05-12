@@ -40,11 +40,11 @@ enum PanningTickProviderMode {
 /// zoom in/out, return ticks calculated with locked step size during panning,
 /// or just pass through to the existing tick provider.
 class PanningTickProvider<D> implements TickProvider<D> {
-  final TickProvider<D> tickProvider;
+  final TickProvider<D>? tickProvider;
 
   PanningTickProviderMode _mode = PanningTickProviderMode.passThrough;
 
-  List<Tick<D>> _ticks;
+  List<Tick<D>?>? _ticks;
 
   PanningTickProvider(this.tickProvider);
 
@@ -53,27 +53,27 @@ class PanningTickProvider<D> implements TickProvider<D> {
   }
 
   @override
-  List<Tick<D>> getTicks({
-    @required ChartContext context,
-    @required GraphicsFactory graphicsFactory,
-    @required MutableScale<D> scale,
-    @required TickFormatter<D> formatter,
-    @required Map<D, String> formatterValueCache,
-    @required TickDrawStrategy tickDrawStrategy,
-    @required AxisOrientation orientation,
+  List<Tick<D>?>? getTicks({
+    required ChartContext? context,
+    required GraphicsFactory? graphicsFactory,
+    required MutableScale<D>? scale,
+    required TickFormatter<D>? formatter,
+    required Map<D, String> formatterValueCache,
+    required TickDrawStrategy? tickDrawStrategy,
+    required AxisOrientation? orientation,
     bool viewportExtensionEnabled = false,
-    TickHint<D> tickHint,
+    TickHint<D>? tickHint,
   }) {
     if (_mode == PanningTickProviderMode.stepSizeLocked) {
       tickHint = TickHint(
-        _ticks.first.value,
-        _ticks.last.value,
-        tickCount: _ticks.length,
+        _ticks!.first!.value,
+        _ticks!.last!.value,
+        tickCount: _ticks!.length,
       );
     }
 
     if (_mode != PanningTickProviderMode.useCachedTicks) {
-      _ticks = tickProvider.getTicks(
+      _ticks = tickProvider!.getTicks(
         context: context,
         graphicsFactory: graphicsFactory,
         scale: scale,

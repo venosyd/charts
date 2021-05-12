@@ -23,22 +23,22 @@ import 'tick.dart' show Tick;
 /// [D] is the type of the value this tick is associated with.
 class RangeTick<D> extends Tick<D> {
   /// The value that this range tick starting point represents
-  final D rangeStartValue;
+  final D? rangeStartValue;
 
   /// Position of the range tick starting point.
-  double rangeStartLocationPx;
+  double? rangeStartLocationPx;
 
   /// The value that this range tick ending point represents.
-  final D rangeEndValue;
+  final D? rangeEndValue;
 
   /// Position of the range tick ending point.
-  double rangeEndLocationPx;
+  double? rangeEndLocationPx;
 
   RangeTick(
-      {@required D value,
-      @required TextElement textElement,
-      double locationPx,
-      double labelOffsetPx,
+      {required D value,
+      required TextElement textElement,
+      double? locationPx,
+      double? labelOffsetPx,
       this.rangeStartValue,
       this.rangeStartLocationPx,
       this.rangeEndValue,

@@ -21,8 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class GroupedBarChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   GroupedBarChart(this.seriesList, {this.animate});
 
@@ -70,20 +70,20 @@ class GroupedBarChart extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tableSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesData,
       ),
     ];
@@ -125,20 +125,20 @@ class GroupedBarChart extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tableSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesData,
       ),
     ];

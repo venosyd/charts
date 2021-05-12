@@ -54,7 +54,7 @@ class DateTimeTickFormatter implements TickFormatter<DateTime> {
   /// where these assumptions are not correct, please create a custom
   /// [TickFormatter].
   factory DateTimeTickFormatter(DateTimeFactory dateTimeFactory,
-      {Map<int, TimeTickFormatter> overrides}) {
+      {Map<int, TimeTickFormatter>? overrides}) {
     final Map<int, TimeTickFormatter> map = {
       MINUTE: TimeTickFormatterImpl(
           dateTimeFactory: dateTimeFactory,
@@ -126,7 +126,7 @@ class DateTimeTickFormatter implements TickFormatter<DateTime> {
   ///
   /// The formatters are expected to be provided with keys in increasing order.
   factory DateTimeTickFormatter.withFormatters(
-      Map<int, TimeTickFormatter> formatters) {
+      Map<int, TimeTickFormatter>? formatters) {
     // Formatters must be non empty.
     if (formatters == null || formatters.isEmpty) {
       throw ArgumentError('At least one TimeTickFormatter is required.');
@@ -144,8 +144,8 @@ class DateTimeTickFormatter implements TickFormatter<DateTime> {
   }
 
   @override
-  List<String> format(List<DateTime> tickValues, Map<DateTime, String> cache,
-      {@required num stepSize}) {
+  List<String> format(List<DateTime> tickValues, Map<DateTime, String>? cache,
+      {num? stepSize}) {
     final tickLabels = <String>[];
     if (tickValues.isEmpty) {
       return tickLabels;
@@ -159,7 +159,7 @@ class DateTimeTickFormatter implements TickFormatter<DateTime> {
     if (_timeFormatters.keys.first == ANY) {
       formatterFound = true;
     } else {
-      int minTimeBetweenTicks = stepSize.toInt();
+      int minTimeBetweenTicks = stepSize!.toInt();
 
       // TODO: Skip the formatter if the formatter's step size is
       // smaller than the minimum step size of the data.
@@ -179,7 +179,7 @@ class DateTimeTickFormatter implements TickFormatter<DateTime> {
 
     var tickValue = (tickValuesIt..moveNext()).current;
     var prevTickValue = tickValue;
-    tickLabels.add(formatter.formatFirstTick(tickValue));
+    tickLabels.add(formatter!.formatFirstTick(tickValue));
 
     while (tickValuesIt.moveNext()) {
       tickValue = tickValuesIt.current;

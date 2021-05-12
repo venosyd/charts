@@ -33,11 +33,11 @@ ChartContainerRenderObject getChartContainerRenderObject(RenderBox box) {
 
   assert(semanticHandler is RenderSemanticsGestureHandler);
   final renderPointerListener =
-      (semanticHandler as RenderSemanticsGestureHandler).child;
+      (semanticHandler as RenderSemanticsGestureHandler).child!;
 
   assert(renderPointerListener is RenderPointerListener);
   final chartContainerRenderObject =
-      (renderPointerListener as RenderPointerListener).child;
+      (renderPointerListener as RenderPointerListener).child!;
 
   assert(chartContainerRenderObject is ChartContainerRenderObject);
 

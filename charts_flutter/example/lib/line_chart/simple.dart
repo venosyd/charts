@@ -21,8 +21,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class SimpleLineChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool? animate;
 
   SimpleLineChart(this.seriesList, {this.animate});
 
@@ -58,8 +58,8 @@ class SimpleLineChart extends StatelessWidget {
       new charts.Series<LinearSales, int>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: data,
       )
     ];
@@ -84,8 +84,8 @@ class SimpleLineChart extends StatelessWidget {
       new charts.Series<LinearSales, int>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: data,
       )
     ];

@@ -30,16 +30,16 @@ class MyRow {
   final int campaign;
   final int campaignLower;
   final int campaignUpper;
-  final double radius;
-  final double boundsRadius;
-  final String shape;
+  final double? radius;
+  final double? boundsRadius;
+  final String? shape;
   MyRow(this.campaignString, this.campaign, this.campaignLower,
       this.campaignUpper, this.radius, this.boundsRadius, this.shape);
 }
 
 void main() {
   SymbolAnnotationRenderer renderer;
-  List<MutableSeries<int>> numericSeriesList;
+  late List<MutableSeries<int>> numericSeriesList;
 
   setUp(() {
     var myFakeDesktopData = [
@@ -52,15 +52,15 @@ void main() {
     ];
 
     numericSeriesList = [
-      MutableSeries<int>(Series<MyRow, int>(
+      MutableSeries<int>(Series<MyRow?, int>(
           id: 'Desktop',
-          colorFn: (MyRow row, _) => MaterialPalette.blue.shadeDefault,
-          domainFn: (MyRow row, _) => row.campaign,
-          domainLowerBoundFn: (MyRow row, _) => row.campaignLower,
-          domainUpperBoundFn: (MyRow row, _) => row.campaignUpper,
-          measureFn: (MyRow row, _) => 0,
-          measureOffsetFn: (MyRow row, _) => 0,
-          radiusPxFn: (MyRow row, _) => row.radius,
+          colorFn: (MyRow? row, _) => MaterialPalette.blue.shadeDefault,
+          domainFn: (MyRow? row, _) => row!.campaign,
+          domainLowerBoundFn: (MyRow? row, _) => row!.campaignLower,
+          domainUpperBoundFn: (MyRow? row, _) => row!.campaignUpper,
+          measureFn: (MyRow? row, _) => 0,
+          measureOffsetFn: (MyRow? row, _) => 0,
+          radiusPxFn: (MyRow? row, _) => row!.radius,
           data: myFakeDesktopData)
         // Define a bounds line radius function.
         ..setAttribute(boundsLineRadiusPxFnKey,
@@ -80,9 +80,9 @@ void main() {
       // Validate Desktop series.
       var series = numericSeriesList[0];
 
-      var keyFn = series.keyFn;
+      String Function(int) keyFn = series.keyFn!;
 
-      var elementsList = series.getAttr(pointElementsKey);
+      var elementsList = series.getAttr(pointElementsKey)!;
       expect(elementsList.length, equals(4));
 
       expect(elementsList[0].radiusPx, equals(3.0));

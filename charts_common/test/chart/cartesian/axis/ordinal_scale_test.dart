@@ -24,11 +24,11 @@ const EPSILON = 0.001;
 
 class TestStyle extends MaterialStyle {
   @override
-  double rangeBandSize;
+  double? rangeBandSize;
 }
 
 void main() {
-  SimpleOrdinalScale scale;
+  late SimpleOrdinalScale scale;
 
   setUp(() {
     scale = SimpleOrdinalScale();
@@ -158,10 +158,10 @@ void main() {
 
   group('set range persists', () {
     test('', () {
-      expect(scale.range.start, equals(2000));
-      expect(scale.range.end, equals(1000));
-      expect(scale.range.min, equals(1000));
-      expect(scale.range.max, equals(2000));
+      expect(scale.range!.start, equals(2000));
+      expect(scale.range!.end, equals(1000));
+      expect(scale.range!.min, equals(1000));
+      expect(scale.range!.max, equals(2000));
       expect(scale.rangeWidth, equals(1000));
 
       expect(scale.isRangeValueWithinViewport(1500.0), isTrue);
@@ -262,20 +262,20 @@ void main() {
       scale.range = ScaleOutputExtent(1000, 2000);
       scale.setViewportSettings(2.0, -700.0);
 
-      expect(scale.reverse(scale['d']), 'd');
-      expect(scale.reverse(scale['b']), 'b');
-      expect(scale.reverse(scale['c']), 'c');
-      expect(scale.reverse(scale['d']), 'd');
+      expect(scale.reverse(scale['d'] as double), 'd');
+      expect(scale.reverse(scale['b'] as double), 'b');
+      expect(scale.reverse(scale['c'] as double), 'c');
+      expect(scale.reverse(scale['d'] as double), 'd');
     });
 
     test('applies in reverse vertically', () {
       scale.range = ScaleOutputExtent(2000, 1000);
       scale.setViewportSettings(2.0, 700.0);
 
-      expect(scale.reverse(scale['d']), 'd');
-      expect(scale.reverse(scale['b']), 'b');
-      expect(scale.reverse(scale['c']), 'c');
-      expect(scale.reverse(scale['d']), 'd');
+      expect(scale.reverse(scale['d'] as double), 'd');
+      expect(scale.reverse(scale['b'] as double), 'b');
+      expect(scale.reverse(scale['c'] as double), 'c');
+      expect(scale.reverse(scale['d'] as double), 'd');
     });
   });
 

@@ -14,7 +14,7 @@
 // limitations under the License.
 
 import 'dart:math' show Rectangle;
-import 'package:meta/meta.dart';
+
 import 'layout_view.dart';
 
 class SizeList {
@@ -27,7 +27,7 @@ class SizeList {
 
   int get length => _sizes.length;
 
-  void add(size) {
+  void add(int size) {
     _sizes.add(size);
     _total += size;
   }
@@ -49,7 +49,7 @@ class _DesiredViewSizes {
 
   void adjustedTo(maxSize) {
     if (maxSize < preferredSizes.total) {
-      int delta = preferredSizes.total - maxSize;
+      int delta = preferredSizes.total - maxSize as int;
       for (int i = preferredSizes.length - 1; i >= 0; i--) {
         int viewAvailablePx = preferredSizes[i] - minimumSizes[i];
 
@@ -71,35 +71,35 @@ class _DesiredViewSizes {
 /// A strategy for calculating size of vertical margins (RIGHT & LEFT).
 abstract class VerticalMarginStrategy {
   SizeList measure(Iterable<LayoutView> views,
-      {@required int maxWidth,
-      @required int height,
-      @required int fullHeight}) {
+      {required int? maxWidth,
+      required int? height,
+      required int? fullHeight}) {
     final measuredWidths = _DesiredViewSizes();
-    int remainingWidth = maxWidth;
+    int? remainingWidth = maxWidth;
 
     views.forEach((LayoutView view) {
-      final params = view.layoutConfig;
+      final params = view.layoutConfig!;
       final viewMargin = params.viewMargin;
 
       final availableHeight =
-          (params.isFullPosition ? fullHeight : height) - viewMargin.height;
+          (params.isFullPosition ? fullHeight : height)! - viewMargin.height;
 
       // Measure with all available space, minus the buffer.
-      remainingWidth = remainingWidth - viewMargin.width;
-      maxWidth -= viewMargin.width;
+      remainingWidth = remainingWidth! - viewMargin.width;
+      maxWidth = (maxWidth ?? 0) - viewMargin.width;
 
-      var size = ViewMeasuredSizes.zero;
+      ViewMeasuredSizes? size = ViewMeasuredSizes.zero;
       // Don't ask component to measure if both measurements are 0.
       //
       // Measure still needs to be called even when one dimension has a size of
       // zero because if the component is an axis, the axis needs to still
       // recalculate ticks even if it is not to be shown.
-      if (remainingWidth > 0 || availableHeight > 0) {
+      if (remainingWidth! > 0 || availableHeight > 0) {
         size = view.measure(remainingWidth, availableHeight);
-        remainingWidth -= size.preferredWidth;
+        remainingWidth = (remainingWidth ?? 0) - size!.preferredWidth!;
       }
 
-      measuredWidths.add(size.preferredWidth, size.minWidth);
+      measuredWidths.add(size.preferredWidth!, size.minWidth);
     });
 
     measuredWidths.adjustedTo(maxWidth);
@@ -113,15 +113,15 @@ abstract class VerticalMarginStrategy {
 /// A strategy for calculating size and bounds of left margins.
 class LeftMarginLayoutStrategy extends VerticalMarginStrategy {
   @override
-  void layout(Iterable<LayoutView> views, SizeList measuredSizes,
+  void layout(Iterable<LayoutView> views, SizeList? measuredSizes,
       Rectangle<int> fullBounds, Rectangle<int> drawAreaBounds) {
     var prevBoundsRight = drawAreaBounds.left;
 
     int i = 0;
     views.forEach((LayoutView view) {
-      final params = view.layoutConfig;
+      final params = view.layoutConfig!;
 
-      final width = measuredSizes[i];
+      final width = measuredSizes![i];
       final left = prevBoundsRight - params.viewMargin.rightPx - width;
       final height =
           (params.isFullPosition ? fullBounds.height : drawAreaBounds.height) -
@@ -143,15 +143,15 @@ class LeftMarginLayoutStrategy extends VerticalMarginStrategy {
 /// A strategy for calculating size and bounds of right margins.
 class RightMarginLayoutStrategy extends VerticalMarginStrategy {
   @override
-  void layout(Iterable<LayoutView> views, SizeList measuredSizes,
+  void layout(Iterable<LayoutView> views, SizeList? measuredSizes,
       Rectangle<int> fullBounds, Rectangle<int> drawAreaBounds) {
     var prevBoundsLeft = drawAreaBounds.right;
 
     int i = 0;
     views.forEach((LayoutView view) {
-      final params = view.layoutConfig;
+      final params = view.layoutConfig!;
 
-      final width = measuredSizes[i];
+      final width = measuredSizes![i];
       final left = prevBoundsLeft + params.viewMargin.leftPx;
       final height =
           (params.isFullPosition ? fullBounds.height : drawAreaBounds.height) -
@@ -173,33 +173,33 @@ class RightMarginLayoutStrategy extends VerticalMarginStrategy {
 /// A strategy for calculating size of horizontal margins (TOP & BOTTOM).
 abstract class HorizontalMarginStrategy {
   SizeList measure(Iterable<LayoutView> views,
-      {@required int maxHeight, @required int width, @required int fullWidth}) {
+      {required int? maxHeight, required int width, required int fullWidth}) {
     final measuredHeights = _DesiredViewSizes();
-    int remainingHeight = maxHeight;
+    int? remainingHeight = maxHeight;
 
     views.forEach((LayoutView view) {
-      final params = view.layoutConfig;
+      final params = view.layoutConfig!;
       final viewMargin = params.viewMargin;
 
       final availableWidth =
           (params.isFullPosition ? fullWidth : width) - viewMargin.width;
 
       // Measure with all available space, minus the buffer.
-      remainingHeight = remainingHeight - viewMargin.height;
-      maxHeight -= viewMargin.height;
+      remainingHeight = remainingHeight! - viewMargin.height;
+      maxHeight = (maxHeight ?? 0) - viewMargin.height;
 
-      var size = ViewMeasuredSizes.zero;
+      ViewMeasuredSizes? size = ViewMeasuredSizes.zero;
       // Don't ask component to measure if both measurements are 0.
       //
       // Measure still needs to be called even when one dimension has a size of
       // zero because if the component is an axis, the axis needs to still
       // recalculate ticks even if it is not to be shown.
-      if (remainingHeight > 0 || availableWidth > 0) {
+      if (remainingHeight! > 0 || availableWidth > 0) {
         size = view.measure(availableWidth, remainingHeight);
-        remainingHeight -= size.preferredHeight;
+        remainingHeight = (remainingHeight ?? 0) - size!.preferredHeight!;
       }
 
-      measuredHeights.add(size.preferredHeight, size.minHeight);
+      measuredHeights.add(size.preferredHeight!, size.minHeight);
     });
 
     measuredHeights.adjustedTo(maxHeight);
@@ -213,15 +213,15 @@ abstract class HorizontalMarginStrategy {
 /// A strategy for calculating size and bounds of top margins.
 class TopMarginLayoutStrategy extends HorizontalMarginStrategy {
   @override
-  void layout(Iterable<LayoutView> views, SizeList measuredSizes,
+  void layout(Iterable<LayoutView> views, SizeList? measuredSizes,
       Rectangle<int> fullBounds, Rectangle<int> drawAreaBounds) {
     var prevBoundsBottom = drawAreaBounds.top;
 
     int i = 0;
     views.forEach((LayoutView view) {
-      final params = view.layoutConfig;
+      final params = view.layoutConfig!;
 
-      final height = measuredSizes[i];
+      final height = measuredSizes![i];
       final top = prevBoundsBottom - height - params.viewMargin.bottomPx;
 
       final width =
@@ -244,15 +244,15 @@ class TopMarginLayoutStrategy extends HorizontalMarginStrategy {
 /// A strategy for calculating size and bounds of bottom margins.
 class BottomMarginLayoutStrategy extends HorizontalMarginStrategy {
   @override
-  void layout(Iterable<LayoutView> views, SizeList measuredSizes,
+  void layout(Iterable<LayoutView> views, SizeList? measuredSizes,
       Rectangle<int> fullBounds, Rectangle<int> drawAreaBounds) {
     var prevBoundsTop = drawAreaBounds.bottom;
 
     int i = 0;
     views.forEach((LayoutView view) {
-      final params = view.layoutConfig;
+      final params = view.layoutConfig!;
 
-      final height = measuredSizes[i];
+      final height = measuredSizes![i];
       final top = prevBoundsTop + params.viewMargin.topPx;
 
       final width =

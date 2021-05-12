@@ -39,16 +39,16 @@ abstract class TickProvider<D> {
   /// [tickDrawStrategy] Draw strategy for ticks.
   /// [viewportExtensionEnabled] allow extending the viewport for 'niced' ticks.
   /// [tickHint] tick values for provider to calculate a desired tick range.
-  List<Tick<D>> getTicks({
-    @required ChartContext context,
-    @required GraphicsFactory graphicsFactory,
-    @required covariant MutableScale<D> scale,
-    @required TickFormatter<D> formatter,
-    @required Map<D, String> formatterValueCache,
-    @required TickDrawStrategy tickDrawStrategy,
-    @required AxisOrientation orientation,
+  List<Tick<D>?>? getTicks({
+    required ChartContext? context,
+    required GraphicsFactory? graphicsFactory,
+    required covariant MutableScale<D>? scale,
+    required TickFormatter<D>? formatter,
+    required Map<D, String> formatterValueCache,
+    required TickDrawStrategy? tickDrawStrategy,
+    required AxisOrientation? orientation,
     bool viewportExtensionEnabled = false,
-    TickHint<D> tickHint,
+    TickHint<D>? tickHint,
   });
 }
 
@@ -59,13 +59,13 @@ abstract class BaseTickProvider<D> implements TickProvider<D> {
   /// Create ticks from [domainValues].
   List<Tick<D>> createTicks(
     List<D> domainValues, {
-    @required ChartContext context,
-    @required GraphicsFactory graphicsFactory,
-    @required MutableScale<D> scale,
-    @required TickFormatter<D> formatter,
-    @required Map<D, String> formatterValueCache,
-    @required TickDrawStrategy tickDrawStrategy,
-    num stepSize,
+    required ChartContext? context,
+    required GraphicsFactory? graphicsFactory,
+    required MutableScale<D>? scale,
+    required TickFormatter<D> formatter,
+    required Map<D, String> formatterValueCache,
+    required TickDrawStrategy tickDrawStrategy,
+    num? stepSize,
   }) {
     final ticks = <Tick<D>>[];
     final labels =
@@ -75,8 +75,8 @@ abstract class BaseTickProvider<D> implements TickProvider<D> {
       final value = domainValues[i];
       final tick = Tick(
           value: value,
-          textElement: graphicsFactory.createTextElement(labels[i]),
-          locationPx: scale[value]);
+          textElement: graphicsFactory!.createTextElement(labels[i]),
+          locationPx: scale![value] as double?);
 
       ticks.add(tick);
     }
@@ -97,7 +97,7 @@ class TickHint<D> {
   final D end;
 
   /// Number of ticks.
-  final int tickCount;
+  final int? tickCount;
 
   TickHint(this.start, this.end, {this.tickCount});
 }

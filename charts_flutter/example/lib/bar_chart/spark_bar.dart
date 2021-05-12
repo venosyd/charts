@@ -22,8 +22,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 /// Example of a Spark Bar by hiding both axis, reducing the chart margins.
 class SparkBar extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   SparkBar(this.seriesList, {this.animate});
 
@@ -64,8 +64,8 @@ class SparkBar extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Global Revenue',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: globalSalesData,
       ),
     ];
@@ -123,8 +123,8 @@ class SparkBar extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Global Revenue',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: globalSalesData,
       ),
     ];

@@ -35,7 +35,7 @@ void main() {
       final stepper = DayTimeStepper(dateTimeFactory);
       final extent = DateTimeExtents(
           start: DateTime(2017, 8, 20), end: DateTime(2017, 8, 25));
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(1);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(1);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(6));
@@ -58,7 +58,7 @@ void main() {
         end: DateTime(2017, 8, 26),
       );
 
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(5);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(5);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(4));
@@ -80,7 +80,7 @@ void main() {
         start: DateTime(2017, 3, 11),
         end: DateTime(2017, 3, 13),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(1);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(1);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(3));
@@ -100,7 +100,7 @@ void main() {
         start: DateTime(2017, 11, 4),
         end: DateTime(2017, 11, 6),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(1);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(1);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(3));
@@ -121,7 +121,7 @@ void main() {
         start: DateTime(2017, 8, 20, 10),
         end: DateTime(2017, 8, 20, 15),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(1);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(1);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(6));
@@ -143,7 +143,7 @@ void main() {
         start: DateTime(2017, 8, 20, 10),
         end: DateTime(2017, 8, 21, 10),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(4);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(4);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(6));
@@ -167,7 +167,7 @@ void main() {
         start: DateTime(2017, 3, 12, 0),
         end: DateTime(2017, 3, 12, 5),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(1);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(1);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(5));
@@ -190,7 +190,7 @@ void main() {
         start: DateTime(2017, 11, 5, 0),
         end: DateTime(2017, 11, 5, 4),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(1);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(1);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(6));
@@ -216,7 +216,7 @@ void main() {
         start: DateTime(2017, 3, 12, 0),
         end: DateTime(2017, 3, 13, 0),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(4);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(4);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(6));
@@ -241,7 +241,7 @@ void main() {
         start: DateTime(2017, 11, 5, 0),
         end: DateTime(2017, 11, 6, 0),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(4);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(4);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(7));
@@ -267,7 +267,7 @@ void main() {
         start: DateTime(2017, 8, 20, 3, 46),
         end: DateTime(2017, 8, 20, 4, 02),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(5);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(5);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(3));
@@ -287,7 +287,7 @@ void main() {
         start: DateTime(2017, 3, 12, 1, 40),
         end: DateTime(2017, 3, 12, 4, 02),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(15);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(15);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(6));
@@ -310,7 +310,7 @@ void main() {
         start: DateTime(2017, 3, 12, 3, 02),
         end: DateTime(2017, 3, 12, 4, 02),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(30);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(30);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(2));
@@ -329,7 +329,7 @@ void main() {
       final extent = DateTimeExtents(
           start: DateTime(2017, 11, 5).add(Duration(hours: 1, minutes: 29)),
           end: DateTime(2017, 11, 5, 3, 02));
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(30);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(30);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(6));
@@ -359,7 +359,7 @@ void main() {
         start: DateTime(2017, 5),
         end: DateTime(2018, 9),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(4);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(4);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(4));
@@ -379,7 +379,7 @@ void main() {
         start: DateTime(2017, 1),
         end: DateTime(2017, 5),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(2);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(2);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(2));
@@ -447,7 +447,7 @@ void main() {
         start: DateTime(2017),
         end: DateTime(2042),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(10);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(10);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(3));
@@ -466,7 +466,7 @@ void main() {
         start: DateTime(-420),
         end: DateTime(240),
       );
-      final stepIterable = stepper.getSteps(extent)..iterator.reset(200);
+      final stepIterable = stepper.getSteps(extent)!..iterator.reset(200);
       final steps = stepIterable.toList();
 
       expect(steps.length, equals(4));

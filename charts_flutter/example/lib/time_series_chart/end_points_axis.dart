@@ -23,8 +23,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class EndPointsAxisTimeSeriesChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, DateTime>> seriesList;
+  final bool? animate;
 
   EndPointsAxisTimeSeriesChart(this.seriesList, {this.animate});
 
@@ -60,8 +60,8 @@ class EndPointsAxisTimeSeriesChart extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: data,
       )
     ];
@@ -94,8 +94,8 @@ class EndPointsAxisTimeSeriesChart extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: data,
       )
     ];

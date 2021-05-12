@@ -27,7 +27,7 @@ import 'package:test/test.dart';
 class MockTickDrawStrategy extends Mock implements TickDrawStrategy<num> {}
 
 class MockGraphicsFactory extends Mock implements GraphicsFactory {
-  TextElement createTextElement(String _) {
+  TextElement createTextElement(String? _) {
     return MockTextElement();
   }
 }
@@ -46,7 +46,7 @@ void main() {
     var tester = AxisTester(axis);
     axis.tickDrawStrategy = MockTickDrawStrategy();
     axis.graphicsFactory = MockGraphicsFactory();
-    tester.scale.range = ScaleOutputExtent(0, 300);
+    tester.scale!.range = ScaleOutputExtent(0, 300);
 
     axis.updateTicks();
 

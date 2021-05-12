@@ -48,18 +48,18 @@ void main() {
   /////////////////////////////////////////
   // Convenience methods for creating mocks.
   /////////////////////////////////////////
-  MutableSeries<int> _makeSeries({String id, int measureOffset = 0}) {
+  MutableSeries<int> _makeSeries({String? id, int measureOffset = 0}) {
     final data = <MyRow>[
       MyRow(1000, measureOffset + 10),
       MyRow(2000, measureOffset + 20),
       MyRow(3000, measureOffset + 30),
     ];
 
-    final series = MutableSeries<int>(Series<MyRow, int>(
+    final series = MutableSeries<int>(Series<MyRow?, int>(
       id: id,
       data: data,
-      domainFn: (MyRow row, _) => row.timestamp,
-      measureFn: (MyRow row, _) => row.clickCount,
+      domainFn: (MyRow? row, _) => row!.timestamp,
+      measureFn: (MyRow? row, _) => row!.clickCount,
     ));
 
     series.measureOffsetFn = (_) => 0.0;
@@ -87,9 +87,9 @@ void main() {
     return series;
   }
 
-  LineRenderer<int> renderer;
+  late LineRenderer<int> renderer;
 
-  bool selectNearestByDomain;
+  late bool selectNearestByDomain;
 
   setUp(() {
     selectNearestByDomain = true;
@@ -108,7 +108,7 @@ void main() {
     test('hit target with missing data in series still selects others', () {
       // Setup
       final seriesList = <MutableSeries<int>>[
-        _makeSeries(id: 'foo')..data.clear(),
+        _makeSeries(id: 'foo')..data!.clear(),
         _makeSeries(id: 'bar'),
       ];
       renderer.configureSeries(seriesList);
@@ -127,8 +127,8 @@ void main() {
 
       final closest = details[0];
       expect(closest.domain, equals(1000));
-      expect(closest.series.id, equals('bar'));
-      expect(closest.datum, equals(seriesList[1].data[0]));
+      expect(closest.series!.id, equals('bar'));
+      expect(closest.datum, equals(seriesList[1].data![0]));
       expect(closest.domainDistance, equals(10));
       expect(closest.measureDistance, equals(5));
     });
@@ -136,8 +136,8 @@ void main() {
     test('all series without data is skipped', () {
       // Setup
       final seriesList = <MutableSeries<int>>[
-        _makeSeries(id: 'foo')..data.clear(),
-        _makeSeries(id: 'bar')..data.clear(),
+        _makeSeries(id: 'foo')..data!.clear(),
+        _makeSeries(id: 'bar')..data!.clear(),
       ];
       renderer.configureSeries(seriesList);
       renderer.preprocessSeries(seriesList);
@@ -176,8 +176,8 @@ void main() {
 
       final closest = details[0];
       expect(closest.domain, equals(1000));
-      expect(closest.series.id, equals('bar'));
-      expect(closest.datum, equals(seriesList[1].data[0]));
+      expect(closest.series!.id, equals('bar'));
+      expect(closest.datum, equals(seriesList[1].data![0]));
       expect(closest.domainDistance, equals(10));
       expect(closest.measureDistance, equals(5));
     });
@@ -227,7 +227,7 @@ void main() {
       final closest = details[0];
       expect(closest.domain, equals(1000));
       expect(closest.series, equals(seriesList[0]));
-      expect(closest.datum, equals(seriesList[0].data[0]));
+      expect(closest.datum, equals(seriesList[0].data![0]));
       expect(closest.domainDistance, equals(10));
       expect(closest.measureDistance, equals(5));
     });
@@ -254,15 +254,15 @@ void main() {
 
       final closest = details[0];
       expect(closest.domain, equals(1000));
-      expect(closest.series.id, equals('foo'));
-      expect(closest.datum, equals(seriesList[0].data[0]));
+      expect(closest.series!.id, equals('foo'));
+      expect(closest.datum, equals(seriesList[0].data![0]));
       expect(closest.domainDistance, equals(10));
       expect(closest.measureDistance, equals(5));
 
       final next = details[1];
       expect(next.domain, equals(1000));
-      expect(next.series.id, equals('bar'));
-      expect(next.datum, equals(seriesList[1].data[0]));
+      expect(next.series!.id, equals('bar'));
+      expect(next.datum, equals(seriesList[1].data![0]));
       expect(next.domainDistance, equals(10));
       expect(next.measureDistance, equals(25)); // 20offset + 10measure - 5pt
     });
@@ -272,7 +272,7 @@ void main() {
       // middle point.
       final seriesList = <MutableSeries<int>>[
         _makeSeries(id: 'foo'),
-        _makeSeries(id: 'bar', measureOffset: 20)..data.removeAt(1),
+        _makeSeries(id: 'bar', measureOffset: 20)..data!.removeAt(1),
       ];
       renderer.configureSeries(seriesList);
       renderer.preprocessSeries(seriesList);
@@ -290,16 +290,16 @@ void main() {
 
       final closest = details[0];
       expect(closest.domain, equals(2000));
-      expect(closest.series.id, equals('foo'));
-      expect(closest.datum, equals(seriesList[0].data[1]));
+      expect(closest.series!.id, equals('foo'));
+      expect(closest.datum, equals(seriesList[0].data![1]));
       expect(closest.domainDistance, equals(10));
       expect(closest.measureDistance, equals(15));
 
       // bar series jumps to last point since it is missing middle.
       final next = details[1];
       expect(next.domain, equals(3000));
-      expect(next.series.id, equals('bar'));
-      expect(next.datum, equals(seriesList[1].data[1]));
+      expect(next.series!.id, equals('bar'));
+      expect(next.datum, equals(seriesList[1].data![1]));
       expect(next.domainDistance, equals(90));
       expect(next.measureDistance, equals(45.0));
     });
@@ -307,7 +307,7 @@ void main() {
     test('hit test works for points above drawArea', () {
       // Setup
       final seriesList = <MutableSeries<int>>[
-        _makeSeries(id: 'foo')..data[1].clickCount = 500
+        _makeSeries(id: 'foo')..data![1].clickCount = 500
       ];
       renderer.configureSeries(seriesList);
       renderer.preprocessSeries(seriesList);
@@ -325,7 +325,7 @@ void main() {
       final closest = details[0];
       expect(closest.domain, equals(2000));
       expect(closest.series, equals(seriesList[0]));
-      expect(closest.datum, equals(seriesList[0].data[1]));
+      expect(closest.datum, equals(seriesList[0].data![1]));
       expect(closest.domainDistance, equals(10));
       expect(closest.measureDistance, equals(410)); // 500 - 100 + 10
     });
@@ -333,7 +333,7 @@ void main() {
     test('no selection for points outside of viewport', () {
       // Setup
       final seriesList = <MutableSeries<int>>[
-        _makeSeries(id: 'foo')..data.add(MyRow(-1000, 20))
+        _makeSeries(id: 'foo')..data!.add(MyRow(-1000, 20))
       ];
       renderer.configureSeries(seriesList);
       renderer.preprocessSeries(seriesList);

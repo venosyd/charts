@@ -22,8 +22,8 @@ void main() {
   final DateTime testDate1 = DateTime.utc(1984, 11, 11);
   final DateTime testDate2 = DateTime.utc(1984, 11, 12);
 
-  SimpleTimeTickFormatter simpleTimeFormatter;
-  SimpleTimeTickFormatter simpleTimeFormatterWithDateFormat;
+  late SimpleTimeTickFormatter simpleTimeFormatter;
+  late SimpleTimeTickFormatter simpleTimeFormatterWithDateFormat;
   DateFormat dateFormat;
 
   String testFormatter(DateTime dateTime) {

@@ -16,16 +16,16 @@
 /// A measurement result for rendering text.
 class TextMeasurement {
   /// Rendered width of the text.
-  final double horizontalSliceWidth;
+  final double? horizontalSliceWidth;
 
   /// Vertical slice is likely based off the rendered text.
   ///
   /// This means that 'mo' and 'My' will have different heights so do not use
   /// this for centering vertical text.
-  final double verticalSliceWidth;
+  final double? verticalSliceWidth;
 
   /// Baseline of the text for text vertical alignment.
-  final double baseline;
+  final double? baseline;
 
   TextMeasurement(
       {this.horizontalSliceWidth, this.verticalSliceWidth, this.baseline});

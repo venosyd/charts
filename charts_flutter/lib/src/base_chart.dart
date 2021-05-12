@@ -16,6 +16,7 @@
 import 'package:charts_common/common.dart' as common
     show
         BaseChart,
+        ChartBehavior,
         LayoutConfig,
         MarginSpec,
         Performance,
@@ -25,8 +26,8 @@ import 'package:charts_common/common.dart' as common
         SelectionModelType,
         SelectionTrigger;
 import 'behaviors/select_nearest.dart' show SelectNearest;
-import 'package:meta/meta.dart' show immutable, required;
-import 'behaviors/chart_behavior.dart'
+import 'package:meta/meta.dart' show immutable;
+import 'behaviors/chart_behavior.dart' as behavior
     show ChartBehavior, ChartStateBehavior, GestureType;
 import 'selection_model_config.dart' show SelectionModelConfig;
 import 'package:flutter/material.dart' show StatefulWidget;
@@ -44,34 +45,34 @@ abstract class BaseChart<D> extends StatefulWidget {
 
   /// Used to configure the margin sizes around the drawArea that the axis and
   /// other things render into.
-  final LayoutConfig layoutConfig;
+  final LayoutConfig? layoutConfig;
 
   // Default renderer used to draw series data on the chart.
-  final common.SeriesRendererConfig<D> defaultRenderer;
+  final common.SeriesRendererConfig<D>? defaultRenderer;
 
   /// Include the default interactions or not.
   final bool defaultInteractions;
 
-  final List<ChartBehavior> behaviors;
+  final List<behavior.ChartBehavior>? behaviors;
 
-  final List<SelectionModelConfig<D>> selectionModels;
+  final List<SelectionModelConfig<D?>>? selectionModels;
 
   // List of custom series renderers used to draw series data on the chart.
   //
   // Series assigned a rendererIdKey will be drawn with the matching renderer in
   // this list. Series without a rendererIdKey will be drawn by the default
   // renderer.
-  final List<common.SeriesRendererConfig<D>> customSeriesRenderers;
+  final List<common.SeriesRendererConfig<D>>? customSeriesRenderers;
 
   /// The spec to use if RTL is enabled.
-  final common.RTLSpec rtlSpec;
+  final common.RTLSpec? rtlSpec;
 
   /// Optional state that overrides internally kept state, such as selection.
-  final UserManagedState<D> userManagedState;
+  final UserManagedState<D>? userManagedState;
 
   BaseChart(this.seriesList,
-      {bool animate,
-      Duration animationDuration,
+      {bool? animate,
+      Duration? animationDuration,
       this.defaultRenderer,
       this.customSeriesRenderers,
       this.behaviors,
@@ -88,16 +89,16 @@ abstract class BaseChart<D> extends StatefulWidget {
   BaseChartState<D> createState() => new BaseChartState<D>();
 
   /// Creates and returns a [common.BaseChart].
-  common.BaseChart<D> createCommonChart(BaseChartState<D> chartState);
+  common.BaseChart<D> createCommonChart(BaseChartState<D>? chartState);
 
   /// Updates the [common.BaseChart].
-  void updateCommonChart(common.BaseChart chart, BaseChart<D> oldWidget,
+  void updateCommonChart(common.BaseChart chart, BaseChart<D>? oldWidget,
       BaseChartState<D> chartState) {
     common.Performance.time('chartsUpdateRenderers');
     // Set default renderer if one was provided.
     if (defaultRenderer != null &&
         defaultRenderer != oldWidget?.defaultRenderer) {
-      chart.defaultRenderer = defaultRenderer.build();
+      chart.defaultRenderer = defaultRenderer!.build();
       chartState.markChartDirty();
     }
 
@@ -105,12 +106,12 @@ abstract class BaseChart<D> extends StatefulWidget {
     if (customSeriesRenderers != null) {
       // TODO: This logic does not remove old renderers and
       // shouldn't require the series configs to remain in the same order.
-      for (var i = 0; i < customSeriesRenderers.length; i++) {
+      for (var i = 0; i < customSeriesRenderers!.length; i++) {
         if (oldWidget == null ||
             (oldWidget.customSeriesRenderers != null &&
-                i > oldWidget.customSeriesRenderers.length) ||
-            customSeriesRenderers[i] != oldWidget.customSeriesRenderers[i]) {
-          chart.addSeriesRenderer(customSeriesRenderers[i].build());
+                i > oldWidget.customSeriesRenderers!.length) ||
+            customSeriesRenderers![i] != oldWidget.customSeriesRenderers![i]) {
+          chart.addSeriesRenderer(customSeriesRenderers![i].build());
           chartState.markChartDirty();
         }
       }
@@ -121,15 +122,15 @@ abstract class BaseChart<D> extends StatefulWidget {
     _updateBehaviors(chart, chartState);
     common.Performance.timeEnd('chartsUpdateBehaviors');
 
-    _updateSelectionModel(chart, chartState);
+    _updateSelectionModel(chart as common.BaseChart<D?>, chartState);
 
     chart.transition = animate ? animationDuration : Duration.zero;
   }
 
   void _updateBehaviors(common.BaseChart chart, BaseChartState chartState) {
     final behaviorList = behaviors != null
-        ? new List<ChartBehavior>.from(behaviors)
-        : <ChartBehavior>[];
+        ? new List<behavior.ChartBehavior>.from(behaviors!)
+        : <behavior.ChartBehavior>[];
 
     // Insert automatic behaviors to the front of the behavior list.
     if (defaultInteractions) {
@@ -141,7 +142,7 @@ abstract class BaseChart<D> extends StatefulWidget {
       // don't conflict with user behaviors by role.
       chartState.autoBehaviorWidgets.reversed
           .where(_notACustomBehavior)
-          .forEach((ChartBehavior behavior) {
+          .forEach((behavior.ChartBehavior behavior) {
         behaviorList.insert(0, behavior);
       });
     }
@@ -161,13 +162,13 @@ abstract class BaseChart<D> extends StatefulWidget {
     }
 
     // Add any remaining/new behaviors.
-    behaviorList.forEach((ChartBehavior behaviorWidget) {
-      final commonBehavior = chart
-          .createBehavior(<D>() => behaviorWidget.createCommonBehavior<D>());
+    behaviorList.forEach((behavior.ChartBehavior behaviorWidget) {
+      final commonBehavior = chart.createBehavior(<D>() => behaviorWidget
+          .createCommonBehavior<D>() as common.ChartBehavior<D>);
 
       // Assign the chart state to any behavior that needs it.
-      if (commonBehavior is ChartStateBehavior) {
-        (commonBehavior as ChartStateBehavior).chartState = chartState;
+      if (commonBehavior is behavior.ChartStateBehavior) {
+        (commonBehavior as behavior.ChartStateBehavior).chartState = chartState;
       }
 
       chart.addBehavior(commonBehavior);
@@ -179,7 +180,7 @@ abstract class BaseChart<D> extends StatefulWidget {
   }
 
   /// Create the list of default interaction behaviors.
-  void addDefaultInteractions(List<ChartBehavior> behaviors) {
+  void addDefaultInteractions(List<behavior.ChartBehavior> behaviors) {
     // Update selection model
     behaviors.add(new SelectNearest(
         eventTrigger: common.SelectionTrigger.tap,
@@ -187,26 +188,26 @@ abstract class BaseChart<D> extends StatefulWidget {
         selectClosestSeries: true));
   }
 
-  bool _notACustomBehavior(ChartBehavior behavior) {
+  bool _notACustomBehavior(behavior.ChartBehavior bhvior) {
     return this.behaviors == null ||
-        !this.behaviors.any(
-            (ChartBehavior userBehavior) => userBehavior.role == behavior.role);
+        !this.behaviors!.any((behavior.ChartBehavior userBehavior) =>
+            userBehavior.role == bhvior.role);
   }
 
   void _updateSelectionModel(
-      common.BaseChart<D> chart, BaseChartState<D> chartState) {
+      common.BaseChart<D?> chart, BaseChartState<D?> chartState) {
     final prevTypes = new List<common.SelectionModelType>.from(
         chartState.addedSelectionChangedListenersByType.keys);
 
     // Update any listeners for each type.
-    selectionModels?.forEach((SelectionModelConfig<D> model) {
+    selectionModels?.forEach((SelectionModelConfig<D?> model) {
       final selectionModel = chart.getSelectionModel(model.type);
 
       final prevChangedListener =
           chartState.addedSelectionChangedListenersByType[model.type];
       if (!identical(model.changedListener, prevChangedListener)) {
-        selectionModel.removeSelectionChangedListener(prevChangedListener);
-        selectionModel.addSelectionChangedListener(model.changedListener);
+        selectionModel.removeSelectionChangedListener(prevChangedListener!);
+        selectionModel.addSelectionChangedListener(model.changedListener!);
         chartState.addedSelectionChangedListenersByType[model.type] =
             model.changedListener;
       }
@@ -214,8 +215,8 @@ abstract class BaseChart<D> extends StatefulWidget {
       final prevUpdatedListener =
           chartState.addedSelectionUpdatedListenersByType[model.type];
       if (!identical(model.updatedListener, prevUpdatedListener)) {
-        selectionModel.removeSelectionUpdatedListener(prevUpdatedListener);
-        selectionModel.addSelectionUpdatedListener(model.updatedListener);
+        selectionModel.removeSelectionUpdatedListener(prevUpdatedListener!);
+        selectionModel.addSelectionUpdatedListener(model.updatedListener!);
         chartState.addedSelectionUpdatedListenersByType[model.type] =
             model.updatedListener;
       }
@@ -227,9 +228,9 @@ abstract class BaseChart<D> extends StatefulWidget {
     prevTypes.forEach((common.SelectionModelType type) {
       chart.getSelectionModel(type)
         ..removeSelectionChangedListener(
-            chartState.addedSelectionChangedListenersByType[type])
+            chartState.addedSelectionChangedListenersByType[type]!)
         ..removeSelectionUpdatedListener(
-            chartState.addedSelectionUpdatedListenersByType[type]);
+            chartState.addedSelectionUpdatedListenersByType[type]!);
     });
   }
 
@@ -239,18 +240,18 @@ abstract class BaseChart<D> extends StatefulWidget {
   /// gestures we need to listen to and it must wrap [ChartContainer] widget.
   /// Gestures are then setup to be proxied in [common.BaseChart] and that is
   /// held by [ChartContainerRenderObject].
-  Set<GestureType> getDesiredGestures(BaseChartState chartState) {
-    final types = new Set<GestureType>();
-    behaviors?.forEach((ChartBehavior behavior) {
-      types.addAll(behavior.desiredGestures);
+  Set<behavior.GestureType> getDesiredGestures(BaseChartState chartState) {
+    final types = new Set<behavior.GestureType>();
+    behaviors?.forEach((behavior.ChartBehavior behavior) {
+      types.addAll(behavior.desiredGestures!);
     });
 
     if (defaultInteractions && chartState.autoBehaviorWidgets.isEmpty) {
       addDefaultInteractions(chartState.autoBehaviorWidgets);
     }
 
-    chartState.autoBehaviorWidgets.forEach((ChartBehavior behavior) {
-      types.addAll(behavior.desiredGestures);
+    chartState.autoBehaviorWidgets.forEach((behavior.ChartBehavior behavior) {
+      types.addAll(behavior.desiredGestures!);
     });
     return types;
   }
@@ -264,10 +265,10 @@ class LayoutConfig {
   final common.MarginSpec bottomMarginSpec;
 
   LayoutConfig({
-    @required this.leftMarginSpec,
-    @required this.topMarginSpec,
-    @required this.rightMarginSpec,
-    @required this.bottomMarginSpec,
+    required this.leftMarginSpec,
+    required this.topMarginSpec,
+    required this.rightMarginSpec,
+    required this.bottomMarginSpec,
   });
 
   common.LayoutConfig get commonLayoutConfig => new common.LayoutConfig(

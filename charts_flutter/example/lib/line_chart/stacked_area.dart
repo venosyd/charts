@@ -21,8 +21,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class StackedAreaLineChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool? animate;
 
   StackedAreaLineChart(this.seriesList, {this.animate});
 
@@ -72,22 +72,22 @@ class StackedAreaLineChart extends StatelessWidget {
       new charts.Series<LinearSales, int>(
         id: 'Desktop',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: myFakeDesktopData,
       ),
       new charts.Series<LinearSales, int>(
         id: 'Tablet',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: myFakeTabletData,
       ),
       new charts.Series<LinearSales, int>(
         id: 'Mobile',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: myFakeMobileData,
       ),
     ];
@@ -129,22 +129,22 @@ class StackedAreaLineChart extends StatelessWidget {
       new charts.Series<LinearSales, int>(
         id: 'Desktop',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: myFakeDesktopData,
       ),
       new charts.Series<LinearSales, int>(
         id: 'Tablet',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: myFakeTabletData,
       ),
       new charts.Series<LinearSales, int>(
         id: 'Mobile',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: myFakeMobileData,
       ),
     ];

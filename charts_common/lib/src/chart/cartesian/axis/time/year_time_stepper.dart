@@ -23,12 +23,12 @@ class YearTimeStepper extends BaseTimeStepper {
   final List<int> _allowedTickIncrements;
 
   YearTimeStepper._internal(
-      DateTimeFactory dateTimeFactory, List<int> increments)
+      DateTimeFactory? dateTimeFactory, List<int> increments)
       : _allowedTickIncrements = increments,
         super(dateTimeFactory);
 
-  factory YearTimeStepper(DateTimeFactory dateTimeFactory,
-      {List<int> allowedTickIncrements}) {
+  factory YearTimeStepper(DateTimeFactory? dateTimeFactory,
+      {List<int>? allowedTickIncrements}) {
     // Set the default increments if null.
     allowedTickIncrements ??= _defaultIncrements;
 
@@ -52,11 +52,11 @@ class YearTimeStepper extends BaseTimeStepper {
   @override
   DateTime getStepTimeBeforeInclusive(DateTime time, int tickIncrement) {
     final yearRemainder = time.year % tickIncrement;
-    return dateTimeFactory.createDateTime(time.year - yearRemainder);
+    return dateTimeFactory!.createDateTime(time.year - yearRemainder);
   }
 
   @override
-  DateTime getNextStepTime(DateTime time, int tickIncrement) {
-    return dateTimeFactory.createDateTime(time.year + tickIncrement);
+  DateTime getNextStepTime(DateTime? time, int tickIncrement) {
+    return dateTimeFactory!.createDateTime(time!.year + tickIncrement);
   }
 }

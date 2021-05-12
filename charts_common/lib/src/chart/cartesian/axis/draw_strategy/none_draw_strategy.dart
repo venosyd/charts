@@ -35,14 +35,14 @@ import 'tick_draw_strategy.dart';
 /// However, it does render the axis line if asked to by the axis.
 @immutable
 class NoneRenderSpec<D> extends RenderSpec<D> {
-  final LineStyleSpec axisLineStyle;
+  final LineStyleSpec? axisLineStyle;
 
   const NoneRenderSpec({this.axisLineStyle});
 
   @override
   TickDrawStrategy<D> createDrawStrategy(
-          ChartContext context, GraphicsFactory graphicFactory) =>
-      NoneDrawStrategy<D>(context, graphicFactory,
+          ChartContext? context, GraphicsFactory? graphicFactory) =>
+      NoneDrawStrategy<D>(context, graphicFactory!,
           axisLineStyleSpec: axisLineStyle);
 
   @override
@@ -54,11 +54,11 @@ class NoneRenderSpec<D> extends RenderSpec<D> {
 }
 
 class NoneDrawStrategy<D> implements TickDrawStrategy<D> {
-  LineStyle axisLineStyle;
-  TextStyle noneTextStyle;
+  late LineStyle axisLineStyle;
+  TextStyle? noneTextStyle;
 
-  NoneDrawStrategy(ChartContext chartContext, GraphicsFactory graphicsFactory,
-      {LineStyleSpec axisLineStyleSpec}) {
+  NoneDrawStrategy(ChartContext? chartContext, GraphicsFactory graphicsFactory,
+      {LineStyleSpec? axisLineStyleSpec}) {
     axisLineStyle = StyleFactory.style
         .createAxisLineStyle(graphicsFactory, axisLineStyleSpec);
     noneTextStyle = graphicsFactory.createTextPaint()
@@ -67,40 +67,40 @@ class NoneDrawStrategy<D> implements TickDrawStrategy<D> {
   }
 
   @override
-  CollisionReport collides(List<Tick> ticks, AxisOrientation orientation) =>
+  CollisionReport collides(List<Tick>? ticks, AxisOrientation? orientation) =>
       CollisionReport(ticksCollide: false, ticks: ticks);
 
   @override
-  void decorateTicks(List<Tick> ticks) {
+  void decorateTicks(List<Tick?> ticks) {
     // Even though no text is rendered, the text style for each element should
     // still be set to handle the case of the draw strategy being switched to
     // a different draw strategy. The new draw strategy will try to animate
     // the old ticks out and the text style property is used.
-    ticks.forEach((tick) => tick.textElement.textStyle = noneTextStyle);
+    ticks.forEach((tick) => tick!.textElement!.textStyle = noneTextStyle);
   }
 
   @override
-  void drawAxisLine(ChartCanvas canvas, AxisOrientation orientation,
-      Rectangle<int> axisBounds) {
-    Point<num> start;
-    Point<num> end;
+  void drawAxisLine(ChartCanvas canvas, AxisOrientation? orientation,
+      Rectangle<int>? axisBounds) {
+    Point<num>? start;
+    Point<num>? end;
 
     switch (orientation) {
       case AxisOrientation.top:
-        start = axisBounds.bottomLeft;
+        start = axisBounds!.bottomLeft;
         end = axisBounds.bottomRight;
 
         break;
       case AxisOrientation.bottom:
-        start = axisBounds.topLeft;
+        start = axisBounds!.topLeft;
         end = axisBounds.topRight;
         break;
       case AxisOrientation.right:
-        start = axisBounds.topLeft;
+        start = axisBounds!.topLeft;
         end = axisBounds.bottomLeft;
         break;
       case AxisOrientation.left:
-        start = axisBounds.topRight;
+        start = axisBounds!.topRight;
         end = axisBounds.bottomRight;
         break;
     }
@@ -116,21 +116,21 @@ class NoneDrawStrategy<D> implements TickDrawStrategy<D> {
 
   @override
   void draw(ChartCanvas canvas, Tick<D> tick,
-      {@required AxisOrientation orientation,
-      @required Rectangle<int> axisBounds,
-      @required Rectangle<int> drawAreaBounds,
-      @required bool isFirst,
-      @required bool isLast}) {}
+      {required AxisOrientation? orientation,
+      required Rectangle<int>? axisBounds,
+      required Rectangle<int>? drawAreaBounds,
+      required bool isFirst,
+      required bool isLast}) {}
 
   @override
   ViewMeasuredSizes measureHorizontallyDrawnTicks(
-      List<Tick> ticks, int maxWidth, int maxHeight) {
+      List<Tick?>? ticks, int? maxWidth, int? maxHeight) {
     return ViewMeasuredSizes(preferredWidth: 0, preferredHeight: 0);
   }
 
   @override
   ViewMeasuredSizes measureVerticallyDrawnTicks(
-      List<Tick> ticks, int maxWidth, int maxHeight) {
+      List<Tick?>? ticks, int? maxWidth, int? maxHeight) {
     return ViewMeasuredSizes(preferredWidth: 0, preferredHeight: 0);
   }
 }

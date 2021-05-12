@@ -29,9 +29,9 @@ abstract class PointRendererDecorator<D> {
   /// series data elements.
   bool get renderAbove;
 
-  void decorate(PointRendererElement<D> pointElement, ChartCanvas canvas,
-      GraphicsFactory graphicsFactory,
-      {@required Rectangle drawBounds,
-      @required double animationPercent,
+  void decorate(PointRendererElement<D>? pointElement, ChartCanvas canvas,
+      GraphicsFactory? graphicsFactory,
+      {required Rectangle? drawBounds,
+      required double? animationPercent,
       bool rtl = false});
 }

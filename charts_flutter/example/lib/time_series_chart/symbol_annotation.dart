@@ -25,15 +25,16 @@
 /// shape between the domainLowerBound and domainUpperBound positions along the
 /// chart's domain axis. Point annotations are drawn on top of range
 /// annotations.
-// EXCLUDE_FROM_GALLERY_DOCS_START
 import 'dart:math';
+
 // EXCLUDE_FROM_GALLERY_DOCS_END
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 
 class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, DateTime>> seriesList;
+  final bool? animate;
 
   TimeSeriesSymbolAnnotationChart(this.seriesList, {this.animate});
 
@@ -55,7 +56,7 @@ class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
   }
 
   /// Create random data.
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createRandomData() {
+  static List<charts.Series<dynamic, DateTime>> _createRandomData() {
     final random = new Random();
 
     final myDesktopData = [
@@ -116,23 +117,23 @@ class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Desktop',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.timeCurrent,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.timeCurrent!,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: myDesktopData,
       ),
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Tablet',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.timeCurrent,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.timeCurrent!,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: myTabletData,
       ),
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Annotation Series 1',
         colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.timeCurrent,
-        domainLowerBoundFn: (TimeSeriesSales row, _) => row.timePrevious,
-        domainUpperBoundFn: (TimeSeriesSales row, _) => row.timeTarget,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.timeCurrent!,
+        domainLowerBoundFn: (TimeSeriesSales? row, _) => row!.timePrevious!,
+        domainUpperBoundFn: (TimeSeriesSales? row, _) => row!.timeTarget!,
         // No measure values are needed for symbol annotations.
         measureFn: (_, __) => null,
         data: myAnnotationDataTop,
@@ -145,9 +146,9 @@ class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Annotation Series 2',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.timeCurrent,
-        domainLowerBoundFn: (TimeSeriesSales row, _) => row.timePrevious,
-        domainUpperBoundFn: (TimeSeriesSales row, _) => row.timeTarget,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.timeCurrent!,
+        domainLowerBoundFn: (TimeSeriesSales? row, _) => row!.timePrevious!,
+        domainUpperBoundFn: (TimeSeriesSales? row, _) => row!.timeTarget!,
         // No measure values are needed for symbol annotations.
         measureFn: (_, __) => null,
         data: myAnnotationDataBottom,
@@ -169,8 +170,9 @@ class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
       // Custom renderer configuration for the point series.
       customSeriesRenderers: [
         new charts.SymbolAnnotationRendererConfig(
-            // ID used to link series to this renderer.
-            customRendererId: 'customSymbolAnnotation')
+                // ID used to link series to this renderer.
+                customRendererId: 'customSymbolAnnotation')
+            as SeriesRendererConfig<DateTime>
       ],
       // Optionally pass in a [DateTimeFactory] used by the chart. The factory
       // should create the same type of [DateTime] as the data provided. If none
@@ -180,7 +182,7 @@ class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+  static List<charts.Series<dynamic, DateTime>> _createSampleData() {
     final myDesktopData = [
       new TimeSeriesSales(timeCurrent: new DateTime(2017, 9, 19), sales: 5),
       new TimeSeriesSales(timeCurrent: new DateTime(2017, 9, 26), sales: 25),
@@ -231,26 +233,26 @@ class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Desktop',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.timeCurrent,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.timeCurrent!,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: myDesktopData,
       ),
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Tablet',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.timeCurrent,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.timeCurrent!,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: myTabletData,
       ),
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Annotation Series 1',
         colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
         // A point shape will be drawn at the location of the domain.
-        domainFn: (TimeSeriesSales sales, _) => sales.timeCurrent,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.timeCurrent!,
         // A range shape will be drawn between the lower and upper domain
         // bounds. The range will be drawn underneath the domain point.
-        domainLowerBoundFn: (TimeSeriesSales row, _) => row.timePrevious,
-        domainUpperBoundFn: (TimeSeriesSales row, _) => row.timeTarget,
+        domainLowerBoundFn: (TimeSeriesSales? row, _) => row!.timePrevious!,
+        domainUpperBoundFn: (TimeSeriesSales? row, _) => row!.timeTarget!,
         // No measure values are needed for symbol annotations.
         measureFn: (_, __) => null,
         data: myAnnotationDataTop,
@@ -264,11 +266,11 @@ class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
         id: 'Annotation Series 2',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         // A point shape will be drawn at the location of the domain.
-        domainFn: (TimeSeriesSales sales, _) => sales.timeCurrent,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.timeCurrent!,
         // A range shape will be drawn between the lower and upper domain
         // bounds. The range will be drawn underneath the domain point.
-        domainLowerBoundFn: (TimeSeriesSales row, _) => row.timePrevious,
-        domainUpperBoundFn: (TimeSeriesSales row, _) => row.timeTarget,
+        domainLowerBoundFn: (TimeSeriesSales? row, _) => row!.timePrevious!,
+        domainUpperBoundFn: (TimeSeriesSales? row, _) => row!.timeTarget!,
         // No measure values are needed for symbol annotations.
         measureFn: (_, __) => null,
         data: myAnnotationDataBottom,
@@ -284,10 +286,10 @@ class TimeSeriesSymbolAnnotationChart extends StatelessWidget {
 
 /// Sample time series data type.
 class TimeSeriesSales {
-  final DateTime timeCurrent;
-  final DateTime timePrevious;
-  final DateTime timeTarget;
-  final int sales;
+  final DateTime? timeCurrent;
+  final DateTime? timePrevious;
+  final DateTime? timeTarget;
+  final int? sales;
 
   TimeSeriesSales(
       {this.timeCurrent, this.timePrevious, this.timeTarget, this.sales});

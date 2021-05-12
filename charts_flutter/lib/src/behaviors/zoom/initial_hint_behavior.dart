@@ -27,9 +27,9 @@ import '../chart_behavior.dart'
 class InitialHintBehavior extends ChartBehavior<common.InitialHintBehavior> {
   final desiredGestures = new Set<GestureType>();
 
-  final Duration hintDuration;
-  final double maxHintTranslate;
-  final double maxHintScaleFactor;
+  final Duration? hintDuration;
+  final double? maxHintTranslate;
+  final double? maxHintScaleFactor;
 
   InitialHintBehavior(
       {this.hintDuration, this.maxHintTranslate, this.maxHintScaleFactor});
@@ -39,11 +39,11 @@ class InitialHintBehavior extends ChartBehavior<common.InitialHintBehavior> {
     final behavior = new FlutterInitialHintBehavior<D>();
 
     if (hintDuration != null) {
-      behavior.hintDuration = hintDuration;
+      behavior.hintDuration = hintDuration!;
     }
 
     if (maxHintTranslate != null) {
-      behavior.maxHintTranslate = maxHintTranslate;
+      behavior.maxHintTranslate = maxHintTranslate!;
     }
 
     if (maxHintScaleFactor != null) {
@@ -72,9 +72,9 @@ class InitialHintBehavior extends ChartBehavior<common.InitialHintBehavior> {
 /// to function.
 class FlutterInitialHintBehavior<D> extends common.InitialHintBehavior<D>
     implements ChartStateBehavior {
-  AnimationController _hintAnimator;
+  AnimationController? _hintAnimator;
 
-  BaseChartState _chartState;
+  late BaseChartState _chartState;
 
   set chartState(BaseChartState chartState) {
     assert(chartState != null);
@@ -89,7 +89,7 @@ class FlutterInitialHintBehavior<D> extends common.InitialHintBehavior<D>
   void startHintAnimation() {
     super.startHintAnimation();
 
-    _hintAnimator
+    _hintAnimator!
       ..duration = hintDuration
       ..forward(from: 0.0);
   }
@@ -106,7 +106,7 @@ class FlutterInitialHintBehavior<D> extends common.InitialHintBehavior<D>
   }
 
   @override
-  double get hintAnimationPercent => _hintAnimator.value;
+  double get hintAnimationPercent => _hintAnimator!.value;
 
   bool _skippedFirstTick = true;
 

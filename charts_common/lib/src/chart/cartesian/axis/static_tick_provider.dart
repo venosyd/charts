@@ -38,15 +38,15 @@ class StaticTickProvider<D> extends TickProvider<D> {
 
   @override
   List<Tick<D>> getTicks({
-    @required ChartContext context,
-    @required GraphicsFactory graphicsFactory,
-    @required MutableScale<D> scale,
-    @required TickFormatter<D> formatter,
-    @required Map<D, String> formatterValueCache,
-    @required TickDrawStrategy tickDrawStrategy,
-    @required AxisOrientation orientation,
+    required ChartContext? context,
+    required GraphicsFactory? graphicsFactory,
+    required MutableScale<D>? scale,
+    required TickFormatter<D>? formatter,
+    required Map<D, String> formatterValueCache,
+    required TickDrawStrategy? tickDrawStrategy,
+    required AxisOrientation? orientation,
     bool viewportExtensionEnabled = false,
-    TickHint<D> tickHint,
+    TickHint<D>? tickHint,
   }) {
     final ticks = <Tick<D>>[];
 
@@ -56,7 +56,7 @@ class StaticTickProvider<D> extends TickProvider<D> {
       // When static ticks are being used with a numeric axis, extend the axis
       // with the values specified.
       if (scale is NumericScale || scale is DateTimeScale) {
-        scale.addDomain(spec.value);
+        scale!.addDomain(spec.value);
       }
 
       // Save off whether all ticks have labels.
@@ -64,36 +64,36 @@ class StaticTickProvider<D> extends TickProvider<D> {
     }
 
     // Use the formatter's label if the tick spec does not provide one.
-    List<String> formattedValues;
+    late List<String> formattedValues;
     if (allTicksHaveLabels == false) {
-      formattedValues = formatter.format(
+      formattedValues = formatter!.format(
           tickSpec.map((spec) => spec.value).toList(), formatterValueCache,
-          stepSize: scale.domainStepSize);
+          stepSize: scale!.domainStepSize);
     }
 
     for (var i = 0; i < tickSpec.length; i++) {
       final spec = tickSpec[i];
       // We still check if the spec is within the viewport because we do not
       // extend the axis for OrdinalScale.
-      if (scale.compareDomainValueToViewport(spec.value) == 0) {
+      if (scale!.compareDomainValueToViewport(spec.value) == 0) {
         final tick = Tick<D>(
             value: spec.value,
-            textElement: graphicsFactory
+            textElement: graphicsFactory!
                 .createTextElement(spec.label ?? formattedValues[i]),
-            locationPx: scale[spec.value]);
+            locationPx: scale[spec.value] as double?);
         if (spec.style != null) {
-          tick.textElement.textStyle = graphicsFactory.createTextPaint()
-            ..fontFamily = spec.style.fontFamily
-            ..fontSize = spec.style.fontSize
-            ..color = spec.style.color
-            ..lineHeight = spec.style.lineHeight;
+          tick.textElement!.textStyle = graphicsFactory.createTextPaint()
+            ..fontFamily = spec.style!.fontFamily
+            ..fontSize = spec.style!.fontSize
+            ..color = spec.style!.color
+            ..lineHeight = spec.style!.lineHeight;
         }
         ticks.add(tick);
       }
     }
 
     // Allow draw strategy to decorate the ticks.
-    tickDrawStrategy.decorateTicks(ticks);
+    tickDrawStrategy!.decorateTicks(ticks);
 
     return ticks;
   }

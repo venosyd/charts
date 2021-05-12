@@ -22,8 +22,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 /// Example of hiding both axis.
 class HiddenTicksAndLabelsAxis extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   HiddenTicksAndLabelsAxis(this.seriesList, {this.animate});
 
@@ -57,8 +57,8 @@ class HiddenTicksAndLabelsAxis extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Global Revenue',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: globalSalesData,
       ),
     ];
@@ -101,8 +101,8 @@ class HiddenTicksAndLabelsAxis extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Global Revenue',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: globalSalesData,
       ),
     ];

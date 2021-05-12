@@ -53,28 +53,28 @@ class TreeMapLabelDecorator<D> extends TreeMapRendererDecorator<D> {
   final bool enableMultiline;
 
   TreeMapLabelDecorator(
-      {TextStyleSpec labelStyleSpec,
+      {TextStyleSpec? labelStyleSpec,
       this.labelPadding = _defaultLabelPadding,
       this.allowLabelOverflow = true,
       this.enableMultiline = false})
       : labelStyleSpec = labelStyleSpec ?? _defaultLabelStyle;
 
   @override
-  void decorate(TreeMapRendererElement<D> rendererElement, ChartCanvas canvas,
-      GraphicsFactory graphicsFactory,
-      {@required Rectangle drawBounds,
-      @required double animationPercent,
+  void decorate(TreeMapRendererElement<D> rendererElement, ChartCanvas? canvas,
+      GraphicsFactory? graphicsFactory,
+      {required Rectangle? drawBounds,
+      required double? animationPercent,
       bool rtl = false,
       bool renderVertically = false,
-      bool renderMultiline = false}) {
+      bool? renderMultiline = false}) {
     // Decorates the renderer elements when animation is completed.
     if (animationPercent != 1.0) return;
 
     // Creates [TextStyle] from [TextStyleSpec] to be used by all the elements.
     // The [GraphicsFactory] is needed since it cannot be created earlier.
-    final labelStyle = _asTextStyle(graphicsFactory, labelStyleSpec);
+    final labelStyle = _asTextStyle(graphicsFactory!, labelStyleSpec);
 
-    final labelFn = rendererElement.series.labelAccessorFn;
+    final labelFn = rendererElement.series!.labelAccessorFn;
     final datumIndex = rendererElement.index;
     final label = labelFn != null ? labelFn(datumIndex) : null;
 
@@ -83,7 +83,7 @@ class TreeMapLabelDecorator<D> extends TreeMapRendererDecorator<D> {
 
     // Uses datum specific label style if provided.
     final datumLabelStyle = _datumStyle(
-        rendererElement.series.insideLabelStyleAccessorFn,
+        rendererElement.series!.insideLabelStyleAccessorFn,
         datumIndex,
         graphicsFactory,
         defaultStyle: labelStyle);
@@ -91,12 +91,12 @@ class TreeMapLabelDecorator<D> extends TreeMapRendererDecorator<D> {
     final labelElement = graphicsFactory.createTextElement(label)
       ..textStyle = datumLabelStyle
       ..textDirection = rtl ? TextDirection.rtl : TextDirection.ltr;
-    final labelHeight = labelElement.measurement.verticalSliceWidth;
+    final labelHeight = labelElement.measurement!.verticalSliceWidth;
     final maxLabelHeight =
-        (renderVertically ? rect.width : rect.height) - (labelPadding * 2);
+        (renderVertically ? rect!.width : rect!.height) - (labelPadding * 2);
     final maxLabelWidth =
         (renderVertically ? rect.height : rect.width) - (labelPadding * 2);
-    final multiline = enableMultiline && renderMultiline;
+    final multiline = enableMultiline && renderMultiline!;
     final parts = wrapLabelLines(
         labelElement, graphicsFactory, maxLabelWidth, maxLabelHeight,
         allowLabelOverflow: allowLabelOverflow, multiline: multiline);
@@ -107,7 +107,7 @@ class TreeMapLabelDecorator<D> extends TreeMapRendererDecorator<D> {
           rtl: rtl, rotate: renderVertically);
 
       // Draws a label inside of a treemap renderer element.
-      canvas.drawText(segment.text, segment.xOffet, segment.yOffset,
+      canvas!.drawText(segment.text, segment.xOffet, segment.yOffset,
           rotation: segment.rotationAngle);
     }
   }
@@ -122,37 +122,37 @@ class TreeMapLabelDecorator<D> extends TreeMapRendererDecorator<D> {
         ..lineHeight = labelSpec?.lineHeight;
 
   /// Gets datum specific style.
-  TextStyle _datumStyle(AccessorFn<TextStyleSpec> labelStyleFn, int datumIndex,
-      GraphicsFactory graphicsFactory,
-      {TextStyle defaultStyle}) {
+  TextStyle? _datumStyle(AccessorFn<TextStyleSpec>? labelStyleFn, int? datumIndex,
+      GraphicsFactory? graphicsFactory,
+      {TextStyle? defaultStyle}) {
     final styleSpec = (labelStyleFn != null) ? labelStyleFn(datumIndex) : null;
     return (styleSpec != null)
-        ? _asTextStyle(graphicsFactory, styleSpec)
+        ? _asTextStyle(graphicsFactory!, styleSpec)
         : defaultStyle;
   }
 
-  _TreeMapLabelSegment _createLabelSegment(Rectangle elementBoundingRect,
-      num labelHeight, TextElement labelElement, int position,
+  _TreeMapLabelSegment _createLabelSegment(Rectangle? elementBoundingRect,
+      num? labelHeight, TextElement? labelElement, int position,
       {bool rtl = false, bool rotate = false}) {
     num xOffset;
     num yOffset;
 
     // Set x offset for each line.
     if (rotate) {
-      xOffset = elementBoundingRect.right -
+      xOffset = elementBoundingRect!.right -
           labelPadding -
-          2 * labelElement.textStyle.fontSize -
-          labelHeight * position;
+          2 * labelElement!.textStyle!.fontSize! -
+          labelHeight! * position;
     } else if (rtl) {
-      xOffset = elementBoundingRect.right - labelPadding;
+      xOffset = elementBoundingRect!.right - labelPadding;
     } else {
-      xOffset = elementBoundingRect.left + labelPadding;
+      xOffset = elementBoundingRect!.left + labelPadding;
     }
 
     // Set y offset for each line.
     if (!rotate) {
       yOffset =
-          elementBoundingRect.top + labelPadding + (labelHeight * position);
+          elementBoundingRect.top + labelPadding + (labelHeight! * position);
     } else if (rtl) {
       yOffset = elementBoundingRect.bottom - labelPadding;
     } else {
@@ -167,7 +167,7 @@ class TreeMapLabelDecorator<D> extends TreeMapRendererDecorator<D> {
 /// Represents a segment of a label that will be drawn in a single line.
 class _TreeMapLabelSegment {
   /// Text to be drawn on the canvas.
-  final TextElement text;
+  final TextElement? text;
 
   /// x-coordinate offset for [text].
   final int xOffet;

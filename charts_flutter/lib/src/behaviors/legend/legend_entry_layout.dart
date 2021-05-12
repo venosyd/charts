@@ -26,7 +26,7 @@ import 'legend.dart' show TappableLegend;
 abstract class LegendEntryLayout {
   Widget build(BuildContext context, common.LegendEntry legendEntry,
       TappableLegend legend, bool isHidden,
-      {bool showMeasures});
+      {bool? showMeasures});
 }
 
 /// Builds one legend entry as a row with symbol and label from the series.
@@ -42,13 +42,13 @@ class SimpleLegendEntryLayout implements LegendEntryLayout {
     // A custom symbol renderer can ignore this size and use their own.
     final materialSymbolSize = new Size(12.0, 12.0);
 
-    final entryColor = legendEntry.color;
+    final entryColor = legendEntry.color!;
     var color = ColorUtil.toDartColor(entryColor);
 
     // Get the SymbolRendererBuilder wrapping a common.SymbolRenderer if needed.
     final SymbolRendererBuilder symbolRendererBuilder =
         legendEntry.symbolRenderer is SymbolRendererBuilder
-            ? legendEntry.symbolRenderer
+            ? legendEntry.symbolRenderer as SymbolRendererBuilder
             : new SymbolRendererCanvas(
                 legendEntry.symbolRenderer, legendEntry.dashPattern);
 
@@ -68,21 +68,21 @@ class SimpleLegendEntryLayout implements LegendEntryLayout {
         _convertTextStyle(isHidden, context, legendEntry.textStyle);
 
     return new GestureDetector(
-        child: new Text(legendEntry.label, style: style),
+        child: new Text(legendEntry.label!, style: style),
         onTapUp: makeTapUpCallback(context, legendEntry, legend));
   }
 
   Widget createMeasureValue(BuildContext context,
       common.LegendEntry legendEntry, TappableLegend legend, bool isHidden) {
     return new GestureDetector(
-        child: new Text(legendEntry.formattedValue),
+        child: new Text(legendEntry.formattedValue!),
         onTapUp: makeTapUpCallback(context, legendEntry, legend));
   }
 
   @override
   Widget build(BuildContext context, common.LegendEntry legendEntry,
       TappableLegend legend, bool isHidden,
-      {bool showMeasures}) {
+      {bool? showMeasures}) {
     final rowChildren = <Widget>[];
 
     // TODO: Allow setting to configure the padding.
@@ -90,7 +90,7 @@ class SimpleLegendEntryLayout implements LegendEntryLayout {
     final symbol = createSymbol(context, legendEntry, legend, isHidden);
     final label = createLabel(context, legendEntry, legend, isHidden);
 
-    final measure = showMeasures
+    final measure = showMeasures!
         ? createMeasureValue(context, legendEntry, legend, isHidden)
         : null;
 
@@ -125,21 +125,21 @@ class SimpleLegendEntryLayout implements LegendEntryLayout {
   /// For non-specified values, override the hidden text color to use the body 1
   /// theme, but allow other properties of [Text] to be inherited.
   TextStyle _convertTextStyle(
-      bool isHidden, BuildContext context, common.TextStyleSpec textStyle) {
-    Color color = textStyle?.color != null
-        ? ColorUtil.toDartColor(textStyle.color)
+      bool isHidden, BuildContext context, common.TextStyleSpec? textStyle) {
+    Color? color = textStyle?.color != null
+        ? ColorUtil.toDartColor(textStyle!.color!)
         : null;
     if (isHidden) {
       // Use a default color for hidden legend entries if none is provided.
-      color ??= Theme.of(context).textTheme.body1.color;
-      color = color.withOpacity(0.26);
+      color ??= Theme.of(context).textTheme.body1!.color;
+      color = color!.withOpacity(0.26);
     }
 
     return new TextStyle(
         inherit: true,
         fontFamily: textStyle?.fontFamily,
         fontSize:
-            textStyle?.fontSize != null ? textStyle.fontSize.toDouble() : null,
+            textStyle?.fontSize != null ? textStyle!.fontSize!.toDouble() : null,
         color: color);
   }
 }

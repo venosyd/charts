@@ -23,13 +23,13 @@ import 'package:test/test.dart';
 /// Fake [TextElement] for testing.
 class FakeTextElement implements TextElement {
   final String text;
-  double opacity;
+  double? opacity;
 
-  TextMeasurement measurement;
-  TextStyle textStyle;
-  int maxWidth;
-  MaxWidthStrategy maxWidthStrategy;
-  TextDirection textDirection;
+  TextMeasurement? measurement;
+  TextStyle? textStyle;
+  int? maxWidth;
+  MaxWidthStrategy? maxWidthStrategy;
+  TextDirection? textDirection;
 
   FakeTextElement(this.text);
 }
@@ -42,7 +42,7 @@ Tick<String> _createTestTick(String value, double locationPx) {
       locationPx: locationPx);
 }
 
-void _verify(Tick<String> tick, {double location, double opacity}) {
+void _verify(Tick<String> tick, {double? location, double? opacity}) {
   expect(tick.locationPx, equals(location));
   expect((tick.textElement as FakeTextElement).opacity, equals(opacity));
 }

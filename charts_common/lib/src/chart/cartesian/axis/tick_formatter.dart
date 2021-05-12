@@ -25,7 +25,7 @@ abstract class TickFormatter<D> {
   const TickFormatter();
 
   /// Formats a list of tick values.
-  List<String> format(List<D> tickValues, Map<D, String> cache, {num stepSize});
+  List<String> format(List<D> tickValues, Map<D, String> cache, {num? stepSize});
 }
 
 abstract class SimpleTickFormatterBase<D> implements TickFormatter<D> {
@@ -33,10 +33,10 @@ abstract class SimpleTickFormatterBase<D> implements TickFormatter<D> {
 
   @override
   List<String> format(List<D> tickValues, Map<D, String> cache,
-          {num stepSize}) =>
+          {num? stepSize}) =>
       tickValues.map((D value) {
         // Try to use the cached formats first.
-        String formattedString = cache[value];
+        String? formattedString = cache[value];
         if (formattedString == null) {
           formattedString = formatValue(value);
           cache[value] = formattedString;
@@ -74,13 +74,13 @@ class NumericTickFormatter extends SimpleTickFormatterBase<num> {
   ///
   /// [formatter] optionally specify a formatter to be used. Defaults to using
   /// [NumberFormat.decimalPattern] if none is specified.
-  factory NumericTickFormatter({MeasureFormatter formatter}) {
+  factory NumericTickFormatter({MeasureFormatter? formatter}) {
     formatter ??= _getFormatter(NumberFormat.decimalPattern());
     return NumericTickFormatter._internal(formatter);
   }
 
   /// Constructs a new [NumericTickFormatter] that formats using [numberFormat].
-  factory NumericTickFormatter.fromNumberFormat(NumberFormat numberFormat) {
+  factory NumericTickFormatter.fromNumberFormat(NumberFormat? numberFormat) {
     return NumericTickFormatter._internal(_getFormatter(numberFormat));
   }
 
@@ -91,8 +91,8 @@ class NumericTickFormatter extends SimpleTickFormatterBase<num> {
   }
 
   /// Returns a [MeasureFormatter] that calls format on [numberFormat].
-  static MeasureFormatter _getFormatter(NumberFormat numberFormat) {
-    return (num value) => numberFormat.format(value);
+  static MeasureFormatter _getFormatter(NumberFormat? numberFormat) {
+    return (num? value) => numberFormat!.format(value);
   }
 
   @override

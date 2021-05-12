@@ -32,8 +32,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class RTLLineSegments extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool? animate;
 
   RTLLineSegments(this.seriesList, {this.animate});
 
@@ -101,34 +101,34 @@ class RTLLineSegments extends StatelessWidget {
       new charts.Series<LinearSales, int>(
         id: 'Color Change',
         // Light shade for even years, dark shade for odd.
-        colorFn: (LinearSales sales, _) =>
-            sales.year % 2 == 0 ? blue[1] : blue[0],
-        dashPatternFn: (LinearSales sales, _) => sales.dashPattern,
-        strokeWidthPxFn: (LinearSales sales, _) => sales.strokeWidthPx,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        colorFn: (LinearSales? sales, _) =>
+            sales!.year % 2 == 0 ? blue[1] : blue[0],
+        dashPatternFn: (LinearSales? sales, _) => sales!.dashPattern,
+        strokeWidthPxFn: (LinearSales? sales, _) => sales!.strokeWidthPx,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: colorChangeData,
       ),
       new charts.Series<LinearSales, int>(
         id: 'Dash Pattern Change',
         // Light shade for even years, dark shade for odd.
-        colorFn: (LinearSales sales, _) =>
-            sales.year % 2 == 0 ? red[1] : red[0],
-        dashPatternFn: (LinearSales sales, _) => sales.dashPattern,
-        strokeWidthPxFn: (LinearSales sales, _) => sales.strokeWidthPx,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        colorFn: (LinearSales? sales, _) =>
+            sales!.year % 2 == 0 ? red[1] : red[0],
+        dashPatternFn: (LinearSales? sales, _) => sales!.dashPattern,
+        strokeWidthPxFn: (LinearSales? sales, _) => sales!.strokeWidthPx,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: dashPatternChangeData,
       ),
       new charts.Series<LinearSales, int>(
         id: 'Stroke Width Change',
         // Light shade for even years, dark shade for odd.
-        colorFn: (LinearSales sales, _) =>
-            sales.year % 2 == 0 ? green[1] : green[0],
-        dashPatternFn: (LinearSales sales, _) => sales.dashPattern,
-        strokeWidthPxFn: (LinearSales sales, _) => sales.strokeWidthPx,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        colorFn: (LinearSales? sales, _) =>
+            sales!.year % 2 == 0 ? green[1] : green[0],
+        dashPatternFn: (LinearSales? sales, _) => sales!.dashPattern,
+        strokeWidthPxFn: (LinearSales? sales, _) => sales!.strokeWidthPx,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: strokeWidthChangeData,
       ),
     ];
@@ -203,34 +203,34 @@ class RTLLineSegments extends StatelessWidget {
       new charts.Series<LinearSales, int>(
         id: 'Color Change',
         // Light shade for even years, dark shade for odd.
-        colorFn: (LinearSales sales, _) =>
-            sales.year % 2 == 0 ? blue[1] : blue[0],
-        dashPatternFn: (LinearSales sales, _) => sales.dashPattern,
-        strokeWidthPxFn: (LinearSales sales, _) => sales.strokeWidthPx,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        colorFn: (LinearSales? sales, _) =>
+            sales!.year % 2 == 0 ? blue[1] : blue[0],
+        dashPatternFn: (LinearSales? sales, _) => sales!.dashPattern,
+        strokeWidthPxFn: (LinearSales? sales, _) => sales!.strokeWidthPx,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: colorChangeData,
       ),
       new charts.Series<LinearSales, int>(
         id: 'Dash Pattern Change',
         // Light shade for even years, dark shade for odd.
-        colorFn: (LinearSales sales, _) =>
-            sales.year % 2 == 0 ? red[1] : red[0],
-        dashPatternFn: (LinearSales sales, _) => sales.dashPattern,
-        strokeWidthPxFn: (LinearSales sales, _) => sales.strokeWidthPx,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        colorFn: (LinearSales? sales, _) =>
+            sales!.year % 2 == 0 ? red[1] : red[0],
+        dashPatternFn: (LinearSales? sales, _) => sales!.dashPattern,
+        strokeWidthPxFn: (LinearSales? sales, _) => sales!.strokeWidthPx,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: dashPatternChangeData,
       ),
       new charts.Series<LinearSales, int>(
         id: 'Stroke Width Change',
         // Light shade for even years, dark shade for odd.
-        colorFn: (LinearSales sales, _) =>
-            sales.year % 2 == 0 ? green[1] : green[0],
-        dashPatternFn: (LinearSales sales, _) => sales.dashPattern,
-        strokeWidthPxFn: (LinearSales sales, _) => sales.strokeWidthPx,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        colorFn: (LinearSales? sales, _) =>
+            sales!.year % 2 == 0 ? green[1] : green[0],
+        dashPatternFn: (LinearSales? sales, _) => sales!.dashPattern,
+        strokeWidthPxFn: (LinearSales? sales, _) => sales!.strokeWidthPx,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: strokeWidthChangeData,
       ),
     ];
@@ -241,7 +241,7 @@ class RTLLineSegments extends StatelessWidget {
 class LinearSales {
   final int year;
   final int sales;
-  final List<int> dashPattern;
+  final List<int>? dashPattern;
   final double strokeWidthPx;
 
   LinearSales(this.year, this.sales, this.dashPattern, this.strokeWidthPx);

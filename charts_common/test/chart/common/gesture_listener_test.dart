@@ -19,8 +19,8 @@ import 'package:charts_common/src/common/proxy_gesture_listener.dart';
 import 'package:test/test.dart';
 
 void main() {
-  ProxyGestureListener _proxy;
-  Point<double> _point;
+  late ProxyGestureListener _proxy;
+  late Point<double> _point;
   setUp(() {
     _proxy = ProxyGestureListener();
     _point = Point<double>(10.0, 12.0);
@@ -217,16 +217,16 @@ void main() {
 }
 
 class MockListener {
-  Object _arg1;
-  Object _arg2;
-  Object _arg3;
+  Object? _arg1;
+  Object? _arg2;
+  Object? _arg3;
   int _callCount = 0;
 
   final bool consumeEvent;
 
   MockListener({this.consumeEvent = false});
 
-  bool callback([Object arg1, Object arg2, Object arg3]) {
+  bool callback([Object? arg1, Object? arg2, Object? arg3]) {
     _arg1 = arg1;
     _arg2 = arg2;
     _arg3 = arg3;
@@ -236,7 +236,7 @@ class MockListener {
     return consumeEvent;
   }
 
-  void verify({int callCount = 1, Object arg1, Object arg2, Object arg3}) {
+  void verify({int callCount = 1, Object? arg1, Object? arg2, Object? arg3}) {
     if (callCount != any) {
       expect(_callCount, equals(callCount));
     }

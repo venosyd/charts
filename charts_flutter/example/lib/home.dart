@@ -36,8 +36,8 @@ import 'legends/legends_gallery.dart' as legends show buildGallery;
 ///
 /// This renders a list of all available demos.
 class Home extends StatelessWidget {
-  final bool showPerformanceOverlay;
-  final ValueChanged<bool> onShowPerformanceOverlayChanged;
+  final bool? showPerformanceOverlay;
+  final ValueChanged<bool>? onShowPerformanceOverlayChanged;
   final a11yGalleries = a11y.buildGallery();
   final barGalleries = bar.buildGallery();
   final timeSeriesGalleries = time_series.buildGallery();
@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
   final legendsGalleries = legends.buildGallery();
 
   Home(
-      {Key key,
+      {Key? key,
       this.showPerformanceOverlay,
       this.onShowPerformanceOverlayChanged})
       : super(key: key) {
@@ -110,7 +110,7 @@ class Home extends StatelessWidget {
       drawer: new GalleryDrawer(
           showPerformanceOverlay: showPerformanceOverlay,
           onShowPerformanceOverlayChanged: onShowPerformanceOverlayChanged),
-      appBar: new AppBar(title: new Text(defaultConfig.appName)),
+      appBar: new AppBar(title: new Text(defaultConfig.appName!)),
       body: new ListView(padding: kMaterialListPadding, children: galleries),
     );
   }

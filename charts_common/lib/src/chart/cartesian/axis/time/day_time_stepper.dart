@@ -25,12 +25,12 @@ class DayTimeStepper extends BaseTimeStepper {
   final List<int> _allowedTickIncrements;
 
   DayTimeStepper._internal(
-      DateTimeFactory dateTimeFactory, List<int> increments)
+      DateTimeFactory? dateTimeFactory, List<int> increments)
       : _allowedTickIncrements = increments,
         super(dateTimeFactory);
 
-  factory DayTimeStepper(DateTimeFactory dateTimeFactory,
-      {List<int> allowedTickIncrements}) {
+  factory DayTimeStepper(DateTimeFactory? dateTimeFactory,
+      {List<int>? allowedTickIncrements}) {
     // Set the default increments if null.
     allowedTickIncrements ??= _defaultIncrements;
 
@@ -63,19 +63,19 @@ class DayTimeStepper extends BaseTimeStepper {
         ? time.subtract(Duration(hours: (_hoursInDay * dayRemainder) - 1))
         : time;
     // Explicitly leaving off hours and beyond to truncate to start of day.
-    final stepBefore = dateTimeFactory.createDateTime(
+    final stepBefore = dateTimeFactory!.createDateTime(
         dayBefore.year, dayBefore.month, dayBefore.day);
 
     return stepBefore;
   }
 
   @override
-  DateTime getNextStepTime(DateTime time, int tickIncrement) {
+  DateTime getNextStepTime(DateTime? time, int tickIncrement) {
     // Add an extra hour in case stepping through a daylight saving change.
     final stepAfter =
-        time.add(Duration(hours: (_hoursInDay * tickIncrement) + 1));
+        time!.add(Duration(hours: (_hoursInDay * tickIncrement) + 1));
     // Explicitly leaving off hours and beyond to truncate to start of day.
-    return dateTimeFactory.createDateTime(
+    return dateTimeFactory!.createDateTime(
         stepAfter.year, stepAfter.month, stepAfter.day);
   }
 }

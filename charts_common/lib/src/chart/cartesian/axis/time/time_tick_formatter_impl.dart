@@ -20,9 +20,9 @@ import 'time_tick_formatter.dart' show TimeTickFormatter;
 
 /// Formatter that can format simple and transition time ticks differently.
 class TimeTickFormatterImpl implements TimeTickFormatter {
-  DateFormat _simpleFormat;
-  DateFormat _transitionFormat;
-  final CalendarField transitionField;
+  late DateFormat _simpleFormat;
+  late DateFormat _transitionFormat;
+  final CalendarField? transitionField;
 
   /// Create time tick formatter.
   ///
@@ -32,9 +32,9 @@ class TimeTickFormatterImpl implements TimeTickFormatter {
   /// For example showing the month with the date for Jan 1.
   /// [transitionField] the calendar field that indicates transition.
   TimeTickFormatterImpl(
-      {@required DateTimeFactory dateTimeFactory,
-      @required String simpleFormat,
-      @required String transitionFormat,
+      {required DateTimeFactory dateTimeFactory,
+      required String? simpleFormat,
+      required String? transitionFormat,
       this.transitionField}) {
     _simpleFormat = dateTimeFactory.createDateFormat(simpleFormat);
     _transitionFormat = dateTimeFactory.createDateFormat(transitionFormat);
@@ -62,8 +62,8 @@ class TimeTickFormatterImpl implements TimeTickFormatter {
   }
 
   /// Gets the calendar field for [dateTime].
-  int getCalendarField(DateTime dateTime, CalendarField field) {
-    int value;
+  int? getCalendarField(DateTime dateTime, CalendarField? field) {
+    int? value;
 
     switch (field) {
       case CalendarField.year:

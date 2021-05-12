@@ -21,14 +21,14 @@ class CollisionReport {
   /// If [ticks] collide.
   final bool ticksCollide;
 
-  final List<Tick> ticks;
+  final List<Tick>? ticks;
 
   final bool alternateTicksUsed;
 
   CollisionReport(
-      {@required this.ticksCollide,
-      @required this.ticks,
-      bool alternateTicksUsed})
+      {required this.ticksCollide,
+      required this.ticks,
+      bool? alternateTicksUsed})
       : alternateTicksUsed = alternateTicksUsed ?? false;
 
   CollisionReport.empty()

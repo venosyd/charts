@@ -33,9 +33,9 @@ void main() {
       scale.addDomain(170.0);
       scale.range = ScaleOutputExtent(2000, 1000);
 
-      expect(scale.range.start, equals(2000));
-      expect(scale.range.end, equals(1000));
-      expect(scale.range.diff, equals(-1000));
+      expect(scale.range!.start, equals(2000));
+      expect(scale.range!.end, equals(1000));
+      expect(scale.range!.diff, equals(-1000));
 
       expect(scale.dataExtent.min, equals(100.0));
       expect(scale.dataExtent.max, equals(200.0));
@@ -49,8 +49,8 @@ void main() {
       // test copy
       LinearScale other = scale.copy();
       expect(other[166.0], closeTo(1340, EPSILON));
-      expect(other.range.start, equals(2000));
-      expect(other.range.end, equals(1000));
+      expect(other.range!.start, equals(2000));
+      expect(other.range!.end, equals(1000));
 
       // test reset
       other.resetDomain();
@@ -59,8 +59,8 @@ void main() {
       other.addDomain(20.0);
       expect(other.dataExtent.min, equals(10.0));
       expect(other.dataExtent.max, equals(20.0));
-      expect(other.viewportDomain.min, equals(10.0));
-      expect(other.viewportDomain.max, equals(20.0));
+      expect(other.viewportDomain!.min, equals(10.0));
+      expect(other.viewportDomain!.max, equals(20.0));
 
       expect(other[15.0], closeTo(1500, EPSILON));
       // original scale shouldn't have been touched.

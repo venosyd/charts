@@ -38,8 +38,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class DomainA11yExploreBarChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   DomainA11yExploreBarChart(this.seriesList, {this.animate});
 
@@ -82,15 +82,15 @@ class DomainA11yExploreBarChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet Sales',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tabletData,
       )
     ];
@@ -113,7 +113,7 @@ class DomainA11yExploreBarChart extends StatelessWidget {
     buffer.write(seriesDatums.first.datum.year);
 
     for (charts.SeriesDatum seriesDatum in seriesDatums) {
-      final series = seriesDatum.series;
+      final series = seriesDatum.series!;
       final datum = seriesDatum.datum;
 
       buffer.write(' ${series.displayName} '
@@ -191,15 +191,15 @@ class DomainA11yExploreBarChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet Sales',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tabletData,
       )
     ];

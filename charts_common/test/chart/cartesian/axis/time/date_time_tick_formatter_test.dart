@@ -31,7 +31,7 @@ class FakeTimeTickFormatter implements TimeTickFormatter {
   final String id;
   final IsTransitionFunction isTransitionFunction;
 
-  FakeTimeTickFormatter(this.id, {IsTransitionFunction isTransitionFunction})
+  FakeTimeTickFormatter(this.id, {IsTransitionFunction? isTransitionFunction})
       : isTransitionFunction = isTransitionFunction ?? transitionAlwaysFalse;
 
   @override
@@ -52,9 +52,9 @@ class FakeTimeTickFormatter implements TimeTickFormatter {
 }
 
 void main() {
-  TimeTickFormatter timeFormatter1;
-  TimeTickFormatter timeFormatter2;
-  TimeTickFormatter timeFormatter3;
+  late TimeTickFormatter timeFormatter1;
+  late TimeTickFormatter timeFormatter2;
+  late TimeTickFormatter timeFormatter3;
 
   setUp(() {
     timeFormatter1 = FakeTimeTickFormatter('fake1');

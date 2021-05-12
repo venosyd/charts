@@ -22,7 +22,7 @@ import 'package:flutter/material.dart';
 
 class DonutPieChart extends StatelessWidget {
   final List<charts.Series> seriesList;
-  final bool animate;
+  final bool? animate;
 
   DonutPieChart(this.seriesList, {this.animate});
 
@@ -57,8 +57,8 @@ class DonutPieChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
         id: 'Sales',
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: data,
       )
     ];
@@ -86,8 +86,8 @@ class DonutPieChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
         id: 'Sales',
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: data,
       )
     ];

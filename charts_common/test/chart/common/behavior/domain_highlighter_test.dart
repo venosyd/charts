@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:charts_common/common.dart';
 import 'package:charts_common/src/chart/common/base_chart.dart';
 import 'package:charts_common/src/chart/common/behavior/domain_highlighter.dart';
 import 'package:charts_common/src/chart/common/processed_series.dart';
@@ -23,14 +24,14 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 class MockChart extends Mock implements BaseChart {
-  LifecycleListener lastListener;
+  LifecycleListener? lastListener;
 
   @override
-  LifecycleListener addLifecycleListener(LifecycleListener listener) =>
+  LifecycleListener? addLifecycleListener(LifecycleListener? listener) =>
       lastListener = listener;
 
   @override
-  bool removeLifecycleListener(LifecycleListener listener) {
+  bool removeLifecycleListener(LifecycleListener? listener) {
     expect(listener, equals(lastListener));
     lastListener = null;
     return true;
@@ -38,7 +39,7 @@ class MockChart extends Mock implements BaseChart {
 }
 
 class MockSelectionModel extends Mock implements MutableSelectionModel {
-  SelectionModelListener lastListener;
+  SelectionModelListener? lastListener;
 
   @override
   void addSelectionChangedListener(SelectionModelListener listener) =>
@@ -52,27 +53,27 @@ class MockSelectionModel extends Mock implements MutableSelectionModel {
 }
 
 void main() {
-  MockChart _chart;
-  MockSelectionModel _selectionModel;
+  late MockChart _chart;
+  late MockSelectionModel _selectionModel;
 
-  MutableSeries<String> _series1;
+  late MutableSeries<String> _series1;
   final _s1D1 = MyRow('s1d1', 11);
   final _s1D2 = MyRow('s1d2', 12);
   final _s1D3 = MyRow('s1d3', 13);
 
-  MutableSeries<String> _series2;
+  late MutableSeries<String> _series2;
   final _s2D1 = MyRow('s2d1', 21);
   final _s2D2 = MyRow('s2d2', 22);
   final _s2D3 = MyRow('s2d3', 23);
 
   void _setupSelection(List<MyRow> selected) {
-    for (var i = 0; i < _series1.data.length; i++) {
+    for (var i = 0; i < _series1.data!.length; i++) {
       when(_selectionModel.isDatumSelected(_series1, i))
-          .thenReturn(selected.contains(_series1.data[i]));
+          .thenReturn(selected.contains(_series1.data![i]));
     }
-    for (var i = 0; i < _series2.data.length; i++) {
+    for (var i = 0; i < _series2.data!.length; i++) {
       when(_selectionModel.isDatumSelected(_series2, i))
-          .thenReturn(selected.contains(_series2.data[i]));
+          .thenReturn(selected.contains(_series2.data![i]));
     }
   }
 
@@ -83,19 +84,19 @@ void main() {
     when(_chart.getSelectionModel(SelectionModelType.info))
         .thenReturn(_selectionModel);
 
-    _series1 = MutableSeries(Series<MyRow, String>(
+    _series1 = MutableSeries(Series<MyRow?, String>(
         id: 's1',
         data: [_s1D1, _s1D2, _s1D3],
-        domainFn: (MyRow row, _) => row.campaign,
-        measureFn: (MyRow row, _) => row.count,
+        domainFn: (MyRow? row, _) => row!.campaign,
+        measureFn: (MyRow? row, _) => row!.count,
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault))
       ..measureFn = (_) => 0.0;
 
-    _series2 = MutableSeries(Series<MyRow, String>(
+    _series2 = MutableSeries(Series<MyRow?, String>(
         id: 's2',
         data: [_s2D1, _s2D2, _s2D3],
-        domainFn: (MyRow row, _) => row.campaign,
-        measureFn: (MyRow row, _) => row.count,
+        domainFn: (MyRow? row, _) => row!.campaign,
+        measureFn: (MyRow? row, _) => row!.count,
         colorFn: (_, __) => MaterialPalette.red.shadeDefault))
       ..measureFn = (_) => 0.0;
   });
@@ -109,17 +110,17 @@ void main() {
       final seriesList = [_series1, _series2];
 
       // Act
-      _selectionModel.lastListener(_selectionModel);
+      _selectionModel.lastListener!(_selectionModel);
       verify(_chart.redraw(skipAnimation: true, skipLayout: true));
-      _chart.lastListener.onPostprocess(seriesList);
+      _chart.lastListener!.onPostprocess!(seriesList);
 
       // Verify
-      final s1ColorFn = _series1.colorFn;
+      final Color? Function(int) s1ColorFn = _series1.colorFn!;
       expect(s1ColorFn(0), equals(MaterialPalette.blue.shadeDefault));
       expect(s1ColorFn(1), equals(MaterialPalette.blue.shadeDefault.darker));
       expect(s1ColorFn(2), equals(MaterialPalette.blue.shadeDefault));
 
-      final s2ColorFn = _series2.colorFn;
+      final Color? Function(int) s2ColorFn = _series2.colorFn!;
       expect(s2ColorFn(0), equals(MaterialPalette.red.shadeDefault));
       expect(s2ColorFn(1), equals(MaterialPalette.red.shadeDefault.darker));
       expect(s2ColorFn(2), equals(MaterialPalette.red.shadeDefault));
@@ -147,17 +148,17 @@ void main() {
       final seriesList = [_series1, _series2];
 
       // Act
-      _selectionModel.lastListener(_selectionModel);
+      _selectionModel.lastListener!(_selectionModel);
       verify(_chart.redraw(skipAnimation: true, skipLayout: true));
-      _chart.lastListener.onPostprocess(seriesList);
+      _chart.lastListener!.onPostprocess!(seriesList);
 
       // Verify
-      final s1ColorFn = _series1.colorFn;
+      final Color? Function(int) s1ColorFn = _series1.colorFn!;
       expect(s1ColorFn(0), equals(MaterialPalette.blue.shadeDefault));
       expect(s1ColorFn(1), equals(MaterialPalette.blue.shadeDefault));
       expect(s1ColorFn(2), equals(MaterialPalette.blue.shadeDefault));
 
-      final s2ColorFn = _series2.colorFn;
+      final Color? Function(int) s2ColorFn = _series2.colorFn!;
       expect(s2ColorFn(0), equals(MaterialPalette.red.shadeDefault));
       expect(s2ColorFn(1), equals(MaterialPalette.red.shadeDefault));
       expect(s2ColorFn(2), equals(MaterialPalette.red.shadeDefault));

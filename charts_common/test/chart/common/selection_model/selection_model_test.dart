@@ -20,46 +20,46 @@ import 'package:charts_common/src/data/series.dart';
 import 'package:test/test.dart';
 
 void main() {
-  MutableSelectionModel<String> _selectionModel;
+  late MutableSelectionModel<String?> _selectionModel;
 
-  ImmutableSeries<String> _closestSeries;
-  MyDatum _closestDatumClosestSeries;
-  SeriesDatum<String> _closestDatumClosestSeriesPair;
+  late ImmutableSeries<String?> _closestSeries;
+  late MyDatum _closestDatumClosestSeries;
+  late SeriesDatum<String?> _closestDatumClosestSeriesPair;
   MyDatum _otherDatumClosestSeries;
-  SeriesDatum<String> _otherDatumClosestSeriesPair;
+  late SeriesDatum<String?> _otherDatumClosestSeriesPair;
 
-  ImmutableSeries<String> _otherSeries;
-  MyDatum _closestDatumOtherSeries;
-  SeriesDatum<String> _closestDatumOtherSeriesPair;
-  MyDatum _otherDatumOtherSeries;
-  SeriesDatum<String> _otherDatumOtherSeriesPair;
+  late ImmutableSeries<String?> _otherSeries;
+  late MyDatum _closestDatumOtherSeries;
+  late SeriesDatum<String?> _closestDatumOtherSeriesPair;
+  late MyDatum _otherDatumOtherSeries;
+  late SeriesDatum<String?> _otherDatumOtherSeriesPair;
 
   setUp(() {
-    _selectionModel = MutableSelectionModel<String>();
+    _selectionModel = MutableSelectionModel<String?>();
 
     _closestDatumClosestSeries = MyDatum('cDcS');
     _otherDatumClosestSeries = MyDatum('oDcS');
-    _closestSeries = MutableSeries<String>(Series<MyDatum, String>(
+    _closestSeries = MutableSeries<String?>(Series<MyDatum?, String?>(
         id: 'closest',
         data: [_closestDatumClosestSeries, _otherDatumClosestSeries],
         domainFn: (dynamic d, _) => d.id,
         measureFn: (_, __) => 0));
     _closestDatumClosestSeriesPair =
-        SeriesDatum<String>(_closestSeries, _closestDatumClosestSeries);
+        SeriesDatum<String?>(_closestSeries, _closestDatumClosestSeries);
     _otherDatumClosestSeriesPair =
-        SeriesDatum<String>(_closestSeries, _otherDatumClosestSeries);
+        SeriesDatum<String?>(_closestSeries, _otherDatumClosestSeries);
 
     _closestDatumOtherSeries = MyDatum('cDoS');
     _otherDatumOtherSeries = MyDatum('oDoS');
-    _otherSeries = MutableSeries<String>(Series<MyDatum, String>(
+    _otherSeries = MutableSeries<String?>(Series<MyDatum?, String?>(
         id: 'other',
         data: [_closestDatumOtherSeries, _otherDatumOtherSeries],
         domainFn: (dynamic d, _) => d.id,
         measureFn: (_, __) => 0));
     _closestDatumOtherSeriesPair =
-        SeriesDatum<String>(_otherSeries, _closestDatumOtherSeries);
+        SeriesDatum<String?>(_otherSeries, _closestDatumOtherSeries);
     _otherDatumOtherSeriesPair =
-        SeriesDatum<String>(_otherSeries, _otherDatumOtherSeries);
+        SeriesDatum<String?>(_otherSeries, _otherDatumOtherSeries);
   });
 
   group('SelectionModel persists values', () {
@@ -184,10 +184,10 @@ void main() {
 
   group('SelectionModel changed listeners', () {
     test('listener triggered for change', () {
-      SelectionModel<String> triggeredModel;
+      SelectionModel<String?>? triggeredModel;
       // Listen
       _selectionModel
-          .addSelectionChangedListener((SelectionModel<String> model) {
+          .addSelectionChangedListener((SelectionModel<String?> model) {
         triggeredModel = model;
       });
 
@@ -203,7 +203,7 @@ void main() {
     });
 
     test('listener not triggered for no change', () {
-      SelectionModel<String> triggeredModel;
+      SelectionModel<String?>? triggeredModel;
       // Set the selection to closest datum.
       _selectionModel.updateSelection([
         SeriesDatum(_closestSeries, _closestDatumClosestSeries),
@@ -213,7 +213,7 @@ void main() {
 
       // Listen
       _selectionModel
-          .addSelectionChangedListener((SelectionModel<String> model) {
+          .addSelectionChangedListener((SelectionModel<String?> model) {
         triggeredModel = model;
       });
 
@@ -229,14 +229,14 @@ void main() {
     });
 
     test('removed listener not triggered for change', () {
-      SelectionModel<String> triggeredModel;
+      SelectionModel<String>? triggeredModel;
 
       Function cb = (SelectionModel<String> model) {
         triggeredModel = model;
       };
 
       // Listen
-      _selectionModel.addSelectionChangedListener(cb);
+      _selectionModel.addSelectionChangedListener(cb as void Function(SelectionModel<String?>));
 
       // Unlisten
       _selectionModel.removeSelectionChangedListener(cb);
@@ -255,10 +255,10 @@ void main() {
 
   group('SelectionModel updated listeners', () {
     test('listener triggered for change', () {
-      SelectionModel<String> triggeredModel;
+      SelectionModel<String?>? triggeredModel;
       // Listen
       _selectionModel
-          .addSelectionUpdatedListener((SelectionModel<String> model) {
+          .addSelectionUpdatedListener((SelectionModel<String?> model) {
         triggeredModel = model;
       });
 
@@ -274,7 +274,7 @@ void main() {
     });
 
     test('listener triggered for no change', () {
-      SelectionModel<String> triggeredModel;
+      SelectionModel<String?>? triggeredModel;
       // Set the selection to closest datum.
       _selectionModel.updateSelection([
         SeriesDatum(_closestSeries, _closestDatumClosestSeries),
@@ -284,7 +284,7 @@ void main() {
 
       // Listen
       _selectionModel
-          .addSelectionUpdatedListener((SelectionModel<String> model) {
+          .addSelectionUpdatedListener((SelectionModel<String?> model) {
         triggeredModel = model;
       });
 
@@ -300,14 +300,14 @@ void main() {
     });
 
     test('removed listener not triggered for change', () {
-      SelectionModel<String> triggeredModel;
+      SelectionModel<String>? triggeredModel;
 
       Function cb = (SelectionModel<String> model) {
         triggeredModel = model;
       };
 
       // Listen
-      _selectionModel.addSelectionUpdatedListener(cb);
+      _selectionModel.addSelectionUpdatedListener(cb as void Function(SelectionModel<String?>));
 
       // Unlisten
       _selectionModel.removeSelectionUpdatedListener(cb);
@@ -326,10 +326,10 @@ void main() {
 
   group('SelectionModel locked listeners', () {
     test('listener triggered when model is locked', () {
-      SelectionModel<String> triggeredModel;
+      SelectionModel<String?>? triggeredModel;
       // Listen
       _selectionModel
-          .addSelectionLockChangedListener((SelectionModel<String> model) {
+          .addSelectionLockChangedListener((SelectionModel<String?> model) {
         triggeredModel = model;
       });
 
@@ -341,14 +341,14 @@ void main() {
     });
 
     test('removed listener not triggered for locking', () {
-      SelectionModel<String> triggeredModel;
+      SelectionModel<String>? triggeredModel;
 
       Function cb = (SelectionModel<String> model) {
         triggeredModel = model;
       };
 
       // Listen
-      _selectionModel.addSelectionLockChangedListener(cb);
+      _selectionModel.addSelectionLockChangedListener(cb as void Function(SelectionModel<String?>));
 
       // Unlisten
       _selectionModel.removeSelectionLockChangedListener(cb);

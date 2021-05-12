@@ -30,7 +30,7 @@ class ParentBehavior implements ChartBehavior<String> {
 
   ParentBehavior(this.child);
 
-  String get role => null;
+  String? get role => null;
 
   @override
   void attachTo(BaseChart chart) {
@@ -45,16 +45,16 @@ class ParentBehavior implements ChartBehavior<String> {
 
 class ConcreteChart extends BaseChart<String> {
   @override
-  SeriesRenderer<String> makeDefaultRenderer() => null;
+  SeriesRenderer<String>? makeDefaultRenderer() => null;
 
   @override
-  List<DatumDetails<String>> getDatumDetails(SelectionModelType _) => null;
+  List<DatumDetails<String>>? getDatumDetails(SelectionModelType _) => null;
 }
 
 void main() {
-  ConcreteChart chart;
-  MockBehavior namedBehavior;
-  MockBehavior unnamedBehavior;
+  late ConcreteChart chart;
+  late MockBehavior namedBehavior;
+  late MockBehavior unnamedBehavior;
 
   setUp(() {
     chart = ConcreteChart();

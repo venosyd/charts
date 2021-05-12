@@ -41,7 +41,7 @@ class PanAndZoomBehavior<D> extends PanBehavior<D> {
   bool get isZooming => _isZooming;
 
   /// Current zoom scaling factor for the behavior.
-  double _scalingFactor = 1.0;
+  double? _scalingFactor = 1.0;
 
   /// Minimum scalingFactor to prevent zooming out beyond the data range.
   final _minScalingFactor = 1.0;
@@ -61,7 +61,7 @@ class PanAndZoomBehavior<D> extends PanBehavior<D> {
     super.onDragStart(localPosition);
 
     // Save the current scaling factor to make zoom events relative.
-    _scalingFactor = chart.domainAxis?.viewportScalingFactor;
+    _scalingFactor = chart!.domainAxis?.viewportScalingFactor;
     _isZooming = true;
 
     return true;
@@ -83,7 +83,7 @@ class PanAndZoomBehavior<D> extends PanBehavior<D> {
     }
 
     // Update the domain axis's viewport scale factor to zoom the chart.
-    final domainAxis = chart.domainAxis;
+    final domainAxis = chart!.domainAxis;
 
     if (domainAxis == null) {
       return false;
@@ -93,19 +93,19 @@ class PanAndZoomBehavior<D> extends PanBehavior<D> {
     // know during onDragStart whether pan/zoom behavior is panning or zooming.
     // During zoom in / zoom out, domain tick provider set to return existing
     // cached ticks.
-    domainAxisTickProvider.mode = PanningTickProviderMode.useCachedTicks;
+    domainAxisTickProvider!.mode = PanningTickProviderMode.useCachedTicks;
 
     // Clamp the scale to prevent zooming out beyond the range of the data, or
     // zooming in so far that we show nothing useful.
     final newScalingFactor =
-        min(max(_scalingFactor * scale, _minScalingFactor), _maxScalingFactor);
+        min(max(_scalingFactor! * scale, _minScalingFactor), _maxScalingFactor);
 
     domainAxis.setViewportSettings(
         newScalingFactor, domainAxis.viewportTranslatePx,
-        drawAreaWidth: chart.drawAreaBounds.width,
-        drawAreaHeight: chart.drawAreaBounds.height);
+        drawAreaWidth: chart!.drawAreaBounds!.width,
+        drawAreaHeight: chart!.drawAreaBounds!.height);
 
-    chart.redraw(skipAnimation: true, skipLayout: true);
+    chart!.redraw(skipAnimation: true, skipLayout: true);
 
     return true;
   }

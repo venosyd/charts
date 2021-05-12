@@ -26,8 +26,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class IntegerOnlyMeasureAxis extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, DateTime>> seriesList;
+  final bool? animate;
 
   IntegerOnlyMeasureAxis(this.seriesList, {this.animate});
 
@@ -69,8 +69,8 @@ class IntegerOnlyMeasureAxis extends StatelessWidget {
     return [
       new charts.Series<MyRow, DateTime>(
         id: 'Headcount',
-        domainFn: (MyRow row, _) => row.timeStamp,
-        measureFn: (MyRow row, _) => row.headcount,
+        domainFn: (MyRow? row, _) => row!.timeStamp,
+        measureFn: (MyRow? row, _) => row!.headcount,
         data: data,
       )
     ];
@@ -113,8 +113,8 @@ class IntegerOnlyMeasureAxis extends StatelessWidget {
     return [
       new charts.Series<MyRow, DateTime>(
         id: 'Headcount',
-        domainFn: (MyRow row, _) => row.timeStamp,
-        measureFn: (MyRow row, _) => row.headcount,
+        domainFn: (MyRow? row, _) => row!.timeStamp,
+        measureFn: (MyRow? row, _) => row!.headcount,
         data: data,
       )
     ];

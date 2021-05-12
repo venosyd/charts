@@ -24,20 +24,20 @@ class Tick<D> {
   final D value;
 
   /// [TextElement] for this tick.
-  TextElement textElement;
+  TextElement? textElement;
 
   /// Location on the axis where this tick is rendered (in canvas coordinates).
-  double locationPx;
+  double? locationPx;
 
   /// Offset of the label for this tick from its location.
   ///
   /// This is a vertical offset for ticks on a vertical axis, or horizontal
   /// offset for ticks on a horizontal axis.
-  double labelOffsetPx;
+  double? labelOffsetPx;
 
   Tick(
-      {@required this.value,
-      @required this.textElement,
+      {required this.value,
+      required this.textElement,
       this.locationPx,
       this.labelOffsetPx});
 

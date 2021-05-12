@@ -29,16 +29,16 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 class MockChart extends Mock implements BaseChart<String> {
-  GestureListener lastListener;
+  GestureListener? lastListener;
 
   @override
-  GestureListener addGestureListener(GestureListener listener) {
+  GestureListener? addGestureListener(GestureListener? listener) {
     lastListener = listener;
     return listener;
   }
 
   @override
-  void removeGestureListener(GestureListener listener) {
+  void removeGestureListener(GestureListener? listener) {
     expect(listener, equals(lastListener));
     lastListener = null;
   }
@@ -48,23 +48,23 @@ class MockSelectionModel extends Mock implements MutableSelectionModel<String> {
 }
 
 void main() {
-  MockChart _chart;
-  MockSelectionModel _hoverSelectionModel;
-  MockSelectionModel _clickSelectionModel;
-  List<String> _series1Data;
+  late MockChart _chart;
+  late MockSelectionModel _hoverSelectionModel;
+  late MockSelectionModel _clickSelectionModel;
+  late List<String> _series1Data;
   List<String> _series2Data;
-  MutableSeries<String> _series1;
-  MutableSeries<String> _series2;
-  DatumDetails<String> _details1;
-  DatumDetails<String> _details1Series2;
-  DatumDetails<String> _details2;
-  DatumDetails<String> _details3;
+  late MutableSeries<String> _series1;
+  late MutableSeries<String> _series2;
+  late DatumDetails<String> _details1;
+  late DatumDetails<String> _details1Series2;
+  late DatumDetails<String> _details2;
+  late DatumDetails<String> _details3;
 
   SelectNearest<String> _makeBehavior(
       SelectionModelType selectionModelType, SelectionTrigger eventTrigger,
-      {bool selectClosestSeries,
+      {bool? selectClosestSeries,
       SelectionMode selectionMode = SelectionMode.expandToDomain,
-      int maximumDomainDistancePx}) {
+      int? maximumDomainDistancePx}) {
     SelectNearest<String> behavior = SelectNearest<String>(
         selectionModelType: selectionModelType,
         selectionMode: selectionMode,
@@ -78,10 +78,10 @@ void main() {
   }
 
   void _setupChart(
-      {Point<double> forPoint,
-      bool isWithinRenderer,
-      List<DatumDetails<String>> respondWithDetails,
-      List<MutableSeries<String>> seriesList}) {
+      {Point<double>? forPoint,
+      bool? isWithinRenderer,
+      List<DatumDetails<String>>? respondWithDetails,
+      List<MutableSeries<String>>? seriesList}) {
     if (isWithinRenderer != null) {
       when(_chart.pointWithinRenderer(forPoint)).thenReturn(isWithinRenderer);
     }
@@ -162,7 +162,7 @@ void main() {
           seriesList: [_series1]);
 
       // Act
-      _chart.lastListener.onHover(point);
+      _chart.lastListener!.onHover!(point);
 
       // Validate
       verify(_hoverSelectionModel.updateSelection(
@@ -170,8 +170,8 @@ void main() {
       verifyNoMoreInteractions(_hoverSelectionModel);
       verifyNoMoreInteractions(_clickSelectionModel);
       // Shouldn't be listening to anything else.
-      expect(_chart.lastListener.onTap, isNull);
-      expect(_chart.lastListener.onDragStart, isNull);
+      expect(_chart.lastListener!.onTap, isNull);
+      expect(_chart.lastListener!.onDragStart, isNull);
     });
 
     test('can listen to tap', () {
@@ -186,8 +186,8 @@ void main() {
           seriesList: [_series1]);
 
       // Act
-      _chart.lastListener.onTapTest(point);
-      _chart.lastListener.onTap(point);
+      _chart.lastListener!.onTapTest(point);
+      _chart.lastListener!.onTap!(point);
 
       // Validate
       verify(_clickSelectionModel.updateSelection(
@@ -230,11 +230,11 @@ void main() {
           seriesList: [_series1]);
 
       // Act
-      _chart.lastListener.onTapTest(startPoint);
-      _chart.lastListener.onDragStart(startPoint);
-      _chart.lastListener.onDragUpdate(updatePoint1, 1.0);
-      _chart.lastListener.onDragUpdate(updatePoint2, 1.0);
-      _chart.lastListener.onDragEnd(endPoint, 1.0, 0.0);
+      _chart.lastListener!.onTapTest(startPoint);
+      _chart.lastListener!.onDragStart!(startPoint);
+      _chart.lastListener!.onDragUpdate!(updatePoint1, 1.0);
+      _chart.lastListener!.onDragUpdate!(updatePoint2, 1.0);
+      _chart.lastListener!.onDragEnd!(endPoint, 1.0, 0.0);
 
       // Validate
       // details1 was tripped 2 times (startPoint & updatePoint1)
@@ -276,16 +276,16 @@ void main() {
           seriesList: [_series1]);
 
       // Act 1
-      _chart.lastListener.onTapTest(startPoint);
+      _chart.lastListener!.onTapTest(startPoint);
       verifyNoMoreInteractions(_hoverSelectionModel);
       verifyNoMoreInteractions(_clickSelectionModel);
 
       // Act 2
       // verify no interaction yet.
-      _chart.lastListener.onLongPress(startPoint);
-      _chart.lastListener.onDragStart(startPoint);
-      _chart.lastListener.onDragUpdate(updatePoint1, 1.0);
-      _chart.lastListener.onDragEnd(endPoint, 1.0, 0.0);
+      _chart.lastListener!.onLongPress!(startPoint);
+      _chart.lastListener!.onDragStart!(startPoint);
+      _chart.lastListener!.onDragUpdate!(updatePoint1, 1.0);
+      _chart.lastListener!.onDragEnd!(endPoint, 1.0, 0.0);
 
       // Validate
       // details1 was tripped 2 times (longPress & dragStart)
@@ -326,10 +326,10 @@ void main() {
           seriesList: [_series1]);
 
       // Act
-      _chart.lastListener.onTapTest(startPoint);
-      _chart.lastListener.onDragStart(startPoint);
-      _chart.lastListener.onDragUpdate(updatePoint1, 1.0);
-      _chart.lastListener.onDragEnd(endPoint, 1.0, 0.0);
+      _chart.lastListener!.onTapTest(startPoint);
+      _chart.lastListener!.onDragStart!(startPoint);
+      _chart.lastListener!.onDragUpdate!(updatePoint1, 1.0);
+      _chart.lastListener!.onDragEnd!(endPoint, 1.0, 0.0);
 
       // Validate
       // No interaction, didn't long press first.
@@ -353,7 +353,7 @@ void main() {
       ]);
 
       // Act
-      _chart.lastListener.onHover(point);
+      _chart.lastListener!.onHover!(point);
 
       // Validate
       verify(_hoverSelectionModel.updateSelection([
@@ -380,7 +380,7 @@ void main() {
       ]);
 
       // Act
-      _chart.lastListener.onHover(point);
+      _chart.lastListener!.onHover!(point);
 
       // Validate
       verify(_hoverSelectionModel.updateSelection(
@@ -403,7 +403,7 @@ void main() {
       ]);
 
       // Act
-      _chart.lastListener.onHover(point);
+      _chart.lastListener!.onHover!(point);
 
       // Validate
       verify(_hoverSelectionModel.updateSelection([
@@ -430,7 +430,7 @@ void main() {
       ]);
 
       // Act
-      _chart.lastListener.onHover(point);
+      _chart.lastListener!.onHover!(point);
 
       // Validate
       verify(_hoverSelectionModel.updateSelection([
@@ -456,7 +456,7 @@ void main() {
       ]);
 
       // Act
-      _chart.lastListener.onHover(point);
+      _chart.lastListener!.onHover!(point);
 
       // Validate
       verify(_hoverSelectionModel.updateSelection([], []));
@@ -498,7 +498,7 @@ void main() {
       ]);
 
       // Act
-      _chart.lastListener.onHover(point);
+      _chart.lastListener!.onHover!(point);
 
       // Validate
       verify(_hoverSelectionModel.updateSelection([

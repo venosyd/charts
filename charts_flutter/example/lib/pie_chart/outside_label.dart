@@ -22,7 +22,7 @@ import 'package:flutter/material.dart';
 
 class PieOutsideLabelChart extends StatelessWidget {
   final List<charts.Series> seriesList;
-  final bool animate;
+  final bool? animate;
 
   PieOutsideLabelChart(this.seriesList, {this.animate});
 
@@ -57,11 +57,11 @@ class PieOutsideLabelChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
         id: 'Sales',
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: data,
         // Set a label accessor to control the text of the arc label.
-        labelAccessorFn: (LinearSales row, _) => '${row.year}: ${row.sales}',
+        labelAccessorFn: (LinearSales? row, _) => '${row!.year}: ${row.sales}',
       )
     ];
   }
@@ -99,11 +99,11 @@ class PieOutsideLabelChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
         id: 'Sales',
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
         data: data,
         // Set a label accessor to control the text of the arc label.
-        labelAccessorFn: (LinearSales row, _) => '${row.year}: ${row.sales}',
+        labelAccessorFn: (LinearSales? row, _) => '${row!.year}: ${row.sales}',
       )
     ];
   }

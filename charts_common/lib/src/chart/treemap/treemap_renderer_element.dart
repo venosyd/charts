@@ -22,50 +22,50 @@ import 'package:charts_common/src/common/color.dart';
 /// A renderer element that represents a TreeNode.
 class TreeMapRendererElement<D> {
   /// Bounding rectangle of this element.
-  Rectangle boundingRect;
+  Rectangle? boundingRect;
 
   /// Occupied area of this element in pixel.
-  num area;
+  num? area;
 
   /// Fill color of this element.
-  Color fillColor;
+  Color? fillColor;
 
   /// Fill pattern of the background of the treemap rectangle.
-  FillPatternType fillPattern;
+  FillPatternType? fillPattern;
 
   /// Pattern color of this element.
-  Color patternColor;
+  Color? patternColor;
 
   /// Stroke color of this element.
-  Color strokeColor;
+  Color? strokeColor;
 
   /// Whether this element is a leaf in the treemap.
-  bool isLeaf;
+  bool? isLeaf;
 
   /// Stroke width of this element.
-  num strokeWidthPx;
+  num? strokeWidthPx;
 
   /// Associated index in the [series].
-  int index;
+  int? index;
 
   /// Original series.
-  ImmutableSeries<D> series;
+  ImmutableSeries<D>? series;
 
   /// Domain of this element.
-  D domain;
+  D? domain;
 
   /// Measure of this element.
-  num measure;
+  num? measure;
 
   /// Clones a new renderer element with the same properties.
   TreeMapRendererElement<D> clone() => TreeMapRendererElement()
     ..boundingRect =
-        Rectangle.fromPoints(boundingRect.topLeft, boundingRect.bottomRight)
+        Rectangle.fromPoints(boundingRect!.topLeft, boundingRect!.bottomRight)
     ..area = area
     ..fillPattern = fillPattern
-    ..fillColor = Color.fromOther(color: fillColor)
-    ..patternColor = Color.fromOther(color: patternColor)
-    ..strokeColor = Color.fromOther(color: strokeColor)
+    ..fillColor = Color.fromOther(color: fillColor!)
+    ..patternColor = Color.fromOther(color: patternColor!)
+    ..strokeColor = Color.fromOther(color: strokeColor!)
     ..strokeWidthPx = strokeWidthPx
     ..isLeaf = isLeaf
     ..index = index
@@ -78,20 +78,20 @@ class TreeMapRendererElement<D> {
   /// This is useful when series accessor functions are updated by behaviors
   /// and redraw of this element is triggered.
   void refreshPaintProperties() {
-    strokeColor = series.colorFn(index);
-    strokeWidthPx = series.strokeWidthPxFn(index);
-    fillColor = series.fillColorFn(index);
-    fillPattern = series.fillPatternFn == null
+    strokeColor = series!.colorFn!(index);
+    strokeWidthPx = series!.strokeWidthPxFn!(index);
+    fillColor = series!.fillColorFn!(index);
+    fillPattern = series!.fillPatternFn == null
         ? FillPatternType.solid
-        : series.fillPatternFn(index);
-    patternColor = series.patternColorFn(index);
+        : series!.fillPatternFn!(index);
+    patternColor = series!.patternColorFn!(index);
   }
 
   /// Updates properties of this element based on [animationPercent].
   ///
   /// Used when animation is in progress.
-  void updateAnimationPercent(TreeMapRendererElement<D> previous,
-      TreeMapRendererElement<D> target, double animationPercent) {
+  void updateAnimationPercent(TreeMapRendererElement<D>? previous,
+      TreeMapRendererElement<D> target, double? animationPercent) {
     // TODO: Implements animation based on animationPercent.
     boundingRect = target.boundingRect;
     area = target.area;

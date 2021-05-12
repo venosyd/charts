@@ -25,8 +25,8 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class GroupedStackedWeightPatternBarChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   GroupedStackedWeightPatternBarChart(this.seriesList, {this.animate});
 
@@ -96,43 +96,43 @@ class GroupedStackedWeightPatternBarChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop A',
         seriesCategory: 'A',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesDataA,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet A',
         seriesCategory: 'A',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tableSalesDataA,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile A',
         seriesCategory: 'A',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesDataA,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop B',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesDataB,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet B',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tableSalesDataB,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile B',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesDataB,
       ),
     ];
@@ -204,43 +204,43 @@ class GroupedStackedWeightPatternBarChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop A',
         seriesCategory: 'A',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesDataA,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet A',
         seriesCategory: 'A',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tableSalesDataA,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile A',
         seriesCategory: 'A',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesDataA,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop B',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesDataB,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet B',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tableSalesDataB,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile B',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesDataB,
       ),
     ];

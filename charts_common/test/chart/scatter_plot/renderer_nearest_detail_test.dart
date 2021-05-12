@@ -39,12 +39,12 @@ class MockCanvas extends Mock implements ChartCanvas {}
 
 void main() {
   PointRenderer renderer;
-  Rectangle layout;
+  late Rectangle layout;
 
-  MutableSeries _makeSeries({String id, String seriesCategory}) {
+  MutableSeries _makeSeries({String? id, String? seriesCategory}) {
     final data = <MyRow>[];
 
-    final series = MutableSeries<num>(Series(
+    final series = MutableSeries<num?>(Series(
       id: id,
       data: data,
       radiusPxFn: (dynamic row, _) => row.radius,
@@ -83,10 +83,10 @@ void main() {
         'false', () {
       // Setup
       final renderer = PointRenderer(config: PointRendererConfig())
-        ..layout(layout, layout);
-      final seriesList = <MutableSeries<num>>[
-        _makeSeries(id: 'foo')
-          ..data.addAll(<MyRow>[
+        ..layout(layout as Rectangle<int>?, layout as Rectangle<int>?);
+      final seriesList = <MutableSeries<num?>>[
+        _makeSeries(id: 'foo') as MutableSeries<num?>
+          ..data!.addAll(<MyRow>[
             MyRow('point1', 20, 30, 6, 0, ''),
             MyRow('point2', 15, 20, 3, 0, ''),
             MyRow('point3', 30, 40, 4, 0, ''),
@@ -99,7 +99,7 @@ void main() {
 
       // Act
       final details = renderer.getNearestDatumDetailPerSeries(
-          Point(10, 20), false, layout,
+          Point(10, 20), false, layout as Rectangle<int>?,
           selectExactEventLocation: false, selectOverlappingPoints: false);
 
       // Only the point nearest to the event location returned.
@@ -112,10 +112,10 @@ void main() {
         'true and there are points inside event', () {
       // Setup
       final renderer = PointRenderer(config: PointRendererConfig())
-        ..layout(layout, layout);
-      final seriesList = <MutableSeries<num>>[
-        _makeSeries(id: 'foo')
-          ..data.addAll(<MyRow>[
+        ..layout(layout as Rectangle<int>?, layout as Rectangle<int>?);
+      final seriesList = <MutableSeries<num?>>[
+        _makeSeries(id: 'foo') as MutableSeries<num?>
+          ..data!.addAll(<MyRow>[
             MyRow('point1', 15, 30, 15, 0, ''),
             MyRow('point2', 10, 20, 5, 0, ''),
             MyRow('point3', 30, 40, 4, 0, ''),
@@ -128,7 +128,7 @@ void main() {
 
       // Act
       final details = renderer.getNearestDatumDetailPerSeries(
-          Point(13, 23), false, layout,
+          Point(13, 23), false, layout as Rectangle<int>?,
           selectExactEventLocation: true, selectOverlappingPoints: true);
 
       // Return only points inside the event location and skip other.
@@ -142,10 +142,10 @@ void main() {
         'true and there are NO points inside event', () {
       // Setup
       final renderer = PointRenderer(config: PointRendererConfig())
-        ..layout(layout, layout);
-      final seriesList = <MutableSeries<num>>[
-        _makeSeries(id: 'foo')
-          ..data.addAll(<MyRow>[
+        ..layout(layout as Rectangle<int>?, layout as Rectangle<int>?);
+      final seriesList = <MutableSeries<num?>>[
+        _makeSeries(id: 'foo') as MutableSeries<num?>
+          ..data!.addAll(<MyRow>[
             MyRow('point1', 15, 30, 2, 0, ''),
             MyRow('point2', 10, 20, 3, 0, ''),
             MyRow('point3', 30, 40, 4, 0, ''),
@@ -158,7 +158,7 @@ void main() {
 
       // Act
       final details = renderer.getNearestDatumDetailPerSeries(
-          Point(5, 10), false, layout,
+          Point(5, 10), false, layout as Rectangle<int>?,
           selectExactEventLocation: true, selectOverlappingPoints: true);
 
       // Since there are no points inside event, empty list is returned.
@@ -171,10 +171,10 @@ void main() {
         () {
       // Setup
       final renderer = PointRenderer(config: PointRendererConfig())
-        ..layout(layout, layout);
-      final seriesList = <MutableSeries<num>>[
-        _makeSeries(id: 'foo')
-          ..data.addAll(<MyRow>[
+        ..layout(layout as Rectangle<int>?, layout as Rectangle<int>?);
+      final seriesList = <MutableSeries<num?>>[
+        _makeSeries(id: 'foo') as MutableSeries<num?>
+          ..data!.addAll(<MyRow>[
             MyRow('point1', 15, 30, 15, 0, ''),
             MyRow('point2', 10, 20, 5, 0, ''),
             MyRow('point3', 30, 40, 4, 0, ''),
@@ -187,7 +187,7 @@ void main() {
 
       // Act
       final details = renderer.getNearestDatumDetailPerSeries(
-          Point(13, 23), false, layout,
+          Point(13, 23), false, layout as Rectangle<int>?,
           selectExactEventLocation: false, selectOverlappingPoints: true);
 
       // Points inside the event location are returned.
@@ -202,10 +202,10 @@ void main() {
         () {
       // Setup
       final renderer = PointRenderer(config: PointRendererConfig())
-        ..layout(layout, layout);
-      final seriesList = <MutableSeries<num>>[
-        _makeSeries(id: 'foo')
-          ..data.addAll(<MyRow>[
+        ..layout(layout as Rectangle<int>?, layout as Rectangle<int>?);
+      final seriesList = <MutableSeries<num?>>[
+        _makeSeries(id: 'foo') as MutableSeries<num?>
+          ..data!.addAll(<MyRow>[
             MyRow('point1', 15, 30, 2, 0, ''),
             MyRow('point2', 10, 20, 3, 0, ''),
             MyRow('point3', 30, 40, 4, 0, ''),
@@ -218,7 +218,7 @@ void main() {
 
       // Act
       final details = renderer.getNearestDatumDetailPerSeries(
-          Point(5, 10), false, layout,
+          Point(5, 10), false, layout as Rectangle<int>?,
           selectExactEventLocation: false, selectOverlappingPoints: true);
 
       // There are no points inside, so single nearest point is returned.
@@ -232,10 +232,10 @@ void main() {
         () {
       // Setup
       final renderer = PointRenderer(config: PointRendererConfig())
-        ..layout(layout, layout);
-      final seriesList = <MutableSeries<num>>[
-        _makeSeries(id: 'foo')
-          ..data.addAll(<MyRow>[
+        ..layout(layout as Rectangle<int>?, layout as Rectangle<int>?);
+      final seriesList = <MutableSeries<num?>>[
+        _makeSeries(id: 'foo') as MutableSeries<num?>
+          ..data!.addAll(<MyRow>[
             MyRow('point1', 15, 30, 15, 0, ''),
             MyRow('point2', 10, 20, 5, 0, ''),
             MyRow('point3', 30, 40, 4, 0, ''),
@@ -248,7 +248,7 @@ void main() {
 
       // Act
       final details = renderer.getNearestDatumDetailPerSeries(
-          Point(13, 23), false, layout,
+          Point(13, 23), false, layout as Rectangle<int>?,
           selectExactEventLocation: true, selectOverlappingPoints: false);
 
       // Only the nearest point from inside event location is returned.
@@ -262,10 +262,10 @@ void main() {
         () {
       // Setup
       final renderer = PointRenderer(config: PointRendererConfig())
-        ..layout(layout, layout);
-      final seriesList = <MutableSeries<num>>[
-        _makeSeries(id: 'foo')
-          ..data.addAll(<MyRow>[
+        ..layout(layout as Rectangle<int>?, layout as Rectangle<int>?);
+      final seriesList = <MutableSeries<num?>>[
+        _makeSeries(id: 'foo') as MutableSeries<num?>
+          ..data!.addAll(<MyRow>[
             MyRow('point1', 15, 30, 2, 0, ''),
             MyRow('point2', 10, 20, 3, 0, ''),
             MyRow('point3', 30, 40, 4, 0, ''),
@@ -278,7 +278,7 @@ void main() {
 
       // Act
       final details = renderer.getNearestDatumDetailPerSeries(
-          Point(5, 10), false, layout,
+          Point(5, 10), false, layout as Rectangle<int>?,
           selectExactEventLocation: true, selectOverlappingPoints: false);
 
       // No points inside event, so empty list is returned.

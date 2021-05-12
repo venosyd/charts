@@ -18,28 +18,28 @@ import '../common/chart_canvas.dart' show getAnimatedColor, FillPatternType;
 import '../common/processed_series.dart' show ImmutableSeries;
 
 abstract class BaseBarRendererElement {
-  int barStackIndex;
-  Color color;
-  num cumulativeTotal;
-  List<int> dashPattern;
-  Color fillColor;
-  FillPatternType fillPattern;
-  double measureAxisPosition;
-  num measureOffset;
-  num measureOffsetPlusMeasure;
-  double strokeWidthPx;
-  bool measureIsNull;
-  bool measureIsNegative;
+  int? barStackIndex;
+  Color? color;
+  num? cumulativeTotal;
+  List<int>? dashPattern;
+  Color? fillColor;
+  FillPatternType? fillPattern;
+  double? measureAxisPosition;
+  num? measureOffset;
+  num? measureOffsetPlusMeasure;
+  double? strokeWidthPx;
+  bool? measureIsNull;
+  bool? measureIsNegative;
 
   BaseBarRendererElement();
 
   BaseBarRendererElement.clone(BaseBarRendererElement other) {
     barStackIndex = other.barStackIndex;
-    color = other.color != null ? Color.fromOther(color: other.color) : null;
+    color = other.color != null ? Color.fromOther(color: other.color!) : null;
     cumulativeTotal = other.cumulativeTotal;
     dashPattern = other.dashPattern;
     fillColor = other.fillColor != null
-        ? Color.fromOther(color: other.fillColor)
+        ? Color.fromOther(color: other.fillColor!)
         : null;
     fillPattern = other.fillPattern;
     measureAxisPosition = other.measureAxisPosition;
@@ -52,23 +52,23 @@ abstract class BaseBarRendererElement {
 
   void updateAnimationPercent(BaseBarRendererElement previous,
       BaseBarRendererElement target, double animationPercent) {
-    color = getAnimatedColor(previous.color, target.color, animationPercent);
+    color = getAnimatedColor(previous.color!, target.color!, animationPercent);
     fillColor = getAnimatedColor(
-        previous.fillColor, target.fillColor, animationPercent);
+        previous.fillColor!, target.fillColor!, animationPercent);
     measureIsNull = target.measureIsNull;
     measureIsNegative = target.measureIsNegative;
   }
 }
 
 abstract class BaseAnimatedBar<D, R extends BaseBarRendererElement> {
-  final String key;
+  final String? key;
   dynamic datum;
-  ImmutableSeries<D> series;
-  D domainValue;
+  ImmutableSeries<D>? series;
+  D? domainValue;
 
-  R _previousBar;
-  R _targetBar;
-  R _currentBar;
+  R? _previousBar;
+  R? _targetBar;
+  R? _currentBar;
 
   // Flag indicating whether this bar is being animated out of the chart.
   bool animatingOut = false;
@@ -103,26 +103,26 @@ abstract class BaseAnimatedBar<D, R extends BaseBarRendererElement> {
     _targetBar = newTarget;
   }
 
-  R get currentBar => _currentBar;
+  R? get currentBar => _currentBar;
 
-  R get previousBar => _previousBar;
+  R? get previousBar => _previousBar;
 
-  R get targetBar => _targetBar;
+  R? get targetBar => _targetBar;
 
   /// Gets the new state of the bar element for painting, updated for a
   /// transition between the previous state and the new animationPercent.
-  R getCurrentBar(double animationPercent) {
+  R? getCurrentBar(double? animationPercent) {
     if (animationPercent == 1.0 || _previousBar == null) {
       _currentBar = _targetBar;
       _previousBar = _targetBar;
       return _currentBar;
     }
 
-    _currentBar.updateAnimationPercent(
-        _previousBar, _targetBar, animationPercent);
+    _currentBar!.updateAnimationPercent(
+        _previousBar!, _targetBar!, animationPercent!);
 
     return _currentBar;
   }
 
-  R clone(R bar);
+  R clone(R? bar);
 }

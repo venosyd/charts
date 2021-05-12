@@ -32,8 +32,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class ShapesScatterPlotChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool? animate;
 
   ShapesScatterPlotChart(this.seriesList, {this.animate});
 
@@ -95,9 +95,9 @@ class ShapesScatterPlotChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
         id: 'Sales',
-        colorFn: (LinearSales sales, _) {
+        colorFn: (LinearSales? sales, _) {
           // Color bucket the measure column value into 3 distinct colors.
-          final bucket = sales.sales / maxMeasure;
+          final bucket = sales!.sales / maxMeasure;
 
           if (bucket < 1 / 3) {
             return charts.MaterialPalette.blue.shadeDefault;
@@ -107,11 +107,11 @@ class ShapesScatterPlotChart extends StatelessWidget {
             return charts.MaterialPalette.green.shadeDefault;
           }
         },
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        radiusPxFn: (LinearSales sales, _) => sales.radius,
-        fillColorFn: (LinearSales row, _) => row.fillColor,
-        strokeWidthPxFn: (LinearSales row, _) => row.strokeWidth,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
+        radiusPxFn: (LinearSales? sales, _) => sales!.radius,
+        fillColorFn: (LinearSales? row, _) => row!.fillColor!,
+        strokeWidthPxFn: (LinearSales? row, _) => row!.strokeWidth!,
         data: data,
       )
         // Accessor function that associates each datum with a symbol renderer.
@@ -164,9 +164,9 @@ class ShapesScatterPlotChart extends StatelessWidget {
       new charts.Series<LinearSales, int>(
         id: 'Sales',
         // Providing a color function is optional.
-        colorFn: (LinearSales sales, _) {
+        colorFn: (LinearSales? sales, _) {
           // Bucket the measure column value into 3 distinct colors.
-          final bucket = sales.sales / maxMeasure;
+          final bucket = sales!.sales / maxMeasure;
 
           if (bucket < 1 / 3) {
             return charts.MaterialPalette.blue.shadeDefault;
@@ -176,11 +176,11 @@ class ShapesScatterPlotChart extends StatelessWidget {
             return charts.MaterialPalette.green.shadeDefault;
           }
         },
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        radiusPxFn: (LinearSales sales, _) => sales.radius,
-        fillColorFn: (LinearSales row, _) => row.fillColor,
-        strokeWidthPxFn: (LinearSales row, _) => row.strokeWidth,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
+        radiusPxFn: (LinearSales? sales, _) => sales!.radius,
+        fillColorFn: (LinearSales? row, _) => row!.fillColor!,
+        strokeWidthPxFn: (LinearSales? row, _) => row!.strokeWidth!,
         data: data,
       )
         // Accessor function that associates each datum with a symbol renderer.
@@ -197,9 +197,9 @@ class LinearSales {
   final int year;
   final int sales;
   final double radius;
-  final String shape;
-  final charts.Color fillColor;
-  final double strokeWidth;
+  final String? shape;
+  final charts.Color? fillColor;
+  final double? strokeWidth;
 
   LinearSales(this.year, this.sales, this.radius, this.shape, this.fillColor,
       this.strokeWidth);

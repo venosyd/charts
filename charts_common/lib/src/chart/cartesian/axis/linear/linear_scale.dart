@@ -78,7 +78,7 @@ class LinearScale implements NumericScale {
   //
 
   @override
-  void addDomain(num domainValue) {
+  void addDomain(num? domainValue) {
     _domainInfo.addDomainValue(domainValue);
   }
 
@@ -104,18 +104,18 @@ class LinearScale implements NumericScale {
   bool canTranslate(_) => true;
 
   @override
-  set domainOverride(NumericExtents domainMaxExtent) {
+  set domainOverride(NumericExtents? domainMaxExtent) {
     _domainInfo.domainOverride = domainMaxExtent;
   }
 
   @override
-  NumericExtents get domainOverride => _domainInfo.domainOverride;
+  NumericExtents? get domainOverride => _domainInfo.domainOverride;
 
   @override
-  int compareDomainValueToViewport(num domainValue) {
+  int compareDomainValueToViewport(num? domainValue) {
     NumericExtents dataExtent =
         _viewportSettings.domainExtent ?? _domainInfo.extent;
-    return dataExtent.compareValue(domainValue);
+    return dataExtent.compareValue(domainValue!);
   }
 
   //
@@ -123,7 +123,7 @@ class LinearScale implements NumericScale {
   //
 
   @override
-  void setViewportSettings(double viewportScale, double viewportTranslatePx) {
+  void setViewportSettings(double? viewportScale, double? viewportTranslatePx) {
     _viewportSettings
       ..scalingFactor = viewportScale
       ..translatePx = viewportTranslatePx
@@ -132,19 +132,19 @@ class LinearScale implements NumericScale {
   }
 
   @override
-  double get viewportScalingFactor => _viewportSettings.scalingFactor;
+  double? get viewportScalingFactor => _viewportSettings.scalingFactor;
 
   @override
-  double get viewportTranslatePx => _viewportSettings.translatePx;
+  double? get viewportTranslatePx => _viewportSettings.translatePx;
 
   @override
-  set viewportDomain(NumericExtents extent) {
+  set viewportDomain(NumericExtents? extent) {
     _scaleReady = false;
     _viewportSettings.domainExtent = extent;
   }
 
   @override
-  NumericExtents get viewportDomain {
+  NumericExtents? get viewportDomain {
     _configureScale();
     return _viewportSettings.domainExtent;
   }
@@ -163,22 +163,22 @@ class LinearScale implements NumericScale {
       _domainInfo.domainDiff / domainWindow;
 
   @override
-  set range(ScaleOutputExtent extent) {
+  set range(ScaleOutputExtent? extent) {
     _viewportSettings.range = extent;
     _scaleReady = false;
   }
 
   @override
-  ScaleOutputExtent get range => _viewportSettings.range;
+  ScaleOutputExtent? get range => _viewportSettings.range;
 
   //
   // Scale application methods
   //
 
   @override
-  num operator [](num domainValue) {
+  num operator [](num? domainValue) {
     _configureScale();
-    return _scaleFunction[domainValue];
+    return _scaleFunction[domainValue!];
   }
 
   @override
@@ -204,11 +204,11 @@ class LinearScale implements NumericScale {
   double get domainStepSize => _domainInfo.minimumDetectedDomainStep.toDouble();
 
   @override
-  int get rangeWidth => (range.end - range.start).abs().toInt();
+  int get rangeWidth => (range!.end! - range!.start!).abs().toInt();
 
   @override
-  bool isRangeValueWithinViewport(double rangeValue) =>
-      range.containsValue(rangeValue);
+  bool isRangeValueWithinViewport(double? rangeValue) =>
+      range!.containsValue(rangeValue!);
 
   //
   // Private update

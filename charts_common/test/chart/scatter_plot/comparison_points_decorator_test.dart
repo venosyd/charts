@@ -27,15 +27,15 @@ class MyRow {
 }
 
 class TestComparisonPointsDecorator<D> extends ComparisonPointsDecorator<D> {
-  List<Point<double>> testComputeBoundedPointsForElement(
+  List<Point<double>>? testComputeBoundedPointsForElement(
       PointRendererElement<D> pointElement, Rectangle drawBounds) {
     return computeBoundedPointsForElement(pointElement, drawBounds);
   }
 }
 
 void main() {
-  TestComparisonPointsDecorator decorator;
-  Rectangle bounds;
+  late TestComparisonPointsDecorator decorator;
+  late Rectangle bounds;
 
   setUp(() {
     decorator = TestComparisonPointsDecorator<num>();
@@ -54,7 +54,7 @@ void main() {
             yUpper: 20.0);
 
       final points =
-          decorator.testComputeBoundedPointsForElement(element, bounds);
+          decorator.testComputeBoundedPointsForElement(element, bounds)!;
 
       expect(points.length, equals(2));
 
@@ -140,7 +140,7 @@ void main() {
             yUpper: 20.0);
 
       final points =
-          decorator.testComputeBoundedPointsForElement(element, bounds);
+          decorator.testComputeBoundedPointsForElement(element, bounds)!;
 
       expect(points.length, equals(2));
 
@@ -162,7 +162,7 @@ void main() {
             yUpper: 110.0);
 
       final points =
-          decorator.testComputeBoundedPointsForElement(element, bounds);
+          decorator.testComputeBoundedPointsForElement(element, bounds)!;
 
       expect(points.length, equals(2));
 
@@ -184,7 +184,7 @@ void main() {
             yUpper: 150.0);
 
       final points =
-          decorator.testComputeBoundedPointsForElement(element, bounds);
+          decorator.testComputeBoundedPointsForElement(element, bounds)!;
 
       expect(points.length, equals(2));
 
@@ -206,7 +206,7 @@ void main() {
             yUpper: -50.0);
 
       final points =
-          decorator.testComputeBoundedPointsForElement(element, bounds);
+          decorator.testComputeBoundedPointsForElement(element, bounds)!;
 
       expect(points.length, equals(2));
 

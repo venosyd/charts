@@ -19,7 +19,7 @@ import 'home.dart';
 
 /// The main gallery app widget.
 class GalleryApp extends StatefulWidget {
-  GalleryApp({Key key}) : super(key: key);
+  GalleryApp({Key? key}) : super(key: key);
 
   @override
   GalleryAppState createState() => new GalleryAppState();
@@ -30,14 +30,14 @@ class GalleryApp extends StatefulWidget {
 /// Controls performance overlay, and instantiates a [Home] widget.
 class GalleryAppState extends State<GalleryApp> {
   // Initialize app settings from the default configuration.
-  bool _showPerformanceOverlay = defaultConfig.showPerformanceOverlay;
+  bool? _showPerformanceOverlay = defaultConfig.showPerformanceOverlay;
 
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-        title: defaultConfig.appName,
+        title: defaultConfig.appName!,
         theme: defaultConfig.theme,
-        showPerformanceOverlay: _showPerformanceOverlay,
+        showPerformanceOverlay: _showPerformanceOverlay!,
         home: new Home(
           showPerformanceOverlay: _showPerformanceOverlay,
           onShowPerformanceOverlayChanged: (bool value) {

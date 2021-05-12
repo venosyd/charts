@@ -22,8 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class OrdinalComboBarLineChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   OrdinalComboBarLineChart(this.seriesList, {this.animate});
 
@@ -72,20 +72,20 @@ class OrdinalComboBarLineChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
           id: 'Desktop',
           colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (OrdinalSales sales, _) => sales.year,
-          measureFn: (OrdinalSales sales, _) => sales.sales,
+          domainFn: (OrdinalSales? sales, _) => sales!.year,
+          measureFn: (OrdinalSales? sales, _) => sales!.sales,
           data: desktopSalesData),
       new charts.Series<OrdinalSales, String>(
           id: 'Tablet',
           colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-          domainFn: (OrdinalSales sales, _) => sales.year,
-          measureFn: (OrdinalSales sales, _) => sales.sales,
+          domainFn: (OrdinalSales? sales, _) => sales!.year,
+          measureFn: (OrdinalSales? sales, _) => sales!.sales,
           data: tableSalesData),
       new charts.Series<OrdinalSales, String>(
           id: 'Mobile',
           colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-          domainFn: (OrdinalSales sales, _) => sales.year,
-          measureFn: (OrdinalSales sales, _) => sales.sales,
+          domainFn: (OrdinalSales? sales, _) => sales!.year,
+          measureFn: (OrdinalSales? sales, _) => sales!.sales,
           data: mobileSalesData)
         // Configure our custom line renderer for this series.
         ..setAttribute(charts.rendererIdKey, 'customLine'),
@@ -136,20 +136,20 @@ class OrdinalComboBarLineChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
           id: 'Desktop',
           colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (OrdinalSales sales, _) => sales.year,
-          measureFn: (OrdinalSales sales, _) => sales.sales,
+          domainFn: (OrdinalSales? sales, _) => sales!.year,
+          measureFn: (OrdinalSales? sales, _) => sales!.sales,
           data: desktopSalesData),
       new charts.Series<OrdinalSales, String>(
           id: 'Tablet',
           colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-          domainFn: (OrdinalSales sales, _) => sales.year,
-          measureFn: (OrdinalSales sales, _) => sales.sales,
+          domainFn: (OrdinalSales? sales, _) => sales!.year,
+          measureFn: (OrdinalSales? sales, _) => sales!.sales,
           data: tableSalesData),
       new charts.Series<OrdinalSales, String>(
           id: 'Mobile ',
           colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-          domainFn: (OrdinalSales sales, _) => sales.year,
-          measureFn: (OrdinalSales sales, _) => sales.sales,
+          domainFn: (OrdinalSales? sales, _) => sales!.year,
+          measureFn: (OrdinalSales? sales, _) => sales!.sales,
           data: mobileSalesData)
         // Configure our custom line renderer for this series.
         ..setAttribute(charts.rendererIdKey, 'customLine'),

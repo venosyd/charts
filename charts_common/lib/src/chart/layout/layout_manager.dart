@@ -19,52 +19,52 @@ import 'layout_view.dart' show LayoutView;
 
 abstract class LayoutManager {
   /// Adds a view to be managed by the LayoutManager.
-  void addView(LayoutView view);
+  void addView(LayoutView? view);
 
   /// Removes a view previously added to the LayoutManager.
   /// No-op if it wasn't there to begin with.
-  void removeView(LayoutView view);
+  void removeView(LayoutView? view);
 
   /// Returns true if view is already attached.
-  bool isAttached(LayoutView view);
+  bool isAttached(LayoutView? view);
 
   /// Walk through the child views and determine their desired sizes storing
   /// off the information for layout.
-  void measure(int width, int height);
+  void measure(int? width, int? height);
 
   /// Walk through the child views and set their bounds from the perspective
   /// of the canvas origin.
-  void layout(int width, int height);
+  void layout(int? width, int? height);
 
   /// Returns the bounds of the drawArea. Must be called after layout().
-  Rectangle<int> get drawAreaBounds;
+  Rectangle<int>? get drawAreaBounds;
 
   /// Returns the combined bounds of the drawArea, and all components that
   /// function as series draw areas. Must be called after layout().
-  Rectangle<int> get drawableLayoutAreaBounds;
+  Rectangle<int>? get drawableLayoutAreaBounds;
 
   /// Gets the measured size of the bottom margin, available after layout.
-  int get marginBottom;
+  int? get marginBottom;
 
   /// Gets the measured size of the left margin, available after layout.
-  int get marginLeft;
+  int? get marginLeft;
 
   /// Gets the measured size of the right margin, available after layout.
-  int get marginRight;
+  int? get marginRight;
 
   /// Gets the measured size of the top margin, available after layout.
-  int get marginTop;
+  int? get marginTop;
 
   /// Returns whether or not [point] is within the draw area bounds.
   bool withinDrawArea(Point<num> point);
 
   /// Walk through the child views and apply the function passed in.
-  void applyToViews(void Function(LayoutView view) apply);
+  void applyToViews(void Function(LayoutView? view) apply);
 
   /// Return the child views in the order that they should be drawn.
-  List<LayoutView> get paintOrderedViews;
+  List<LayoutView>? get paintOrderedViews;
 
   /// Return the child views in the order that they should be positioned within
   /// chart margins.
-  List<LayoutView> get positionOrderedViews;
+  List<LayoutView>? get positionOrderedViews;
 }

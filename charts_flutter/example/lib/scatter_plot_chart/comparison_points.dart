@@ -21,8 +21,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class ComparisonPointsScatterPlotChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool? animate;
 
   ComparisonPointsScatterPlotChart(this.seriesList, {this.animate});
 
@@ -61,9 +61,9 @@ class ComparisonPointsScatterPlotChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
         id: 'Sales',
-        colorFn: (LinearSales sales, _) {
+        colorFn: (LinearSales? sales, _) {
           // Color bucket the measure column value into 3 distinct colors.
-          final bucket = sales.sales / maxMeasure;
+          final bucket = sales!.sales / maxMeasure;
 
           if (bucket < 1 / 3) {
             return charts.MaterialPalette.blue.shadeDefault;
@@ -73,13 +73,13 @@ class ComparisonPointsScatterPlotChart extends StatelessWidget {
             return charts.MaterialPalette.green.shadeDefault;
           }
         },
-        domainFn: (LinearSales sales, _) => sales.year,
-        domainLowerBoundFn: (LinearSales sales, _) => sales.yearLower,
-        domainUpperBoundFn: (LinearSales sales, _) => sales.yearUpper,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        measureLowerBoundFn: (LinearSales sales, _) => sales.salesLower,
-        measureUpperBoundFn: (LinearSales sales, _) => sales.salesUpper,
-        radiusPxFn: (LinearSales sales, _) => sales.radius,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        domainLowerBoundFn: (LinearSales? sales, _) => sales!.yearLower,
+        domainUpperBoundFn: (LinearSales? sales, _) => sales!.yearUpper,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
+        measureLowerBoundFn: (LinearSales? sales, _) => sales!.salesLower,
+        measureUpperBoundFn: (LinearSales? sales, _) => sales!.salesUpper,
+        radiusPxFn: (LinearSales? sales, _) => sales!.radius,
         data: data,
       )
     ];
@@ -128,9 +128,9 @@ class ComparisonPointsScatterPlotChart extends StatelessWidget {
       new charts.Series<LinearSales, int>(
         id: 'Sales',
         // Providing a color function is optional.
-        colorFn: (LinearSales sales, _) {
+        colorFn: (LinearSales? sales, _) {
           // Bucket the measure column value into 3 distinct colors.
-          final bucket = sales.sales / maxMeasure;
+          final bucket = sales!.sales / maxMeasure;
 
           if (bucket < 1 / 3) {
             return charts.MaterialPalette.blue.shadeDefault;
@@ -140,14 +140,14 @@ class ComparisonPointsScatterPlotChart extends StatelessWidget {
             return charts.MaterialPalette.green.shadeDefault;
           }
         },
-        domainFn: (LinearSales sales, _) => sales.year,
-        domainLowerBoundFn: (LinearSales sales, _) => sales.yearLower,
-        domainUpperBoundFn: (LinearSales sales, _) => sales.yearUpper,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        measureLowerBoundFn: (LinearSales sales, _) => sales.salesLower,
-        measureUpperBoundFn: (LinearSales sales, _) => sales.salesUpper,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        domainLowerBoundFn: (LinearSales? sales, _) => sales!.yearLower,
+        domainUpperBoundFn: (LinearSales? sales, _) => sales!.yearUpper,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
+        measureLowerBoundFn: (LinearSales? sales, _) => sales!.salesLower,
+        measureUpperBoundFn: (LinearSales? sales, _) => sales!.salesUpper,
         // Providing a radius function is optional.
-        radiusPxFn: (LinearSales sales, _) => sales.radius,
+        radiusPxFn: (LinearSales? sales, _) => sales!.radius,
         data: data,
       )
     ];

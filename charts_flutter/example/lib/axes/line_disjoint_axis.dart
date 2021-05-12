@@ -28,8 +28,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class DisjointMeasureAxisLineChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool? animate;
 
   DisjointMeasureAxisLineChart(this.seriesList, {this.animate});
 
@@ -95,14 +95,14 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
       // chart.
       new charts.Series<LinearClicks, int>(
           id: 'Fake Series',
-          domainFn: (LinearClicks clickCount, _) => clickCount.year,
-          measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+          domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+          measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
           data: []),
       new charts.Series<LinearClicks, int>(
         id: 'Desktop',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearClicks clickCount, _) => clickCount.year,
-        measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+        domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+        measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
         data: myFakeDesktopData,
       )
         // Set the 'Desktop' series to use a disjoint axis.
@@ -110,8 +110,8 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
       new charts.Series<LinearClicks, int>(
         id: 'Tablet',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (LinearClicks clickCount, _) => clickCount.year,
-        measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+        domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+        measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
         data: myFakeTabletData,
       )
         // Set the 'Tablet' series to use a disjoint axis.
@@ -119,8 +119,8 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
       new charts.Series<LinearClicks, int>(
         id: 'Mobile',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (LinearClicks clickCount, _) => clickCount.year,
-        measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+        domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+        measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
         data: myFakeMobileData,
       )
         // Set the 'Mobile' series to use a disjoint axis.
@@ -128,8 +128,8 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
       new charts.Series<LinearClicks, int>(
         id: 'Click Rate',
         colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
-        domainFn: (LinearClicks clickCount, _) => clickCount.year,
-        measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+        domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+        measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
         data: myFakeClickRateData,
       )
         // Set the 'Click Rate' series to use a disjoint axis.
@@ -215,14 +215,14 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
       // chart.
       new charts.Series<LinearClicks, int>(
           id: 'Fake Series',
-          domainFn: (LinearClicks clickCount, _) => clickCount.year,
-          measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+          domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+          measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
           data: []),
       new charts.Series<LinearClicks, int>(
         id: 'Desktop',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearClicks clickCount, _) => clickCount.year,
-        measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+        domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+        measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
         data: myFakeDesktopData,
       )
         // Set the 'Desktop' series to use a disjoint axis.
@@ -230,8 +230,8 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
       new charts.Series<LinearClicks, int>(
         id: 'Tablet',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (LinearClicks clickCount, _) => clickCount.year,
-        measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+        domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+        measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
         data: myFakeTabletData,
       )
         // Set the 'Tablet' series to use a disjoint axis.
@@ -239,8 +239,8 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
       new charts.Series<LinearClicks, int>(
         id: 'Mobile',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (LinearClicks clickCount, _) => clickCount.year,
-        measureFn: (LinearClicks clickCount, _) => clickCount.clickCount,
+        domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+        measureFn: (LinearClicks? clickCount, _) => clickCount!.clickCount,
         data: myFakeMobileData,
       )
         // Set the 'Mobile' series to use a disjoint axis.
@@ -248,8 +248,8 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
       new charts.Series<LinearClicks, int>(
         id: 'Click Rate',
         colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
-        domainFn: (LinearClicks clickCount, _) => clickCount.year,
-        measureFn: (LinearClicks clickCount, _) => clickCount.clickRate,
+        domainFn: (LinearClicks? clickCount, _) => clickCount!.year,
+        measureFn: (LinearClicks? clickCount, _) => clickCount!.clickRate,
         data: myFakeClickRateData,
       )
         // Set the 'Click Rate' series to use a disjoint axis.
@@ -261,8 +261,8 @@ class DisjointMeasureAxisLineChart extends StatelessWidget {
 /// Sample linear data type.
 class LinearClicks {
   final int year;
-  final int clickCount;
-  final double clickRate;
+  final int? clickCount;
+  final double? clickRate;
 
   LinearClicks(this.year, {this.clickCount, this.clickRate});
 }

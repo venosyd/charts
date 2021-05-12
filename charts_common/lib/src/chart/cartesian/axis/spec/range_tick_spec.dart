@@ -20,8 +20,8 @@ import 'tick_spec.dart' show TickSpec;
 ///
 /// Used to define a tick that is used by range tick provider.
 class RangeTickSpec<D> extends TickSpec<D> {
-  final D rangeStartValue;
-  final D rangeEndValue;
+  final D? rangeStartValue;
+  final D? rangeEndValue;
 
   /// Creates a range tick for [value].
   /// A [label] can optionallu label for this tick. If not set, the tick
@@ -32,8 +32,8 @@ class RangeTickSpec<D> extends TickSpec<D> {
   /// A [rangeEndValue] represents the value of this range tick's ending point.
   const RangeTickSpec(
     D value, {
-    String label,
-    TextStyleSpec style,
+    String? label,
+    TextStyleSpec? style,
     this.rangeStartValue,
     this.rangeEndValue,
   }) : super(value, label: label, style: style);

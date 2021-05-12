@@ -19,21 +19,21 @@ import 'base_treemap_renderer.dart';
 import 'treemap_renderer_config.dart';
 
 /// A treemap renderer that renders a treemap with dice layout.
-class DiceTreeMapRenderer<D> extends BaseTreeMapRenderer<D> {
-  DiceTreeMapRenderer({String rendererId, TreeMapRendererConfig config})
+class DiceTreeMapRenderer<D> extends BaseTreeMapRenderer<D?> {
+  DiceTreeMapRenderer({String? rendererId, TreeMapRendererConfig? config})
       : super(
-            config:
-                config ?? TreeMapRendererConfig(tileType: TreeMapTileType.dice),
+            config: config as TreeMapRendererConfig<D>? ??
+                TreeMapRendererConfig(tileType: TreeMapTileType.dice),
             rendererId: rendererId ?? BaseTreeMapRenderer.defaultRendererId);
 
   /// Uses dicing as the tiling algorithm for this tree map.
   @override
-  void tile(TreeNode node) {
-    final children = node.children;
+  void tile(TreeNode? node) {
+    final children = node!.children;
     if (children.isNotEmpty) {
       final rect = availableLayoutBoundingRect(node);
       final measure = measureForTreeNode(node);
-      final scaleFactor = measure == 0 ? 0 : areaForRectangle(rect) / measure;
+      final scaleFactor = measure == 0 ? 0 : areaForRectangle(rect) / measure!;
       scaleArea(children, scaleFactor);
       position(children, rect, rect.height, areaForRectangle(rect));
     }

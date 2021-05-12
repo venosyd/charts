@@ -55,15 +55,15 @@ abstract class SeriesRenderer<D> extends LayoutView {
   /// The default is set natively by the platform. This is because in Flutter,
   /// the [SymbolRenderer] has to be a Flutter wrapped version to support
   /// building widget based symbols.
-  SymbolRenderer get symbolRenderer;
+  SymbolRenderer? get symbolRenderer;
 
-  set symbolRenderer(SymbolRenderer symbolRenderer);
+  set symbolRenderer(SymbolRenderer? symbolRenderer);
 
   /// Unique identifier for this renderer. Any [Series] on a chart with a
   /// matching  [rendererIdKey] will be drawn by this renderer.
-  String get rendererId;
+  String? get rendererId;
 
-  set rendererId(String rendererId);
+  set rendererId(String? rendererId);
 
   /// Handles any setup of the renderer that needs to be deferred until it is
   /// attached to a chart.
@@ -97,7 +97,7 @@ abstract class SeriesRenderer<D> extends LayoutView {
   /// Renders the series data on the canvas, using the data generated during the
   /// [update] call.
   @override
-  void paint(ChartCanvas canvas, double animationPercent);
+  void paint(ChartCanvas canvas, double? animationPercent);
 
   /// Gets a list of the data from each series that is closest to a given point.
   ///
@@ -117,10 +117,10 @@ abstract class SeriesRenderer<D> extends LayoutView {
   /// outside the box. If not specified, then each series renderer on the chart
   /// will use its own component bounds for filtering out selection events
   /// (usually the chart draw area).
-  List<DatumDetails<D>> getNearestDatumDetailPerSeries(
-    Point<double> chartPoint,
+  List<DatumDetails<D>>? getNearestDatumDetailPerSeries(
+    Point<double>? chartPoint,
     bool byDomain,
-    Rectangle<int> boundsOverride, {
+    Rectangle<int>? boundsOverride, {
     bool selectOverlappingPoints = false,
     bool selectExactEventLocation = false,
   });
@@ -129,14 +129,14 @@ abstract class SeriesRenderer<D> extends LayoutView {
   ///
   /// This is typically called by chart behaviors that need to get full details
   /// on selected data.
-  DatumDetails<D> getDetailsForSeriesDatum(SeriesDatum<D> seriesDatum);
+  DatumDetails<D>? getDetailsForSeriesDatum(SeriesDatum<D> seriesDatum);
 
   /// Adds chart position data to [details].
   ///
   /// This is a helper function intended to be called from
   /// [getDetailsForSeriesDatum]. Every concrete [SeriesRenderer] needs to
   /// implement custom logic for setting location data.
-  DatumDetails<D> addPositionToDetailsForSeriesDatum(
+  DatumDetails<D>? addPositionToDetailsForSeriesDatum(
       DatumDetails<D> details, SeriesDatum<D> seriesDatum);
 }
 
@@ -147,21 +147,21 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
   final LayoutViewConfig layoutConfig;
 
   @override
-  String rendererId;
+  String? rendererId;
 
   @override
-  SymbolRenderer symbolRenderer;
+  SymbolRenderer? symbolRenderer;
 
-  Rectangle<int> _drawAreaBounds;
+  Rectangle<int>? _drawAreaBounds;
 
-  Rectangle<int> get drawBounds => _drawAreaBounds;
+  Rectangle<int>? get drawBounds => _drawAreaBounds;
 
   @override
-  GraphicsFactory graphicsFactory;
+  GraphicsFactory? graphicsFactory;
 
   BaseSeriesRenderer({
-    @required this.rendererId,
-    @required int layoutPaintOrder,
+    this.rendererId,
+    int? layoutPaintOrder,
     this.symbolRenderer,
   }) : layoutConfig = LayoutViewConfig(
             paintOrder: layoutPaintOrder,
@@ -183,7 +183,7 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
   ///     s2 uses Red500),
   @protected
   void assignMissingColors(Iterable<MutableSeries<D>> seriesList,
-      {@required bool emptyCategoryUsesSinglePalette}) {
+      {required bool emptyCategoryUsesSinglePalette}) {
     const defaultCategory = '__default__';
 
     // Count up the number of missing series per category, keeping a max across
@@ -203,7 +203,7 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
       // "missing" set.
       if (series.colorFn == null) {
         // If there is no category, give it a default category to match logic.
-        String category = series.seriesCategory;
+        String? category = series.seriesCategory;
         if (category == null) {
           category = defaultCategory;
         } else {
@@ -235,7 +235,7 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
             // return a color.
             if (series.seriesColor == null) {
               try {
-                series.seriesColor = series.colorFn(0);
+                series.seriesColor = series.colorFn!(0);
               } catch (exception) {
                 series.seriesColor = StyleFactory.style.defaultSeriesColor;
               }
@@ -268,20 +268,20 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
           final category = series.seriesCategory ?? defaultCategory;
 
           // Get the current index into the color list.
-          final colorIndex = missingColorCountPerCategory[category];
+          final colorIndex = missingColorCountPerCategory[category]!;
           missingColorCountPerCategory[category] = colorIndex + 1;
 
-          final color = colorsByCategory[category][colorIndex];
+          final color = colorsByCategory[category]![colorIndex];
           series.colorFn = (_) => color;
         }
 
         // Fill color defaults to the series color if no accessor is provided.
-        series.fillColorFn ??= (int index) => series.colorFn(index);
+        series.fillColorFn ??= (int? index) => series.colorFn!(index);
       });
     } else {
       seriesList.forEach((MutableSeries series) {
         // Fill color defaults to the series color if no accessor is provided.
-        series.fillColorFn ??= (int index) => series.colorFn(index);
+        series.fillColorFn ??= (int? index) => series.colorFn!(index);
       });
     }
 
@@ -290,7 +290,7 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
     seriesList.forEach((MutableSeries series) {
       if (series.seriesColor == null) {
         try {
-          series.seriesColor = series.colorFn(0);
+          series.seriesColor = series.colorFn!(0);
         } catch (exception) {
           series.seriesColor = StyleFactory.style.defaultSeriesColor;
         }
@@ -299,17 +299,17 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
   }
 
   @override
-  ViewMeasuredSizes measure(int maxWidth, int maxHeight) {
+  ViewMeasuredSizes? measure(int? maxWidth, int? maxHeight) {
     return null;
   }
 
   @override
-  void layout(Rectangle<int> componentBounds, Rectangle<int> drawAreaBounds) {
+  void layout(Rectangle<int>? componentBounds, Rectangle<int>? drawAreaBounds) {
     _drawAreaBounds = drawAreaBounds;
   }
 
   @override
-  Rectangle<int> get componentBounds => _drawAreaBounds;
+  Rectangle<int>? get componentBounds => _drawAreaBounds;
 
   @override
   bool get isSeriesRenderer => true;
@@ -327,23 +327,23 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
   void configureMeasureAxes(List<MutableSeries<D>> seriesList) {}
 
   @override
-  DatumDetails<D> getDetailsForSeriesDatum(SeriesDatum<D> seriesDatum) {
+  DatumDetails<D>? getDetailsForSeriesDatum(SeriesDatum<D> seriesDatum) {
     // Generate details relevant to every type of series renderer. Position
     // details are left as an exercise for every renderer that extends this
     // class.
-    final series = seriesDatum.series;
+    final series = seriesDatum.series!;
     final index = seriesDatum.index;
-    final domainFn = series.domainFn;
+    final domainFn = series.domainFn!;
     final domainLowerBoundFn = series.domainLowerBoundFn;
     final domainUpperBoundFn = series.domainUpperBoundFn;
-    final measureFn = series.measureFn;
+    final measureFn = series.measureFn!;
     final measureLowerBoundFn = series.measureLowerBoundFn;
     final measureUpperBoundFn = series.measureUpperBoundFn;
     final measureOffsetFn = series.measureOffsetFn;
-    final rawMeasureFn = series.rawMeasureFn;
+    final rawMeasureFn = series.rawMeasureFn!;
     final rawMeasureLowerBoundFn = series.rawMeasureLowerBoundFn;
     final rawMeasureUpperBoundFn = series.rawMeasureUpperBoundFn;
-    final colorFn = series.colorFn;
+    final colorFn = series.colorFn!;
     final areaColorFn = series.areaColorFn ?? colorFn;
     final fillColorFn = series.fillColorFn ?? colorFn;
     final radiusPxFn = series.radiusPxFn;
@@ -402,8 +402,8 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
         color: color,
         fillColor: fillColor,
         areaColor: areaColor,
-        radiusPx: radiusPx,
-        strokeWidthPx: strokeWidthPx);
+        radiusPx: radiusPx as double?,
+        strokeWidthPx: strokeWidthPx as double?);
 
     // chartPosition depends on the shape of the rendered elements, and must be
     // added by concrete [SeriesRenderer] classes.
@@ -418,14 +418,14 @@ abstract class BaseSeriesRenderer<D> implements SeriesRenderer<D> {
   /// [bounds] optional override for component bounds. If this is passed, then
   /// we will check whether the point is within these bounds instead of the
   /// component bounds.
-  bool isPointWithinBounds(Point<double> chartPoint, Rectangle<int> bounds) {
+  bool isPointWithinBounds(Point<double>? chartPoint, Rectangle<int>? bounds) {
     // Was it even in the drawArea?
     if (bounds != null) {
-      if (!bounds.containsPoint(chartPoint)) {
+      if (!bounds.containsPoint(chartPoint!)) {
         return false;
       }
     } else if (componentBounds == null ||
-        !componentBounds.containsPoint(chartPoint)) {
+        !componentBounds!.containsPoint(chartPoint!)) {
       return false;
     }
 

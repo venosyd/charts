@@ -28,58 +28,58 @@ import 'tick_provider.dart' show BaseTickProvider, TickHint;
 import 'time/date_time_scale.dart' show DateTimeScale;
 
 /// Tick provider that provides ticks at the two end points of the axis range.
-class EndPointsTickProvider<D> extends BaseTickProvider<D> {
+class EndPointsTickProvider<D> extends BaseTickProvider<D?> {
   @override
-  List<Tick<D>> getTicks({
-    @required ChartContext context,
-    @required GraphicsFactory graphicsFactory,
-    @required MutableScale<D> scale,
-    @required TickFormatter<D> formatter,
-    @required Map<D, String> formatterValueCache,
-    @required TickDrawStrategy tickDrawStrategy,
-    @required AxisOrientation orientation,
+  List<Tick<D?>> getTicks({
+    required ChartContext? context,
+    required GraphicsFactory? graphicsFactory,
+    required MutableScale<D?>? scale,
+    required TickFormatter<D?>? formatter,
+    required Map<D?, String> formatterValueCache,
+    required TickDrawStrategy? tickDrawStrategy,
+    required AxisOrientation? orientation,
     bool viewportExtensionEnabled = false,
-    TickHint<D> tickHint,
+    TickHint<D?>? tickHint,
   }) {
-    final ticks = <Tick<D>>[];
+    final List<Tick<D?>> ticks = <Tick<D>>[];
 
     // Check to see if the axis has been configured with some domain values.
     //
     // An un-configured axis has no domain step size, and its scale defaults to
     // infinity.
-    if (scale.domainStepSize.abs() != double.infinity) {
+    if (scale!.domainStepSize.abs() != double.infinity) {
       final start = _getStartValue(tickHint, scale);
       final end = _getEndValue(tickHint, scale);
 
-      final labels = formatter.format([start, end], formatterValueCache,
+      final labels = formatter!.format([start, end], formatterValueCache,
           stepSize: scale.domainStepSize);
 
       ticks.add(Tick(
           value: start,
-          textElement: graphicsFactory.createTextElement(labels[0]),
-          locationPx: scale[start]));
+          textElement: graphicsFactory!.createTextElement(labels[0]),
+          locationPx: scale[start] as double?));
 
       ticks.add(Tick(
           value: end,
           textElement: graphicsFactory.createTextElement(labels[1]),
-          locationPx: scale[end]));
+          locationPx: scale[end] as double?));
 
       // Allow draw strategy to decorate the ticks.
-      tickDrawStrategy.decorateTicks(ticks);
+      tickDrawStrategy!.decorateTicks(ticks);
     }
 
     return ticks;
   }
 
   /// Get the start value from the scale.
-  D _getStartValue(TickHint<D> tickHint, MutableScale<D> scale) {
-    Object start;
+  D? _getStartValue(TickHint<D?>? tickHint, MutableScale<D?>? scale) {
+    Object? start;
 
     if (tickHint != null) {
       start = tickHint.start;
     } else {
       if (scale is NumericScale) {
-        start = (scale as NumericScale).viewportDomain.min;
+        start = (scale as NumericScale).viewportDomain!.min;
       } else if (scale is DateTimeScale) {
         start = (scale as DateTimeScale).viewportDomain.start;
       } else if (scale is OrdinalScale) {
@@ -87,18 +87,18 @@ class EndPointsTickProvider<D> extends BaseTickProvider<D> {
       }
     }
 
-    return start;
+    return start as D?;
   }
 
   /// Get the end value from the scale.
-  D _getEndValue(TickHint<D> tickHint, MutableScale<D> scale) {
-    Object end;
+  D? _getEndValue(TickHint<D?>? tickHint, MutableScale<D?>? scale) {
+    Object? end;
 
     if (tickHint != null) {
       end = tickHint.end;
     } else {
       if (scale is NumericScale) {
-        end = (scale as NumericScale).viewportDomain.max;
+        end = (scale as NumericScale).viewportDomain!.max;
       } else if (scale is DateTimeScale) {
         end = (scale as DateTimeScale).viewportDomain.end;
       } else if (scale is OrdinalScale) {
@@ -106,6 +106,6 @@ class EndPointsTickProvider<D> extends BaseTickProvider<D> {
       }
     }
 
-    return end;
+    return end as D?;
   }
 }

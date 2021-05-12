@@ -22,8 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CustomAxisTickFormatters extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, DateTime>> seriesList;
+  final bool? animate;
 
   CustomAxisTickFormatters(this.seriesList, {this.animate});
 
@@ -65,8 +65,8 @@ class CustomAxisTickFormatters extends StatelessWidget {
     return [
       new charts.Series<MyRow, DateTime>(
         id: 'Cost',
-        domainFn: (MyRow row, _) => row.timeStamp,
-        measureFn: (MyRow row, _) => row.cost,
+        domainFn: (MyRow? row, _) => row!.timeStamp,
+        measureFn: (MyRow? row, _) => row!.cost,
         data: data,
       )
     ];
@@ -128,8 +128,8 @@ class CustomAxisTickFormatters extends StatelessWidget {
     return [
       new charts.Series<MyRow, DateTime>(
         id: 'Cost',
-        domainFn: (MyRow row, _) => row.timeStamp,
-        measureFn: (MyRow row, _) => row.cost,
+        domainFn: (MyRow? row, _) => row!.timeStamp,
+        measureFn: (MyRow? row, _) => row!.cost,
         data: data,
       )
     ];

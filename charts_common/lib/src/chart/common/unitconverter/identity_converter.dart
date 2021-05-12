@@ -16,7 +16,7 @@
 import 'unit_converter.dart' show UnitConverter;
 
 /// A No op unit converter.
-class IdentityConverter<U extends num> implements UnitConverter<U, U> {
+class IdentityConverter<U extends num?> implements UnitConverter<U, U> {
   const IdentityConverter();
 
   @override

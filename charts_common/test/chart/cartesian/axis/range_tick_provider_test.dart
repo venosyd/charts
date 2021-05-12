@@ -36,7 +36,7 @@ class FakeNumericTickFormatter implements TickFormatter<num> {
 
   @override
   List<String> format(List<num> tickValues, Map<num, String> cache,
-      {num stepSize}) {
+      {num? stepSize}) {
     calledTimes += 1;
 
     return tickValues.map((value) => value.toString()).toList();
@@ -46,11 +46,11 @@ class FakeNumericTickFormatter implements TickFormatter<num> {
 class MockDrawStrategy extends Mock implements BaseTickDrawStrategy {}
 
 void main() {
-  ChartContext context;
-  GraphicsFactory graphicsFactory;
-  TickFormatter formatter;
-  BaseTickDrawStrategy drawStrategy;
-  LinearScale scale;
+  late ChartContext context;
+  late GraphicsFactory graphicsFactory;
+  late TickFormatter formatter;
+  late BaseTickDrawStrategy drawStrategy;
+  late LinearScale scale;
 
   setUp(() {
     context = MockChartContext();
@@ -96,7 +96,7 @@ void main() {
           context: context,
           graphicsFactory: graphicsFactory,
           scale: scale,
-          formatter: formatter,
+          formatter: formatter as TickFormatter<num?>?,
           formatterValueCache: <num, String>{},
           tickDrawStrategy: drawStrategy,
           orientation: null);
@@ -133,7 +133,7 @@ void main() {
           context: context,
           graphicsFactory: graphicsFactory,
           scale: scale,
-          formatter: formatter,
+          formatter: formatter as TickFormatter<num?>?,
           formatterValueCache: <num, String>{},
           tickDrawStrategy: drawStrategy,
           orientation: null);

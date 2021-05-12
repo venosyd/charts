@@ -19,18 +19,18 @@ import '../../../../common/color.dart' show Color;
 import '../../../../common/graphics_factory.dart' show GraphicsFactory;
 import '../../../common/chart_context.dart' show ChartContext;
 import '../axis.dart' show Axis;
-import '../scale.dart' show Scale;
 import '../draw_strategy/tick_draw_strategy.dart' show TickDrawStrategy;
+import '../scale.dart' show MutableScale, Scale;
 import '../tick_formatter.dart' show TickFormatter;
 import '../tick_provider.dart' show TickProvider;
 
 @immutable
 class AxisSpec<D> {
-  final bool showAxisLine;
-  final RenderSpec<D> renderSpec;
-  final TickProviderSpec<D> tickProviderSpec;
-  final TickFormatterSpec<D> tickFormatterSpec;
-  final ScaleSpec scaleSpec;
+  final bool? showAxisLine;
+  final RenderSpec<D>? renderSpec;
+  final TickProviderSpec<D>? tickProviderSpec;
+  final TickFormatterSpec<D>? tickFormatterSpec;
+  final ScaleSpec? scaleSpec;
 
   const AxisSpec({
     this.renderSpec,
@@ -42,23 +42,25 @@ class AxisSpec<D> {
 
   factory AxisSpec.from(
     AxisSpec other, {
-    RenderSpec<D> renderSpec,
-    TickProviderSpec<D> tickProviderSpec,
-    TickFormatterSpec<D> tickFormatterSpec,
-    bool showAxisLine,
-    ScaleSpec scaleSpec,
+    RenderSpec<D>? renderSpec,
+    TickProviderSpec<D>? tickProviderSpec,
+    TickFormatterSpec<D>? tickFormatterSpec,
+    bool? showAxisLine,
+    ScaleSpec? scaleSpec,
   }) {
     return AxisSpec(
-      renderSpec: renderSpec ?? other.renderSpec,
-      tickProviderSpec: tickProviderSpec ?? other.tickProviderSpec,
-      tickFormatterSpec: tickFormatterSpec ?? other.tickFormatterSpec,
+      renderSpec: renderSpec ?? other.renderSpec as RenderSpec<D>?,
+      tickProviderSpec:
+          tickProviderSpec ?? other.tickProviderSpec as TickProviderSpec<D>?,
+      tickFormatterSpec:
+          tickFormatterSpec ?? other.tickFormatterSpec as TickFormatterSpec<D>?,
       showAxisLine: showAxisLine ?? other.showAxisLine,
       scaleSpec: scaleSpec ?? other.scaleSpec,
     );
   }
 
   void configure(
-      Axis<D> axis, ChartContext context, GraphicsFactory graphicsFactory) {
+      Axis<D> axis, ChartContext? context, GraphicsFactory? graphicsFactory) {
     axis.resetDefaultConfiguration();
 
     if (showAxisLine != null) {
@@ -67,24 +69,24 @@ class AxisSpec<D> {
 
     if (renderSpec != null) {
       axis.tickDrawStrategy =
-          renderSpec.createDrawStrategy(context, graphicsFactory);
+          renderSpec!.createDrawStrategy(context, graphicsFactory);
     }
 
     if (tickProviderSpec != null) {
-      axis.tickProvider = tickProviderSpec.createTickProvider(context);
+      axis.tickProvider = tickProviderSpec!.createTickProvider(context);
     }
 
     if (tickFormatterSpec != null) {
-      axis.tickFormatter = tickFormatterSpec.createTickFormatter(context);
+      axis.tickFormatter = tickFormatterSpec!.createTickFormatter(context);
     }
 
     if (scaleSpec != null) {
-      axis.scale = scaleSpec.createScale();
+      axis.scale = scaleSpec!.createScale() as MutableScale<D>?;
     }
   }
 
   /// Creates an appropriately typed [Axis].
-  Axis<D> createAxis() => null;
+  Axis<D>? createAxis() => null;
 
   @override
   bool operator ==(Object other) =>
@@ -109,12 +111,12 @@ class AxisSpec<D> {
 
 @immutable
 abstract class TickProviderSpec<D> {
-  TickProvider<D> createTickProvider(ChartContext context);
+  TickProvider<D> createTickProvider(ChartContext? context);
 }
 
 @immutable
 abstract class TickFormatterSpec<D> {
-  TickFormatter<D> createTickFormatter(ChartContext context);
+  TickFormatter<D> createTickFormatter(ChartContext? context);
 }
 
 @immutable
@@ -127,16 +129,16 @@ abstract class RenderSpec<D> {
   const RenderSpec();
 
   TickDrawStrategy<D> createDrawStrategy(
-      ChartContext context, GraphicsFactory graphicFactory);
+      ChartContext? context, GraphicsFactory? graphicFactory);
 }
 
 @immutable
 class TextStyleSpec {
-  final String fontFamily;
-  final int fontSize;
-  final double lineHeight;
-  final Color color;
-  final String fontWeight;
+  final String? fontFamily;
+  final int? fontSize;
+  final double? lineHeight;
+  final Color? color;
+  final String? fontWeight;
 
   const TextStyleSpec(
       {this.fontFamily,
@@ -159,19 +161,19 @@ class TextStyleSpec {
   @override
   int get hashCode {
     int hashcode = fontFamily?.hashCode ?? 0;
-    hashcode = (hashcode * 37) + fontSize?.hashCode ?? 0;
-    hashcode = (hashcode * 37) + lineHeight?.hashCode ?? 0;
-    hashcode = (hashcode * 37) + color?.hashCode ?? 0;
-    hashcode = (hashcode * 37) + fontWeight?.hashCode ?? 0;
+    hashcode = (hashcode * 37) + fontSize.hashCode;
+    hashcode = (hashcode * 37) + lineHeight.hashCode;
+    hashcode = (hashcode * 37) + color.hashCode;
+    hashcode = (hashcode * 37) + fontWeight.hashCode;
     return hashcode;
   }
 }
 
 @immutable
 class LineStyleSpec {
-  final Color color;
-  final List<int> dashPattern;
-  final int thickness;
+  final Color? color;
+  final List<int>? dashPattern;
+  final int? thickness;
 
   const LineStyleSpec({this.color, this.dashPattern, this.thickness});
 
@@ -187,8 +189,8 @@ class LineStyleSpec {
   @override
   int get hashCode {
     int hashcode = color?.hashCode ?? 0;
-    hashcode = (hashcode * 37) + dashPattern?.hashCode ?? 0;
-    hashcode = (hashcode * 37) + thickness?.hashCode ?? 0;
+    hashcode = (hashcode * 37) + dashPattern.hashCode;
+    hashcode = (hashcode * 37) + thickness.hashCode;
     return hashcode;
   }
 }

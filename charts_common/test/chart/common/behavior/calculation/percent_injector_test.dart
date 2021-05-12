@@ -34,16 +34,16 @@ class MyRow {
 }
 
 class MockChart extends Mock implements CartesianChart {
-  LifecycleListener lastLifecycleListener;
+  LifecycleListener? lastLifecycleListener;
 
   bool vertical = true;
 
   @override
-  LifecycleListener addLifecycleListener(LifecycleListener listener) =>
+  LifecycleListener? addLifecycleListener(LifecycleListener? listener) =>
       lastLifecycleListener = listener;
 
   @override
-  bool removeLifecycleListener(LifecycleListener listener) {
+  bool removeLifecycleListener(LifecycleListener? listener) {
     expect(listener, equals(lastLifecycleListener));
     lastLifecycleListener = null;
     return true;
@@ -51,8 +51,8 @@ class MockChart extends Mock implements CartesianChart {
 }
 
 void main() {
-  MockChart _chart;
-  List<MutableSeries<String>> seriesList;
+  late MockChart _chart;
+  late List<MutableSeries<String>> seriesList;
 
   PercentInjector _makeBehavior(
       {PercentInjectorTotalType totalType = PercentInjectorTotalType.domain}) {
@@ -103,53 +103,53 @@ void main() {
     ];
 
     seriesList = [
-      MutableSeries<String>(Series<MyRow, String>(
+      MutableSeries<String>(Series<MyRow?, String>(
           id: 'Desktop A',
           seriesCategory: 'A',
-          domainFn: (MyRow row, _) => row.campaign,
-          measureFn: (MyRow row, _) => row.clickCount,
-          measureOffsetFn: (MyRow row, _) => 0,
+          domainFn: (MyRow? row, _) => row!.campaign,
+          measureFn: (MyRow? row, _) => row!.clickCount,
+          measureOffsetFn: (MyRow? row, _) => 0,
           data: myFakeDesktopAData)),
-      MutableSeries<String>(Series<MyRow, String>(
+      MutableSeries<String>(Series<MyRow?, String>(
           id: 'Tablet A',
           seriesCategory: 'A',
-          domainFn: (MyRow row, _) => row.campaign,
-          measureFn: (MyRow row, _) => row.clickCount,
-          measureOffsetFn: (MyRow row, _) => 0,
+          domainFn: (MyRow? row, _) => row!.campaign,
+          measureFn: (MyRow? row, _) => row!.clickCount,
+          measureOffsetFn: (MyRow? row, _) => 0,
           data: myFakeTabletAData)),
-      MutableSeries<String>(Series<MyRow, String>(
+      MutableSeries<String>(Series<MyRow?, String>(
           id: 'Mobile A',
           seriesCategory: 'A',
-          domainFn: (MyRow row, _) => row.campaign,
-          measureFn: (MyRow row, _) => row.clickCount,
-          measureOffsetFn: (MyRow row, _) => 0,
+          domainFn: (MyRow? row, _) => row!.campaign,
+          measureFn: (MyRow? row, _) => row!.clickCount,
+          measureOffsetFn: (MyRow? row, _) => 0,
           data: myFakeMobileAData)),
-      MutableSeries<String>(Series<MyRow, String>(
+      MutableSeries<String>(Series<MyRow?, String>(
           id: 'Desktop B',
           seriesCategory: 'B',
-          domainFn: (MyRow row, _) => row.campaign,
-          measureFn: (MyRow row, _) => row.clickCount,
-          measureLowerBoundFn: (MyRow row, _) => row.clickCountLower,
-          measureUpperBoundFn: (MyRow row, _) => row.clickCountUpper,
-          measureOffsetFn: (MyRow row, _) => 0,
+          domainFn: (MyRow? row, _) => row!.campaign,
+          measureFn: (MyRow? row, _) => row!.clickCount,
+          measureLowerBoundFn: (MyRow? row, _) => row!.clickCountLower,
+          measureUpperBoundFn: (MyRow? row, _) => row!.clickCountUpper,
+          measureOffsetFn: (MyRow? row, _) => 0,
           data: myFakeDesktopBData)),
-      MutableSeries<String>(Series<MyRow, String>(
+      MutableSeries<String>(Series<MyRow?, String>(
           id: 'Tablet B',
           seriesCategory: 'B',
-          domainFn: (MyRow row, _) => row.campaign,
-          measureFn: (MyRow row, _) => row.clickCount,
-          measureLowerBoundFn: (MyRow row, _) => row.clickCountLower,
-          measureUpperBoundFn: (MyRow row, _) => row.clickCountUpper,
-          measureOffsetFn: (MyRow row, _) => 0,
+          domainFn: (MyRow? row, _) => row!.campaign,
+          measureFn: (MyRow? row, _) => row!.clickCount,
+          measureLowerBoundFn: (MyRow? row, _) => row!.clickCountLower,
+          measureUpperBoundFn: (MyRow? row, _) => row!.clickCountUpper,
+          measureOffsetFn: (MyRow? row, _) => 0,
           data: myFakeTabletBData)),
-      MutableSeries<String>(Series<MyRow, String>(
+      MutableSeries<String>(Series<MyRow?, String>(
           id: 'Mobile B',
           seriesCategory: 'B',
-          domainFn: (MyRow row, _) => row.campaign,
-          measureFn: (MyRow row, _) => row.clickCount,
-          measureLowerBoundFn: (MyRow row, _) => row.clickCountLower,
-          measureUpperBoundFn: (MyRow row, _) => row.clickCountUpper,
-          measureOffsetFn: (MyRow row, _) => 0,
+          domainFn: (MyRow? row, _) => row!.campaign,
+          measureFn: (MyRow? row, _) => row!.clickCount,
+          measureLowerBoundFn: (MyRow? row, _) => row!.clickCountLower,
+          measureUpperBoundFn: (MyRow? row, _) => row!.clickCountUpper,
+          measureOffsetFn: (MyRow? row, _) => 0,
           data: myFakeMobileBData))
     ];
   });
@@ -160,122 +160,122 @@ void main() {
       _makeBehavior(totalType: PercentInjectorTotalType.domain);
 
       // Act
-      _chart.lastLifecycleListener.onData(seriesList);
-      _chart.lastLifecycleListener.onPreprocess(seriesList);
+      _chart.lastLifecycleListener!.onData!(seriesList);
+      _chart.lastLifecycleListener!.onPreprocess!(seriesList);
 
       // Verify first series.
       var series = seriesList[0];
 
-      expect(series.measureFn(0), equals(1 / 66));
-      expect(series.measureFn(1), equals(2 / 99));
-      expect(series.measureFn(2), equals(3 / 132));
+      expect(series.measureFn!(0), equals(1 / 66));
+      expect(series.measureFn!(1), equals(2 / 99));
+      expect(series.measureFn!(2), equals(3 / 132));
 
-      expect(series.rawMeasureFn(0), equals(1));
-      expect(series.rawMeasureFn(1), equals(2));
-      expect(series.rawMeasureFn(2), equals(3));
+      expect(series.rawMeasureFn!(0), equals(1));
+      expect(series.rawMeasureFn!(1), equals(2));
+      expect(series.rawMeasureFn!(2), equals(3));
 
       // Verify second series.
       series = seriesList[1];
 
-      expect(series.measureFn(0), equals(2 / 66));
-      expect(series.measureFn(1), equals(3 / 99));
-      expect(series.measureFn(2), equals(4 / 132));
+      expect(series.measureFn!(0), equals(2 / 66));
+      expect(series.measureFn!(1), equals(3 / 99));
+      expect(series.measureFn!(2), equals(4 / 132));
 
-      expect(series.rawMeasureFn(0), equals(2));
-      expect(series.rawMeasureFn(1), equals(3));
-      expect(series.rawMeasureFn(2), equals(4));
+      expect(series.rawMeasureFn!(0), equals(2));
+      expect(series.rawMeasureFn!(1), equals(3));
+      expect(series.rawMeasureFn!(2), equals(4));
 
       // Verify third series.
       series = seriesList[2];
 
-      expect(series.measureFn(0), equals(3 / 66));
-      expect(series.measureFn(1), equals(4 / 99));
-      expect(series.measureFn(2), equals(5 / 132));
+      expect(series.measureFn!(0), equals(3 / 66));
+      expect(series.measureFn!(1), equals(4 / 99));
+      expect(series.measureFn!(2), equals(5 / 132));
 
-      expect(series.rawMeasureFn(0), equals(3));
-      expect(series.rawMeasureFn(1), equals(4));
-      expect(series.rawMeasureFn(2), equals(5));
+      expect(series.rawMeasureFn!(0), equals(3));
+      expect(series.rawMeasureFn!(1), equals(4));
+      expect(series.rawMeasureFn!(2), equals(5));
 
       // Verify fourth series.
       series = seriesList[3];
 
-      expect(series.measureFn(0), equals(10 / 66));
-      expect(series.measureFn(1), equals(20 / 99));
-      expect(series.measureFn(2), equals(30 / 132));
+      expect(series.measureFn!(0), equals(10 / 66));
+      expect(series.measureFn!(1), equals(20 / 99));
+      expect(series.measureFn!(2), equals(30 / 132));
 
-      expect(series.rawMeasureFn(0), equals(10));
-      expect(series.rawMeasureFn(1), equals(20));
-      expect(series.rawMeasureFn(2), equals(30));
+      expect(series.rawMeasureFn!(0), equals(10));
+      expect(series.rawMeasureFn!(1), equals(20));
+      expect(series.rawMeasureFn!(2), equals(30));
 
-      expect(series.measureLowerBoundFn(0), equals(8 / 66));
-      expect(series.measureLowerBoundFn(1), equals(18 / 99));
-      expect(series.measureLowerBoundFn(2), equals(28 / 132));
+      expect(series.measureLowerBoundFn!(0), equals(8 / 66));
+      expect(series.measureLowerBoundFn!(1), equals(18 / 99));
+      expect(series.measureLowerBoundFn!(2), equals(28 / 132));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(8));
-      expect(series.rawMeasureLowerBoundFn(1), equals(18));
-      expect(series.rawMeasureLowerBoundFn(2), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(8));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(18));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(28));
 
-      expect(series.measureUpperBoundFn(0), equals(12 / 66));
-      expect(series.measureUpperBoundFn(1), equals(22 / 99));
-      expect(series.measureUpperBoundFn(2), equals(32 / 132));
+      expect(series.measureUpperBoundFn!(0), equals(12 / 66));
+      expect(series.measureUpperBoundFn!(1), equals(22 / 99));
+      expect(series.measureUpperBoundFn!(2), equals(32 / 132));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(12));
-      expect(series.rawMeasureUpperBoundFn(1), equals(22));
-      expect(series.rawMeasureUpperBoundFn(2), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(12));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(22));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(32));
 
       // Verify fifth series.
       series = seriesList[4];
 
-      expect(series.measureFn(0), equals(20 / 66));
-      expect(series.measureFn(1), equals(30 / 99));
-      expect(series.measureFn(2), equals(40 / 132));
+      expect(series.measureFn!(0), equals(20 / 66));
+      expect(series.measureFn!(1), equals(30 / 99));
+      expect(series.measureFn!(2), equals(40 / 132));
 
-      expect(series.rawMeasureFn(0), equals(20));
-      expect(series.rawMeasureFn(1), equals(30));
-      expect(series.rawMeasureFn(2), equals(40));
+      expect(series.rawMeasureFn!(0), equals(20));
+      expect(series.rawMeasureFn!(1), equals(30));
+      expect(series.rawMeasureFn!(2), equals(40));
 
-      expect(series.measureLowerBoundFn(0), equals(18 / 66));
-      expect(series.measureLowerBoundFn(1), equals(28 / 99));
-      expect(series.measureLowerBoundFn(2), equals(38 / 132));
+      expect(series.measureLowerBoundFn!(0), equals(18 / 66));
+      expect(series.measureLowerBoundFn!(1), equals(28 / 99));
+      expect(series.measureLowerBoundFn!(2), equals(38 / 132));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(18));
-      expect(series.rawMeasureLowerBoundFn(1), equals(28));
-      expect(series.rawMeasureLowerBoundFn(2), equals(38));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(18));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(38));
 
-      expect(series.measureUpperBoundFn(0), equals(22 / 66));
-      expect(series.measureUpperBoundFn(1), equals(32 / 99));
-      expect(series.measureUpperBoundFn(2), equals(42 / 132));
+      expect(series.measureUpperBoundFn!(0), equals(22 / 66));
+      expect(series.measureUpperBoundFn!(1), equals(32 / 99));
+      expect(series.measureUpperBoundFn!(2), equals(42 / 132));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(22));
-      expect(series.rawMeasureUpperBoundFn(1), equals(32));
-      expect(series.rawMeasureUpperBoundFn(2), equals(42));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(22));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(42));
 
       // Verify sixth series.
       series = seriesList[5];
 
-      expect(series.measureFn(0), equals(30 / 66));
-      expect(series.measureFn(1), equals(40 / 99));
-      expect(series.measureFn(2), equals(50 / 132));
+      expect(series.measureFn!(0), equals(30 / 66));
+      expect(series.measureFn!(1), equals(40 / 99));
+      expect(series.measureFn!(2), equals(50 / 132));
 
-      expect(series.rawMeasureFn(0), equals(30));
-      expect(series.rawMeasureFn(1), equals(40));
-      expect(series.rawMeasureFn(2), equals(50));
+      expect(series.rawMeasureFn!(0), equals(30));
+      expect(series.rawMeasureFn!(1), equals(40));
+      expect(series.rawMeasureFn!(2), equals(50));
 
-      expect(series.measureLowerBoundFn(0), equals(28 / 66));
-      expect(series.measureLowerBoundFn(1), equals(38 / 99));
-      expect(series.measureLowerBoundFn(2), equals(48 / 132));
+      expect(series.measureLowerBoundFn!(0), equals(28 / 66));
+      expect(series.measureLowerBoundFn!(1), equals(38 / 99));
+      expect(series.measureLowerBoundFn!(2), equals(48 / 132));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(28));
-      expect(series.rawMeasureLowerBoundFn(1), equals(38));
-      expect(series.rawMeasureLowerBoundFn(2), equals(48));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(38));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(48));
 
-      expect(series.measureUpperBoundFn(0), equals(32 / 66));
-      expect(series.measureUpperBoundFn(1), equals(42 / 99));
-      expect(series.measureUpperBoundFn(2), equals(52 / 132));
+      expect(series.measureUpperBoundFn!(0), equals(32 / 66));
+      expect(series.measureUpperBoundFn!(1), equals(42 / 99));
+      expect(series.measureUpperBoundFn!(2), equals(52 / 132));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(32));
-      expect(series.rawMeasureUpperBoundFn(1), equals(42));
-      expect(series.rawMeasureUpperBoundFn(2), equals(52));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(42));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(52));
     });
 
     test('percent of domain, grouped by series category', () {
@@ -283,122 +283,122 @@ void main() {
       _makeBehavior(totalType: PercentInjectorTotalType.domainBySeriesCategory);
 
       // Act
-      _chart.lastLifecycleListener.onData(seriesList);
-      _chart.lastLifecycleListener.onPreprocess(seriesList);
+      _chart.lastLifecycleListener!.onData!(seriesList);
+      _chart.lastLifecycleListener!.onPreprocess!(seriesList);
 
       // Verify first series.
       var series = seriesList[0];
 
-      expect(series.measureFn(0), equals(1 / 6));
-      expect(series.measureFn(1), equals(2 / 9));
-      expect(series.measureFn(2), equals(3 / 12));
+      expect(series.measureFn!(0), equals(1 / 6));
+      expect(series.measureFn!(1), equals(2 / 9));
+      expect(series.measureFn!(2), equals(3 / 12));
 
-      expect(series.rawMeasureFn(0), equals(1));
-      expect(series.rawMeasureFn(1), equals(2));
-      expect(series.rawMeasureFn(2), equals(3));
+      expect(series.rawMeasureFn!(0), equals(1));
+      expect(series.rawMeasureFn!(1), equals(2));
+      expect(series.rawMeasureFn!(2), equals(3));
 
       // Verify second series.
       series = seriesList[1];
 
-      expect(series.measureFn(0), equals(2 / 6));
-      expect(series.measureFn(1), equals(3 / 9));
-      expect(series.measureFn(2), equals(4 / 12));
+      expect(series.measureFn!(0), equals(2 / 6));
+      expect(series.measureFn!(1), equals(3 / 9));
+      expect(series.measureFn!(2), equals(4 / 12));
 
-      expect(series.rawMeasureFn(0), equals(2));
-      expect(series.rawMeasureFn(1), equals(3));
-      expect(series.rawMeasureFn(2), equals(4));
+      expect(series.rawMeasureFn!(0), equals(2));
+      expect(series.rawMeasureFn!(1), equals(3));
+      expect(series.rawMeasureFn!(2), equals(4));
 
       // Verify third series.
       series = seriesList[2];
 
-      expect(series.measureFn(0), equals(3 / 6));
-      expect(series.measureFn(1), equals(4 / 9));
-      expect(series.measureFn(2), equals(5 / 12));
+      expect(series.measureFn!(0), equals(3 / 6));
+      expect(series.measureFn!(1), equals(4 / 9));
+      expect(series.measureFn!(2), equals(5 / 12));
 
-      expect(series.rawMeasureFn(0), equals(3));
-      expect(series.rawMeasureFn(1), equals(4));
-      expect(series.rawMeasureFn(2), equals(5));
+      expect(series.rawMeasureFn!(0), equals(3));
+      expect(series.rawMeasureFn!(1), equals(4));
+      expect(series.rawMeasureFn!(2), equals(5));
 
       // Verify fourth series.
       series = seriesList[3];
 
-      expect(series.measureFn(0), equals(10 / 60));
-      expect(series.measureFn(1), equals(20 / 90));
-      expect(series.measureFn(2), equals(30 / 120));
+      expect(series.measureFn!(0), equals(10 / 60));
+      expect(series.measureFn!(1), equals(20 / 90));
+      expect(series.measureFn!(2), equals(30 / 120));
 
-      expect(series.rawMeasureFn(0), equals(10));
-      expect(series.rawMeasureFn(1), equals(20));
-      expect(series.rawMeasureFn(2), equals(30));
+      expect(series.rawMeasureFn!(0), equals(10));
+      expect(series.rawMeasureFn!(1), equals(20));
+      expect(series.rawMeasureFn!(2), equals(30));
 
-      expect(series.measureLowerBoundFn(0), equals(8 / 60));
-      expect(series.measureLowerBoundFn(1), equals(18 / 90));
-      expect(series.measureLowerBoundFn(2), equals(28 / 120));
+      expect(series.measureLowerBoundFn!(0), equals(8 / 60));
+      expect(series.measureLowerBoundFn!(1), equals(18 / 90));
+      expect(series.measureLowerBoundFn!(2), equals(28 / 120));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(8));
-      expect(series.rawMeasureLowerBoundFn(1), equals(18));
-      expect(series.rawMeasureLowerBoundFn(2), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(8));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(18));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(28));
 
-      expect(series.measureUpperBoundFn(0), equals(12 / 60));
-      expect(series.measureUpperBoundFn(1), equals(22 / 90));
-      expect(series.measureUpperBoundFn(2), equals(32 / 120));
+      expect(series.measureUpperBoundFn!(0), equals(12 / 60));
+      expect(series.measureUpperBoundFn!(1), equals(22 / 90));
+      expect(series.measureUpperBoundFn!(2), equals(32 / 120));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(12));
-      expect(series.rawMeasureUpperBoundFn(1), equals(22));
-      expect(series.rawMeasureUpperBoundFn(2), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(12));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(22));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(32));
 
       // Verify fifth series.
       series = seriesList[4];
 
-      expect(series.measureFn(0), equals(20 / 60));
-      expect(series.measureFn(1), equals(30 / 90));
-      expect(series.measureFn(2), equals(40 / 120));
+      expect(series.measureFn!(0), equals(20 / 60));
+      expect(series.measureFn!(1), equals(30 / 90));
+      expect(series.measureFn!(2), equals(40 / 120));
 
-      expect(series.rawMeasureFn(0), equals(20));
-      expect(series.rawMeasureFn(1), equals(30));
-      expect(series.rawMeasureFn(2), equals(40));
+      expect(series.rawMeasureFn!(0), equals(20));
+      expect(series.rawMeasureFn!(1), equals(30));
+      expect(series.rawMeasureFn!(2), equals(40));
 
-      expect(series.measureLowerBoundFn(0), equals(18 / 60));
-      expect(series.measureLowerBoundFn(1), equals(28 / 90));
-      expect(series.measureLowerBoundFn(2), equals(38 / 120));
+      expect(series.measureLowerBoundFn!(0), equals(18 / 60));
+      expect(series.measureLowerBoundFn!(1), equals(28 / 90));
+      expect(series.measureLowerBoundFn!(2), equals(38 / 120));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(18));
-      expect(series.rawMeasureLowerBoundFn(1), equals(28));
-      expect(series.rawMeasureLowerBoundFn(2), equals(38));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(18));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(38));
 
-      expect(series.measureUpperBoundFn(0), equals(22 / 60));
-      expect(series.measureUpperBoundFn(1), equals(32 / 90));
-      expect(series.measureUpperBoundFn(2), equals(42 / 120));
+      expect(series.measureUpperBoundFn!(0), equals(22 / 60));
+      expect(series.measureUpperBoundFn!(1), equals(32 / 90));
+      expect(series.measureUpperBoundFn!(2), equals(42 / 120));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(22));
-      expect(series.rawMeasureUpperBoundFn(1), equals(32));
-      expect(series.rawMeasureUpperBoundFn(2), equals(42));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(22));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(42));
 
       // Verify sixth series.
       series = seriesList[5];
 
-      expect(series.measureFn(0), equals(30 / 60));
-      expect(series.measureFn(1), equals(40 / 90));
-      expect(series.measureFn(2), equals(50 / 120));
+      expect(series.measureFn!(0), equals(30 / 60));
+      expect(series.measureFn!(1), equals(40 / 90));
+      expect(series.measureFn!(2), equals(50 / 120));
 
-      expect(series.rawMeasureFn(0), equals(30));
-      expect(series.rawMeasureFn(1), equals(40));
-      expect(series.rawMeasureFn(2), equals(50));
+      expect(series.rawMeasureFn!(0), equals(30));
+      expect(series.rawMeasureFn!(1), equals(40));
+      expect(series.rawMeasureFn!(2), equals(50));
 
-      expect(series.measureLowerBoundFn(0), equals(28 / 60));
-      expect(series.measureLowerBoundFn(1), equals(38 / 90));
-      expect(series.measureLowerBoundFn(2), equals(48 / 120));
+      expect(series.measureLowerBoundFn!(0), equals(28 / 60));
+      expect(series.measureLowerBoundFn!(1), equals(38 / 90));
+      expect(series.measureLowerBoundFn!(2), equals(48 / 120));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(28));
-      expect(series.rawMeasureLowerBoundFn(1), equals(38));
-      expect(series.rawMeasureLowerBoundFn(2), equals(48));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(38));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(48));
 
-      expect(series.measureUpperBoundFn(0), equals(32 / 60));
-      expect(series.measureUpperBoundFn(1), equals(42 / 90));
-      expect(series.measureUpperBoundFn(2), equals(52 / 120));
+      expect(series.measureUpperBoundFn!(0), equals(32 / 60));
+      expect(series.measureUpperBoundFn!(1), equals(42 / 90));
+      expect(series.measureUpperBoundFn!(2), equals(52 / 120));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(32));
-      expect(series.rawMeasureUpperBoundFn(1), equals(42));
-      expect(series.rawMeasureUpperBoundFn(2), equals(52));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(42));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(52));
     });
 
     test('percent of series', () {
@@ -406,8 +406,8 @@ void main() {
       _makeBehavior(totalType: PercentInjectorTotalType.series);
 
       // Act
-      _chart.lastLifecycleListener.onData(seriesList);
-      _chart.lastLifecycleListener.onPreprocess(seriesList);
+      _chart.lastLifecycleListener!.onData!(seriesList);
+      _chart.lastLifecycleListener!.onPreprocess!(seriesList);
 
       // Verify that every series has a total measure value. Technically this is
       // handled in MutableSeries, but it is a pre-condition for this behavior
@@ -422,116 +422,116 @@ void main() {
       // Verify first series.
       var series = seriesList[0];
 
-      expect(series.measureFn(0), equals(1 / 6));
-      expect(series.measureFn(1), equals(2 / 6));
-      expect(series.measureFn(2), equals(3 / 6));
+      expect(series.measureFn!(0), equals(1 / 6));
+      expect(series.measureFn!(1), equals(2 / 6));
+      expect(series.measureFn!(2), equals(3 / 6));
 
-      expect(series.rawMeasureFn(0), equals(1));
-      expect(series.rawMeasureFn(1), equals(2));
-      expect(series.rawMeasureFn(2), equals(3));
+      expect(series.rawMeasureFn!(0), equals(1));
+      expect(series.rawMeasureFn!(1), equals(2));
+      expect(series.rawMeasureFn!(2), equals(3));
 
       // Verify second series.
       series = seriesList[1];
 
-      expect(series.measureFn(0), equals(2 / 9));
-      expect(series.measureFn(1), equals(3 / 9));
-      expect(series.measureFn(2), equals(4 / 9));
+      expect(series.measureFn!(0), equals(2 / 9));
+      expect(series.measureFn!(1), equals(3 / 9));
+      expect(series.measureFn!(2), equals(4 / 9));
 
-      expect(series.rawMeasureFn(0), equals(2));
-      expect(series.rawMeasureFn(1), equals(3));
-      expect(series.rawMeasureFn(2), equals(4));
+      expect(series.rawMeasureFn!(0), equals(2));
+      expect(series.rawMeasureFn!(1), equals(3));
+      expect(series.rawMeasureFn!(2), equals(4));
 
       // Verify third series.
       series = seriesList[2];
 
-      expect(series.measureFn(0), equals(3 / 12));
-      expect(series.measureFn(1), equals(4 / 12));
-      expect(series.measureFn(2), equals(5 / 12));
+      expect(series.measureFn!(0), equals(3 / 12));
+      expect(series.measureFn!(1), equals(4 / 12));
+      expect(series.measureFn!(2), equals(5 / 12));
 
-      expect(series.rawMeasureFn(0), equals(3));
-      expect(series.rawMeasureFn(1), equals(4));
-      expect(series.rawMeasureFn(2), equals(5));
+      expect(series.rawMeasureFn!(0), equals(3));
+      expect(series.rawMeasureFn!(1), equals(4));
+      expect(series.rawMeasureFn!(2), equals(5));
 
       // Verify fourth series.
       series = seriesList[3];
 
-      expect(series.measureFn(0), equals(10 / 60));
-      expect(series.measureFn(1), equals(20 / 60));
-      expect(series.measureFn(2), equals(30 / 60));
+      expect(series.measureFn!(0), equals(10 / 60));
+      expect(series.measureFn!(1), equals(20 / 60));
+      expect(series.measureFn!(2), equals(30 / 60));
 
-      expect(series.rawMeasureFn(0), equals(10));
-      expect(series.rawMeasureFn(1), equals(20));
-      expect(series.rawMeasureFn(2), equals(30));
+      expect(series.rawMeasureFn!(0), equals(10));
+      expect(series.rawMeasureFn!(1), equals(20));
+      expect(series.rawMeasureFn!(2), equals(30));
 
-      expect(series.measureLowerBoundFn(0), equals(8 / 60));
-      expect(series.measureLowerBoundFn(1), equals(18 / 60));
-      expect(series.measureLowerBoundFn(2), equals(28 / 60));
+      expect(series.measureLowerBoundFn!(0), equals(8 / 60));
+      expect(series.measureLowerBoundFn!(1), equals(18 / 60));
+      expect(series.measureLowerBoundFn!(2), equals(28 / 60));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(8));
-      expect(series.rawMeasureLowerBoundFn(1), equals(18));
-      expect(series.rawMeasureLowerBoundFn(2), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(8));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(18));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(28));
 
-      expect(series.measureUpperBoundFn(0), equals(12 / 60));
-      expect(series.measureUpperBoundFn(1), equals(22 / 60));
-      expect(series.measureUpperBoundFn(2), equals(32 / 60));
+      expect(series.measureUpperBoundFn!(0), equals(12 / 60));
+      expect(series.measureUpperBoundFn!(1), equals(22 / 60));
+      expect(series.measureUpperBoundFn!(2), equals(32 / 60));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(12));
-      expect(series.rawMeasureUpperBoundFn(1), equals(22));
-      expect(series.rawMeasureUpperBoundFn(2), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(12));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(22));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(32));
 
       // Verify fifth series.
       series = seriesList[4];
 
-      expect(series.measureFn(0), equals(20 / 90));
-      expect(series.measureFn(1), equals(30 / 90));
-      expect(series.measureFn(2), equals(40 / 90));
+      expect(series.measureFn!(0), equals(20 / 90));
+      expect(series.measureFn!(1), equals(30 / 90));
+      expect(series.measureFn!(2), equals(40 / 90));
 
-      expect(series.rawMeasureFn(0), equals(20));
-      expect(series.rawMeasureFn(1), equals(30));
-      expect(series.rawMeasureFn(2), equals(40));
+      expect(series.rawMeasureFn!(0), equals(20));
+      expect(series.rawMeasureFn!(1), equals(30));
+      expect(series.rawMeasureFn!(2), equals(40));
 
-      expect(series.measureLowerBoundFn(0), equals(18 / 90));
-      expect(series.measureLowerBoundFn(1), equals(28 / 90));
-      expect(series.measureLowerBoundFn(2), equals(38 / 90));
+      expect(series.measureLowerBoundFn!(0), equals(18 / 90));
+      expect(series.measureLowerBoundFn!(1), equals(28 / 90));
+      expect(series.measureLowerBoundFn!(2), equals(38 / 90));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(18));
-      expect(series.rawMeasureLowerBoundFn(1), equals(28));
-      expect(series.rawMeasureLowerBoundFn(2), equals(38));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(18));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(38));
 
-      expect(series.measureUpperBoundFn(0), equals(22 / 90));
-      expect(series.measureUpperBoundFn(1), equals(32 / 90));
-      expect(series.measureUpperBoundFn(2), equals(42 / 90));
+      expect(series.measureUpperBoundFn!(0), equals(22 / 90));
+      expect(series.measureUpperBoundFn!(1), equals(32 / 90));
+      expect(series.measureUpperBoundFn!(2), equals(42 / 90));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(22));
-      expect(series.rawMeasureUpperBoundFn(1), equals(32));
-      expect(series.rawMeasureUpperBoundFn(2), equals(42));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(22));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(42));
 
       // Verify sixth series.
       series = seriesList[5];
 
-      expect(series.measureFn(0), equals(30 / 120));
-      expect(series.measureFn(1), equals(40 / 120));
-      expect(series.measureFn(2), equals(50 / 120));
+      expect(series.measureFn!(0), equals(30 / 120));
+      expect(series.measureFn!(1), equals(40 / 120));
+      expect(series.measureFn!(2), equals(50 / 120));
 
-      expect(series.rawMeasureFn(0), equals(30));
-      expect(series.rawMeasureFn(1), equals(40));
-      expect(series.rawMeasureFn(2), equals(50));
+      expect(series.rawMeasureFn!(0), equals(30));
+      expect(series.rawMeasureFn!(1), equals(40));
+      expect(series.rawMeasureFn!(2), equals(50));
 
-      expect(series.measureLowerBoundFn(0), equals(28 / 120));
-      expect(series.measureLowerBoundFn(1), equals(38 / 120));
-      expect(series.measureLowerBoundFn(2), equals(48 / 120));
+      expect(series.measureLowerBoundFn!(0), equals(28 / 120));
+      expect(series.measureLowerBoundFn!(1), equals(38 / 120));
+      expect(series.measureLowerBoundFn!(2), equals(48 / 120));
 
-      expect(series.rawMeasureLowerBoundFn(0), equals(28));
-      expect(series.rawMeasureLowerBoundFn(1), equals(38));
-      expect(series.rawMeasureLowerBoundFn(2), equals(48));
+      expect(series.rawMeasureLowerBoundFn!(0), equals(28));
+      expect(series.rawMeasureLowerBoundFn!(1), equals(38));
+      expect(series.rawMeasureLowerBoundFn!(2), equals(48));
 
-      expect(series.measureUpperBoundFn(0), equals(32 / 120));
-      expect(series.measureUpperBoundFn(1), equals(42 / 120));
-      expect(series.measureUpperBoundFn(2), equals(52 / 120));
+      expect(series.measureUpperBoundFn!(0), equals(32 / 120));
+      expect(series.measureUpperBoundFn!(1), equals(42 / 120));
+      expect(series.measureUpperBoundFn!(2), equals(52 / 120));
 
-      expect(series.rawMeasureUpperBoundFn(0), equals(32));
-      expect(series.rawMeasureUpperBoundFn(1), equals(42));
-      expect(series.rawMeasureUpperBoundFn(2), equals(52));
+      expect(series.rawMeasureUpperBoundFn!(0), equals(32));
+      expect(series.rawMeasureUpperBoundFn!(1), equals(42));
+      expect(series.rawMeasureUpperBoundFn!(2), equals(52));
     });
   });
 
@@ -541,7 +541,7 @@ void main() {
       _makeBehavior(totalType: PercentInjectorTotalType.domain);
 
       // Act
-      _chart.lastLifecycleListener.onData(seriesList);
+      _chart.lastLifecycleListener!.onData!(seriesList);
 
       // Verify that each series has an initially false flag.
       expect(seriesList[0].getAttr(percentInjectedKey), isFalse);
@@ -552,7 +552,7 @@ void main() {
       expect(seriesList[5].getAttr(percentInjectedKey), isFalse);
 
       // Act
-      _chart.lastLifecycleListener.onPreprocess(seriesList);
+      _chart.lastLifecycleListener!.onPreprocess!(seriesList);
 
       // Verify that each series has a true flag.
       expect(seriesList[0].getAttr(percentInjectedKey), isTrue);
@@ -568,7 +568,7 @@ void main() {
       _makeBehavior(totalType: PercentInjectorTotalType.series);
 
       // Act
-      _chart.lastLifecycleListener.onData(seriesList);
+      _chart.lastLifecycleListener!.onData!(seriesList);
 
       // Verify that each series has an initially false flag.
       expect(seriesList[0].getAttr(percentInjectedKey), isFalse);
@@ -579,7 +579,7 @@ void main() {
       expect(seriesList[5].getAttr(percentInjectedKey), isFalse);
 
       // Act
-      _chart.lastLifecycleListener.onPreprocess(seriesList);
+      _chart.lastLifecycleListener!.onPreprocess!(seriesList);
 
       // Verify that each series has a true flag.
       expect(seriesList[0].getAttr(percentInjectedKey), isTrue);

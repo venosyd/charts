@@ -80,10 +80,10 @@ class NumericExtents implements Extents<num> {
 
   // Returns true if these [NumericExtents] collides with [other].
   bool overlaps(NumericExtents other) {
-    return _containsValue(other.min) ||
-        _containsValue(other.max) ||
-        other._containsValue(min) ||
-        other._containsValue(max);
+    return _containsValue(other.min as double) ||
+        _containsValue(other.max as double) ||
+        other._containsValue(min as double) ||
+        other._containsValue(max as double);
   }
 
   @override

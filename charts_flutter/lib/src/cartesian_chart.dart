@@ -33,29 +33,29 @@ import 'selection_model_config.dart' show SelectionModelConfig;
 import 'user_managed_state.dart' show UserManagedState;
 
 @immutable
-abstract class CartesianChart<D> extends BaseChart<D> {
-  final common.AxisSpec domainAxis;
-  final common.AxisSpec primaryMeasureAxis;
-  final common.AxisSpec secondaryMeasureAxis;
-  final LinkedHashMap<String, common.NumericAxisSpec> disjointMeasureAxes;
-  final bool flipVerticalAxis;
+abstract class CartesianChart<D> extends BaseChart<D?> {
+  final common.AxisSpec? domainAxis;
+  final common.AxisSpec? primaryMeasureAxis;
+  final common.AxisSpec? secondaryMeasureAxis;
+  final LinkedHashMap<String, common.NumericAxisSpec>? disjointMeasureAxes;
+  final bool? flipVerticalAxis;
 
   CartesianChart(
     List<common.Series<dynamic, D>> seriesList, {
-    bool animate,
-    Duration animationDuration,
+    bool? animate,
+    Duration? animationDuration,
     this.domainAxis,
     this.primaryMeasureAxis,
     this.secondaryMeasureAxis,
     this.disjointMeasureAxes,
-    common.SeriesRendererConfig<D> defaultRenderer,
-    List<common.SeriesRendererConfig<D>> customSeriesRenderers,
-    List<ChartBehavior> behaviors,
-    List<SelectionModelConfig<D>> selectionModels,
-    common.RTLSpec rtlSpec,
+    common.SeriesRendererConfig<D>? defaultRenderer,
+    List<common.SeriesRendererConfig<D>>? customSeriesRenderers,
+    List<ChartBehavior>? behaviors,
+    List<SelectionModelConfig<D>>? selectionModels,
+    common.RTLSpec? rtlSpec,
     bool defaultInteractions = true,
-    LayoutConfig layoutConfig,
-    UserManagedState userManagedState,
+    LayoutConfig? layoutConfig,
+    UserManagedState? userManagedState,
     this.flipVerticalAxis,
   }) : super(
           seriesList,
@@ -68,48 +68,49 @@ abstract class CartesianChart<D> extends BaseChart<D> {
           rtlSpec: rtlSpec,
           defaultInteractions: defaultInteractions,
           layoutConfig: layoutConfig,
-          userManagedState: userManagedState,
+          userManagedState: userManagedState as UserManagedState<D>?,
         );
 
   @override
-  void updateCommonChart(common.BaseChart baseChart, BaseChart oldWidget,
+  void updateCommonChart(common.BaseChart baseChart, BaseChart? oldWidget,
       BaseChartState chartState) {
-    super.updateCommonChart(baseChart, oldWidget, chartState);
+    super.updateCommonChart(
+        baseChart, oldWidget as BaseChart<D>?, chartState as BaseChartState<D>);
 
-    final prev = oldWidget as CartesianChart;
+    final prev = oldWidget as CartesianChart?;
     final chart = baseChart as common.CartesianChart;
 
     if (flipVerticalAxis != null) {
-      chart.flipVerticalAxisOutput = flipVerticalAxis;
+      chart.flipVerticalAxisOutput = flipVerticalAxis!;
     }
 
     if (domainAxis != null && domainAxis != prev?.domainAxis) {
-      chart.domainAxisSpec = domainAxis;
+      chart.domainAxisSpec = domainAxis!;
       chartState.markChartDirty();
     }
 
     if (primaryMeasureAxis != prev?.primaryMeasureAxis) {
-      chart.primaryMeasureAxisSpec = primaryMeasureAxis;
+      chart.primaryMeasureAxisSpec = primaryMeasureAxis!;
       chartState.markChartDirty();
     }
 
     if (secondaryMeasureAxis != prev?.secondaryMeasureAxis) {
-      chart.secondaryMeasureAxisSpec = secondaryMeasureAxis;
+      chart.secondaryMeasureAxisSpec = secondaryMeasureAxis!;
       chartState.markChartDirty();
     }
 
     if (disjointMeasureAxes != prev?.disjointMeasureAxes) {
-      chart.disjointMeasureAxisSpecs = disjointMeasureAxes;
+      chart.disjointMeasureAxisSpecs = disjointMeasureAxes!;
       chartState.markChartDirty();
     }
   }
 
   @protected
-  LinkedHashMap<String, common.NumericAxis> createDisjointMeasureAxes() {
+  LinkedHashMap<String, common.NumericAxis>? createDisjointMeasureAxes() {
     if (disjointMeasureAxes != null) {
       final disjointAxes = new LinkedHashMap<String, common.NumericAxis>();
 
-      disjointMeasureAxes
+      disjointMeasureAxes!
           .forEach((String axisId, common.NumericAxisSpec axisSpec) {
         disjointAxes[axisId] = axisSpec.createAxis();
       });

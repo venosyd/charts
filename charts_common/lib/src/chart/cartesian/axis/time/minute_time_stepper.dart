@@ -24,12 +24,12 @@ class MinuteTimeStepper extends BaseTimeStepper {
   final List<int> _allowedTickIncrements;
 
   MinuteTimeStepper._internal(
-      DateTimeFactory dateTimeFactory, List<int> increments)
+      DateTimeFactory? dateTimeFactory, List<int> increments)
       : _allowedTickIncrements = increments,
         super(dateTimeFactory);
 
-  factory MinuteTimeStepper(DateTimeFactory dateTimeFactory,
-      {List<int> allowedTickIncrements}) {
+  factory MinuteTimeStepper(DateTimeFactory? dateTimeFactory,
+      {List<int>? allowedTickIncrements}) {
     // Set the default increments if null.
     allowedTickIncrements ??= _defaultIncrements;
 
@@ -65,14 +65,14 @@ class MinuteTimeStepper extends BaseTimeStepper {
     final minRemainder = minutesToNextHour % tickIncrement;
     final rewindMinutes = minRemainder == 0 ? 0 : tickIncrement - minRemainder;
 
-    final stepBefore = dateTimeFactory.createDateTimeFromMilliSecondsSinceEpoch(
+    final stepBefore = dateTimeFactory!.createDateTimeFromMilliSecondsSinceEpoch(
         time.millisecondsSinceEpoch - rewindMinutes * _millisecondsInMinute);
 
     return stepBefore;
   }
 
   @override
-  DateTime getNextStepTime(DateTime time, int tickIncrement) {
-    return time.add(Duration(minutes: tickIncrement));
+  DateTime getNextStepTime(DateTime? time, int tickIncrement) {
+    return time!.add(Duration(minutes: tickIncrement));
   }
 }

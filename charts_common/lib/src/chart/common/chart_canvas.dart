@@ -26,7 +26,7 @@ abstract class ChartCanvas {
 
   /// Set the name of the view doing the rendering for debugging purposes,
   /// or null when we believe rendering is complete.
-  set drawingView(String viewName);
+  set drawingView(String? viewName);
 
   /// Renders a sector of a circle, with an optional hole in the center.
   ///
@@ -43,7 +43,7 @@ abstract class ChartCanvas {
   /// [strokeWidthPx] Stroke width of the arc and radius lines.
   void drawCircleSector(Point center, double radius, double innerRadius,
       double startAngle, double endAngle,
-      {Color fill, Color stroke, double strokeWidthPx});
+      {Color? fill, Color? stroke, double? strokeWidthPx});
 
   /// Renders a simple line.
   ///
@@ -53,13 +53,13 @@ abstract class ChartCanvas {
   /// pattern will be repeated to derive an even number of values. "1,2,3" is
   /// equivalent to "1,2,3,1,2,3."
   void drawLine(
-      {List<Point> points,
-      Rectangle<num> clipBounds,
-      Color fill,
-      Color stroke,
-      bool roundEndCaps,
-      double strokeWidthPx,
-      List<int> dashPattern});
+      {List<Point?>? points,
+      Rectangle<num>? clipBounds,
+      Color? fill,
+      Color? stroke,
+      bool? roundEndCaps,
+      double? strokeWidthPx,
+      List<int>? dashPattern});
 
   /// Renders a pie, with an optional hole in the center.
   void drawPie(CanvasPie canvasPie);
@@ -78,12 +78,12 @@ abstract class ChartCanvas {
   ///
   /// [blendMode] Blend mode to be used when drawing this point on canvas.
   void drawPoint(
-      {Point point,
-      double radius,
-      Color fill,
-      Color stroke,
-      double strokeWidthPx,
-      BlendMode blendMode});
+      {Point? point,
+      double? radius,
+      Color? fill,
+      Color? stroke,
+      double? strokeWidthPx,
+      BlendMode? blendMode});
 
   /// Renders a polygon shape described by a set of points.
   ///
@@ -96,11 +96,11 @@ abstract class ChartCanvas {
   /// [stroke] and [strokeWidthPx] configure the color and thickness of the
   /// edges of the polygon. Both must be provided together for a line to appear.
   void drawPolygon(
-      {List<Point> points,
-      Rectangle<num> clipBounds,
-      Color fill,
-      Color stroke,
-      double strokeWidthPx});
+      {List<Point>? points,
+      Rectangle<num>? clipBounds,
+      Color? fill,
+      Color? stroke,
+      double? strokeWidthPx});
 
   /// Renders a simple rectangle.
   ///
@@ -108,25 +108,25 @@ abstract class ChartCanvas {
   /// the draw area bounds on the top, the first x pixels (decided by the native
   /// platform) exceeding the draw area will apply a gradient to transparent
   /// with anything exceeding the x pixels to be transparent.
-  void drawRect(Rectangle<num> bounds,
-      {Color fill,
-      Color stroke,
-      double strokeWidthPx,
-      Rectangle<num> drawAreaBounds});
+  void drawRect(Rectangle<num>? bounds,
+      {Color? fill,
+      Color? stroke,
+      double? strokeWidthPx,
+      Rectangle<num>? drawAreaBounds});
 
   /// Renders a rounded rectangle.
-  void drawRRect(Rectangle<num> bounds,
-      {Color fill,
-      Color stroke,
-      Color patternColor,
-      FillPatternType fillPattern,
-      double patternStrokeWidthPx,
-      double strokeWidthPx,
-      num radius,
-      bool roundTopLeft,
-      bool roundTopRight,
-      bool roundBottomLeft,
-      bool roundBottomRight});
+  void drawRRect(Rectangle<num>? bounds,
+      {Color? fill,
+      Color? stroke,
+      Color? patternColor,
+      FillPatternType? fillPattern,
+      double? patternStrokeWidthPx,
+      double? strokeWidthPx,
+      num? radius,
+      bool? roundTopLeft,
+      bool? roundTopRight,
+      bool? roundBottomLeft,
+      bool? roundBottomRight});
 
   /// Renders a stack of bars, rounding the last bar in the stack.
   ///
@@ -138,9 +138,9 @@ abstract class ChartCanvas {
   /// platform) exceeding the draw area will apply a gradient to transparent
   /// with anything exceeding the x pixels to be transparent.
   void drawBarStack(CanvasBarStack canvasBarStack,
-      {Rectangle<num> drawAreaBounds});
+      {Rectangle<num>? drawAreaBounds});
 
-  void drawText(TextElement textElement, int offsetX, int offsetY,
+  void drawText(TextElement? textElement, int? offsetX, int? offsetY,
       {double rotation = 0.0});
 
   /// Request the canvas to clip to [clipBounds].
@@ -153,9 +153,9 @@ abstract class ChartCanvas {
 }
 
 Color getAnimatedColor(Color previous, Color target, double animationPercent) {
-  var r = (((target.r - previous.r) * animationPercent) + previous.r).round();
-  var g = (((target.g - previous.g) * animationPercent) + previous.g).round();
-  var b = (((target.b - previous.b) * animationPercent) + previous.b).round();
+  var r = (((target.r! - previous.r!) * animationPercent) + previous.r!).round();
+  var g = (((target.g! - previous.g!) * animationPercent) + previous.g!).round();
+  var b = (((target.b! - previous.b!) * animationPercent) + previous.b!).round();
   var a = (((target.a - previous.a) * animationPercent) + previous.a).round();
 
   return Color(a: a, r: r, g: g, b: b);

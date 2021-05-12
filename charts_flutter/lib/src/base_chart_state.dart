@@ -36,12 +36,12 @@ class BaseChartState<D> extends State<BaseChart<D>>
     with TickerProviderStateMixin
     implements ChartState {
   // Animation
-  AnimationController _animationController;
+  late AnimationController _animationController;
   double _animationValue = 0.0;
 
-  Widget _oldWidget;
+  Widget? _oldWidget;
 
-  ChartGestureDetector _chartGestureDetector;
+  ChartGestureDetector? _chartGestureDetector;
 
   bool _configurationChanged = false;
 
@@ -50,9 +50,9 @@ class BaseChartState<D> extends State<BaseChart<D>>
   final addedCommonBehaviorsByRole = <String, common.ChartBehavior>{};
 
   final addedSelectionChangedListenersByType =
-      <common.SelectionModelType, common.SelectionModelListener<D>>{};
+      <common.SelectionModelType, common.SelectionModelListener<D>?>{};
   final addedSelectionUpdatedListenersByType =
-      <common.SelectionModelType, common.SelectionModelListener<D>>{};
+      <common.SelectionModelType, common.SelectionModelListener<D>?>{};
 
   final _behaviorAnimationControllers =
       <ChartStateBehavior, AnimationController>{};
@@ -94,7 +94,7 @@ class BaseChartState<D> extends State<BaseChart<D>>
   /// Builds the common chart canvas widget.
   Widget _buildChartContainer() {
     final chartContainer = new ChartContainer<D>(
-      oldChartWidget: _oldWidget,
+      oldChartWidget: _oldWidget as BaseChart<D>?,
       chartWidget: widget,
       chartState: this,
       animationValue: _animationValue,
@@ -107,7 +107,7 @@ class BaseChartState<D> extends State<BaseChart<D>>
     final desiredGestures = widget.getDesiredGestures(this);
     if (desiredGestures.isNotEmpty) {
       _chartGestureDetector ??= new ChartGestureDetector();
-      return _chartGestureDetector.makeWidget(
+      return _chartGestureDetector!.makeWidget(
           context, chartContainer, desiredGestures);
     } else {
       return chartContainer;
@@ -171,7 +171,7 @@ class BaseChartState<D> extends State<BaseChart<D>>
   }
 
   /// Get animation controller to be used by [behavior].
-  AnimationController getAnimationController(ChartStateBehavior behavior) {
+  AnimationController? getAnimationController(ChartStateBehavior behavior) {
     _behaviorAnimationControllers[behavior] ??=
         new AnimationController(vsync: this);
 

@@ -30,8 +30,8 @@ abstract class ArcRendererDecorator<D> {
   bool get renderAbove;
 
   void decorate(ArcRendererElementList<D> arcElements, ChartCanvas canvas,
-      GraphicsFactory graphicsFactory,
-      {@required Rectangle drawBounds,
-      @required double animationPercent,
+      GraphicsFactory? graphicsFactory,
+      {required Rectangle? drawBounds,
+      required double? animationPercent,
       bool rtl = false});
 }

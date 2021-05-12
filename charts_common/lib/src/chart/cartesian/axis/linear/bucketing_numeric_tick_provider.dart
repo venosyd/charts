@@ -49,31 +49,31 @@ import '../tick_provider.dart' show TickHint;
 class BucketingNumericTickProvider extends NumericTickProvider {
   /// All values smaller than the threshold will be bucketed into the same
   /// position in the reserved space on the axis.
-  num _threshold;
+  num? _threshold;
 
-  set threshold(num threshold) {
+  set threshold(num? threshold) {
     _threshold = threshold;
   }
 
   /// Whether or not measure values bucketed below the [threshold] should be
   /// visible on the chart, or collapsed.
-  bool _showBucket;
+  bool? _showBucket;
 
   set showBucket(bool showBucket) {
     _showBucket = showBucket;
   }
 
   @override
-  List<Tick<num>> getTicks({
-    @required ChartContext context,
-    @required GraphicsFactory graphicsFactory,
-    @required NumericScale scale,
-    @required TickFormatter<num> formatter,
-    @required Map<num, String> formatterValueCache,
-    @required TickDrawStrategy tickDrawStrategy,
-    @required AxisOrientation orientation,
+  List<Tick<num?>> getTicks({
+    required ChartContext? context,
+    required GraphicsFactory? graphicsFactory,
+    required NumericScale scale,
+    required TickFormatter<num?>? formatter,
+    required Map<num?, String> formatterValueCache,
+    required TickDrawStrategy? tickDrawStrategy,
+    required AxisOrientation? orientation,
     bool viewportExtensionEnabled = false,
-    TickHint<num> tickHint,
+    TickHint<num?>? tickHint,
   }) {
     if (_threshold == null) {
       throw ArgumentError(
@@ -87,7 +87,7 @@ class BucketingNumericTickProvider extends NumericTickProvider {
 
     final localFormatter = _BucketingFormatter()
       ..threshold = _threshold
-      ..originalFormatter = formatter;
+      ..originalFormatter = formatter as SimpleTickFormatterBase<num?>?;
 
     final ticks = super.getTicks(
         context: context,
@@ -97,32 +97,32 @@ class BucketingNumericTickProvider extends NumericTickProvider {
         formatterValueCache: formatterValueCache,
         tickDrawStrategy: tickDrawStrategy,
         orientation: orientation,
-        viewportExtensionEnabled: viewportExtensionEnabled);
+        viewportExtensionEnabled: viewportExtensionEnabled)!;
 
     assert(scale != null);
 
     // Create a tick for the threshold.
-    final thresholdTick = Tick<num>(
+    final thresholdTick = Tick<num?>(
         value: _threshold,
-        textElement: graphicsFactory
-            .createTextElement(localFormatter.formatValue(_threshold)),
-        locationPx: _showBucket ? scale[_threshold] : scale[0],
+        textElement: graphicsFactory!
+            .createTextElement(localFormatter.formatValue(_threshold!)),
+        locationPx: _showBucket! ? scale[_threshold] as double? : scale[0] as double?,
         labelOffsetPx:
-            _showBucket ? -0.5 * (scale[_threshold] - scale[0]) : 0.0);
-    tickDrawStrategy.decorateTicks(<Tick<num>>[thresholdTick]);
+            _showBucket! ? -0.5 * (scale[_threshold] - scale[0]) : 0.0);
+    tickDrawStrategy!.decorateTicks(<Tick<num?>>[thresholdTick]);
 
     // Filter out ticks that sit below the threshold.
-    ticks.removeWhere((Tick<num> tick) =>
-        tick.value <= thresholdTick.value && tick.value != 0.0);
+    ticks.removeWhere((Tick<num?> tick) =>
+        tick.value! <= thresholdTick.value! && tick.value != 0.0);
 
     // Finally, add our threshold tick to the list.
     ticks.add(thresholdTick);
 
     // Make sure they are sorted by increasing value.
     ticks.sort((a, b) {
-      if (a.value < b.value) {
+      if (a.value! < b.value!) {
         return -1;
-      } else if (a.value > b.value) {
+      } else if (a.value! > b.value!) {
         return 1;
       } else {
         return 0;
@@ -136,19 +136,19 @@ class BucketingNumericTickProvider extends NumericTickProvider {
 class _BucketingFormatter extends SimpleTickFormatterBase<num> {
   /// All values smaller than the threshold will be formatted into an empty
   /// string.
-  num threshold;
+  num? threshold;
 
-  SimpleTickFormatterBase<num> originalFormatter;
+  SimpleTickFormatterBase<num?>? originalFormatter;
 
   /// Formats a single tick value.
   @override
   String formatValue(num value) {
-    if (value < threshold) {
+    if (value < threshold!) {
       return '';
     } else if (value == threshold) {
-      return '< ' + originalFormatter.formatValue(value);
+      return '< ' + originalFormatter!.formatValue(value);
     } else {
-      return originalFormatter.formatValue(value);
+      return originalFormatter!.formatValue(value);
     }
   }
 }

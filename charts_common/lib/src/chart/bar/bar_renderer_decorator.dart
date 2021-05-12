@@ -25,10 +25,10 @@ import 'bar_renderer.dart' show ImmutableBarRendererElement;
 abstract class BarRendererDecorator<D> {
   const BarRendererDecorator();
 
-  void decorate(Iterable<ImmutableBarRendererElement<D>> barElements,
-      ChartCanvas canvas, GraphicsFactory graphicsFactory,
-      {@required Rectangle drawBounds,
-      @required double animationPercent,
-      @required bool renderingVertically,
+  void decorate(Iterable<ImmutableBarRendererElement<D>?> barElements,
+      ChartCanvas canvas, GraphicsFactory? graphicsFactory,
+      {required Rectangle? drawBounds,
+      required double? animationPercent,
+      required bool renderingVertically,
       bool rtl = false});
 }

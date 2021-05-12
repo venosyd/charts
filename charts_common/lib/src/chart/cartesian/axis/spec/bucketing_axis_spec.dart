@@ -56,7 +56,7 @@ import 'numeric_axis_spec.dart'
 class BucketingAxisSpec extends NumericAxisSpec {
   /// All values smaller than the threshold will be bucketed into the same
   /// position in the reserved space on the axis.
-  final num threshold;
+  final num? threshold;
 
   /// Whether or not measure values bucketed below the [threshold] should be
   /// visible on the chart, or collapsed.
@@ -67,13 +67,13 @@ class BucketingAxisSpec extends NumericAxisSpec {
 
   /// Creates a [NumericAxisSpec] that is specialized for percentage data.
   BucketingAxisSpec({
-    RenderSpec<num> renderSpec,
-    NumericTickProviderSpec tickProviderSpec,
-    NumericTickFormatterSpec tickFormatterSpec,
-    bool showAxisLine,
-    bool showBucket,
+    RenderSpec<num>? renderSpec,
+    NumericTickProviderSpec? tickProviderSpec,
+    NumericTickFormatterSpec? tickFormatterSpec,
+    bool? showAxisLine,
+    bool? showBucket,
     this.threshold,
-    NumericExtents viewport,
+    NumericExtents? viewport,
   })  : showBucket = showBucket ?? true,
         super(
             renderSpec: renderSpec,
@@ -87,7 +87,7 @@ class BucketingAxisSpec extends NumericAxisSpec {
 
   @override
   void configure(
-      Axis<num> axis, ChartContext context, GraphicsFactory graphicsFactory) {
+      Axis<num?> axis, ChartContext? context, GraphicsFactory? graphicsFactory) {
     super.configure(axis, context, graphicsFactory);
 
     if (axis is NumericAxis && viewport != null) {
@@ -140,11 +140,11 @@ class BucketingNumericTickProviderSpec extends BasicNumericTickProviderSpec {
   ///     count to produce the 'nicest' ticks but make sure we don't have more
   ///     than this many.
   const BucketingNumericTickProviderSpec(
-      {bool zeroBound,
-      bool dataIsInWholeNumbers,
-      int desiredTickCount,
-      int desiredMinTickCount,
-      int desiredMaxTickCount})
+      {bool? zeroBound,
+      bool? dataIsInWholeNumbers,
+      int? desiredTickCount,
+      int? desiredMinTickCount,
+      int? desiredMaxTickCount})
       : super(
           zeroBound: zeroBound ?? true,
           dataIsInWholeNumbers: dataIsInWholeNumbers ?? false,
@@ -154,7 +154,7 @@ class BucketingNumericTickProviderSpec extends BasicNumericTickProviderSpec {
         );
 
   @override
-  BucketingNumericTickProvider createTickProvider(ChartContext context) {
+  BucketingNumericTickProvider createTickProvider(ChartContext? context) {
     final provider = BucketingNumericTickProvider()
       ..zeroBound = zeroBound
       ..dataIsInWholeNumbers = dataIsInWholeNumbers;

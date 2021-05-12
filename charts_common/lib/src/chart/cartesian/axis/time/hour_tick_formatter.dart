@@ -21,13 +21,13 @@ import 'time_tick_formatter_impl.dart'
 
 /// Hour specific tick formatter which will format noon differently.
 class HourTickFormatter extends TimeTickFormatterImpl {
-  DateFormat _noonFormat;
+  late DateFormat _noonFormat;
 
   HourTickFormatter(
-      {@required DateTimeFactory dateTimeFactory,
-      @required String simpleFormat,
-      @required String transitionFormat,
-      @required String noonFormat})
+      {required DateTimeFactory dateTimeFactory,
+      required String? simpleFormat,
+      required String? transitionFormat,
+      required String? noonFormat})
       : super(
             dateTimeFactory: dateTimeFactory,
             simpleFormat: simpleFormat,

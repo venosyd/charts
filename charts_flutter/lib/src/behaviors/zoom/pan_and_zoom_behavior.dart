@@ -32,14 +32,14 @@ class PanAndZoomBehavior extends ChartBehavior<common.PanAndZoomBehavior> {
   ///
   /// When flinging this callback is called after the fling is completed.
   /// This is because panning is only completed when the flinging stops.
-  final common.PanningCompletedCallback panningCompletedCallback;
+  final common.PanningCompletedCallback? panningCompletedCallback;
 
   PanAndZoomBehavior({this.panningCompletedCallback});
 
   @override
   common.PanAndZoomBehavior<D> createCommonBehavior<D>() {
     return new FlutterPanAndZoomBehavior<D>()
-      ..panningCompletedCallback = panningCompletedCallback;
+      ..panningCompletedCallback = panningCompletedCallback!;
   }
 
   @override

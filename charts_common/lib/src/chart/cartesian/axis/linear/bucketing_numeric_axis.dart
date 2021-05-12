@@ -39,18 +39,18 @@ import 'bucketing_numeric_tick_provider.dart' show BucketingNumericTickProvider;
 class BucketingNumericAxis extends NumericAxis {
   /// All values smaller than the threshold will be bucketed into the same
   /// position in the reserved space on the axis.
-  num _threshold;
+  num? _threshold;
 
   /// Whether or not measure values bucketed below the [threshold] should be
   /// visible on the chart, or collapsed.
   ///
   /// If this is false, then any data with measure values smaller than
   /// [threshold] will be rendered at the baseline of the chart. The
-  bool _showBucket;
+  late bool _showBucket;
 
   BucketingNumericAxis() : super(tickProvider: BucketingNumericTickProvider());
 
-  set threshold(num threshold) {
+  set threshold(num? threshold) {
     _threshold = threshold;
     (tickProvider as BucketingNumericTickProvider).threshold = threshold;
   }
@@ -63,13 +63,13 @@ class BucketingNumericAxis extends NumericAxis {
   /// Gets the location of [domain] on the axis, repositioning any value less
   /// than [threshold] to the middle of the reserved bucket.
   @override
-  double getLocation(num domain) {
+  double? getLocation(num? domain) {
     if (domain == null) {
       return null;
-    } else if (_threshold != null && domain < _threshold) {
-      return _showBucket ? scale[_threshold / 2] : scale[0.0];
+    } else if (_threshold != null && domain < _threshold!) {
+      return _showBucket ? scale![_threshold! / 2] as double? : scale![0.0] as double?;
     } else {
-      return scale[domain];
+      return scale![domain] as double?;
     }
   }
 }

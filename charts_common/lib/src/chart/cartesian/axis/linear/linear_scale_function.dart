@@ -57,7 +57,7 @@ class LinearScaleFunction {
       LinearScaleDomainInfo domainInfo,
       RangeBandConfig rangeBandConfig,
       StepSizeConfig stepSizeConfig) {
-    double rangeDiff = viewportSettings.range.diff.toDouble();
+    double rangeDiff = viewportSettings.range!.diff.toDouble();
     // Note: if you provided a nicing function that extends the domain, we won't
     // muck with the extended side.
     bool hasHalfStepAtStart =
@@ -95,7 +95,7 @@ class LinearScaleFunction {
     if (domainInfo.domainDiff == 0) {
       // Translate it to the center of the range.
       rangeTranslate =
-          viewportSettings.range.start + (viewportSettings.range.diff / 2);
+          viewportSettings.range!.start! + (viewportSettings.range!.diff / 2);
     } else {
       bool hasHalfStepAtStart =
           domainInfo.extent.min == domainInfo.dataDomainStart;
@@ -104,8 +104,8 @@ class LinearScaleFunction {
       double reservedRangePixelShift =
           hasHalfStepAtStart ? (stepSizePixels / 2.0) : 0.0;
 
-      rangeTranslate = viewportSettings.range.start +
-          viewportSettings.translatePx +
+      rangeTranslate = viewportSettings.range!.start! +
+          viewportSettings.translatePx! +
           reservedRangePixelShift;
     }
 
@@ -159,7 +159,7 @@ class LinearScaleFunction {
               domainInfo.minimumDetectedDomainStep.toDouble();
           if (minimumDetectedDomainStep != null &&
               minimumDetectedDomainStep.isFinite) {
-            scalingFactor = viewportSettings.scalingFactor *
+            scalingFactor = viewportSettings.scalingFactor! *
                 (rangeDiff /
                     (domainDiff +
                         (minimumDetectedDomainStep *
@@ -176,7 +176,7 @@ class LinearScaleFunction {
               stepSizePixels * reservedRangePercentOfStep;
           scalingFactor = domainDiff == 0
               ? 1.0
-              : viewportSettings.scalingFactor *
+              : viewportSettings.scalingFactor! *
                   (rangeDiff - reservedRangeForStepPixels) /
                   domainDiff;
           return;
@@ -186,7 +186,7 @@ class LinearScaleFunction {
               domainDiff + (domainStepWidth * reservedRangePercentOfStep);
           scalingFactor = totalDomainDiff == 0
               ? 1.0
-              : viewportSettings.scalingFactor * (rangeDiff / totalDomainDiff);
+              : viewportSettings.scalingFactor! * (rangeDiff / totalDomainDiff);
           stepSizePixels = domainStepWidth * scalingFactor;
           return;
       }
@@ -196,6 +196,6 @@ class LinearScaleFunction {
     stepSizePixels = 0.0;
     scalingFactor = domainDiff == 0
         ? 1.0
-        : viewportSettings.scalingFactor * rangeDiff / domainDiff;
+        : viewportSettings.scalingFactor! * rangeDiff / domainDiff;
   }
 }

@@ -49,7 +49,7 @@ abstract class Scale<D> {
   bool canTranslate(D domainValue);
 
   /// Returns the previously set output range for the scale function.
-  ScaleOutputExtent get range;
+  ScaleOutputExtent? get range;
 
   /// Returns the absolute width between the max and min range values.
   int get rangeWidth;
@@ -65,12 +65,12 @@ abstract class Scale<D> {
   /// measured step size.  This value is used as the bar group width.  If
   /// StepSizeConfig is set to auto detect, then you must wait until after
   /// the chart's onPostLayout phase before you'll get a valid number.
-  double get rangeBand;
+  double? get rangeBand;
 
   /// Returns the stepSize width in pixels.
   ///
   /// The step size is determined using the [StepSizeConfig].
-  double get stepSize;
+  double? get stepSize;
 
   /// Returns the stepSize domain value.
   double get domainStepSize;
@@ -85,7 +85,7 @@ abstract class Scale<D> {
   /// Returns true if the given [rangeValue] point is within the output range.
   ///
   /// Not to be confused with the start and end of the domain.
-  bool isRangeValueWithinViewport(double rangeValue);
+  bool isRangeValueWithinViewport(double? rangeValue);
 
   /// Returns the current viewport scale.
   ///
@@ -93,14 +93,14 @@ abstract class Scale<D> {
   /// value of 2.0 would map the data to an output of double the range so you
   /// only see half the data in the viewport.  This is the equivalent to
   /// zooming.  Its value is likely >= 1.0.
-  double get viewportScalingFactor;
+  double? get viewportScalingFactor;
 
   /// Returns the current pixel viewport offset
   ///
   /// The translate is used by the scale function when it applies the scale.
   /// This is the equivalent to panning.  Its value is likely <= 0 to pan the
   /// data to the left.
-  double get viewportTranslatePx;
+  double? get viewportTranslatePx;
 
   /// Returns a mutable copy of the scale.
   ///
@@ -136,7 +136,7 @@ abstract class MutableScale<D> extends Scale<D> {
   ///
   /// [extent] is the extent of the range which will likely be the pixel
   /// range of the drawing area to convert to.
-  set range(ScaleOutputExtent extent);
+  set range(ScaleOutputExtent? extent);
 
   /// Configures the zoom and translate.
   ///
@@ -147,7 +147,7 @@ abstract class MutableScale<D> extends Scale<D> {
   /// [viewportTranslatePx] is the translate/pan to use in pixel units,
   /// likely <= 0 which shifts the start of the data before the edge of the
   /// chart giving us a pan.
-  void setViewportSettings(double viewportScale, double viewportTranslatePx);
+  void setViewportSettings(double? viewportScale, double? viewportTranslatePx);
 
   /// Sets the configuration used to determine the rangeBand (bar group width).
   set rangeBandConfig(RangeBandConfig barGroupWidthConfig);
@@ -164,13 +164,13 @@ abstract class MutableScale<D> extends Scale<D> {
 /// It is different from [Extent] because it focuses on start and end and not
 /// min and max, meaning that start could be greater or less than end.
 class ScaleOutputExtent {
-  final int start;
-  final int end;
+  final int? start;
+  final int? end;
 
   const ScaleOutputExtent(this.start, this.end);
 
-  int get min => math.min(start, end);
-  int get max => math.max(start, end);
+  int get min => math.min(start!, end!);
+  int get max => math.max(start!, end!);
 
   bool containsValue(double value) => withinBounds(value, min, max);
 
@@ -178,7 +178,7 @@ class ScaleOutputExtent {
   ///
   /// If the [end] is less than the [start] (think vertical measure axis), then
   /// this will correctly return a negative value.
-  int get diff => end - start;
+  int get diff => end! - start!;
 
   /// Returns the width of the extent.
   int get width => diff.abs();

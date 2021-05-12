@@ -43,34 +43,34 @@ class RangeAnnotation extends ChartBehavior<common.RangeAnnotation> {
   final List<common.AnnotationSegment> annotations;
 
   /// Configures where to anchor annotation label text.
-  final common.AnnotationLabelAnchor defaultLabelAnchor;
+  final common.AnnotationLabelAnchor? defaultLabelAnchor;
 
   /// Direction of label text on the annotations.
-  final common.AnnotationLabelDirection defaultLabelDirection;
+  final common.AnnotationLabelDirection? defaultLabelDirection;
 
   /// Configures where to place labels relative to the annotation.
-  final common.AnnotationLabelPosition defaultLabelPosition;
+  final common.AnnotationLabelPosition? defaultLabelPosition;
 
   /// Configures the style of label text.
-  final common.TextStyleSpec defaultLabelStyleSpec;
+  final common.TextStyleSpec? defaultLabelStyleSpec;
 
   /// Default color for annotations.
   final common.Color defaultColor;
 
   /// Whether or not the range of the axis should be extended to include the
   /// annotation start and end values.
-  final bool extendAxis;
+  final bool? extendAxis;
 
   /// Space before and after label text.
-  final int labelPadding;
+  final int? labelPadding;
 
   /// Configures the order in which the behavior should be painted.
   /// This value should be relative to LayoutPaintViewOrder.rangeAnnotation.
   /// (e.g. LayoutViewPaintOrder.rangeAnnotation + 1)
-  final int layoutPaintOrder;
+  final int? layoutPaintOrder;
 
   RangeAnnotation(this.annotations,
-      {common.Color defaultColor,
+      {common.Color? defaultColor,
       this.defaultLabelAnchor,
       this.defaultLabelDirection,
       this.defaultLabelPosition,

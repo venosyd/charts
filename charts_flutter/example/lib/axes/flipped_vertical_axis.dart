@@ -29,8 +29,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 /// Note: primary and secondary may flip left and right positioning when
 /// RTL.flipAxisLocations is set.
 class FlippedVerticalAxis extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   FlippedVerticalAxis(this.seriesList, {this.animate});
 
@@ -67,8 +67,8 @@ class FlippedVerticalAxis extends StatelessWidget {
     return [
       new charts.Series<RunnerRank, String>(
         id: 'Race Results',
-        domainFn: (RunnerRank row, _) => row.name,
-        measureFn: (RunnerRank row, _) => row.place,
+        domainFn: (RunnerRank? row, _) => row!.name,
+        measureFn: (RunnerRank? row, _) => row!.place,
         data: raceData,
       ),
     ];
@@ -99,8 +99,8 @@ class FlippedVerticalAxis extends StatelessWidget {
     return [
       new charts.Series<RunnerRank, String>(
           id: 'Race Results',
-          domainFn: (RunnerRank row, _) => row.name,
-          measureFn: (RunnerRank row, _) => row.place,
+          domainFn: (RunnerRank? row, _) => row!.name,
+          measureFn: (RunnerRank? row, _) => row!.place,
           data: raceData),
     ];
   }

@@ -22,35 +22,35 @@ import 'package:charts_common/common.dart' as common show Color;
 /// TODO: Support for more shapes than circles?
 class PointPainter {
   void draw(
-      {Canvas canvas,
-      Paint paint,
-      Point point,
-      double radius,
-      common.Color fill,
-      common.Color stroke,
-      double strokeWidthPx}) {
+      {Canvas? canvas,
+      Paint? paint,
+      Point? point,
+      double? radius,
+      common.Color? fill,
+      common.Color? stroke,
+      double? strokeWidthPx}) {
     if (point == null) {
       return;
     }
 
     if (fill != null) {
-      paint.color = new Color.fromARGB(fill.a, fill.r, fill.g, fill.b);
+      paint!.color = new Color.fromARGB(fill.a, fill.r!, fill.g!, fill.b!);
       paint.style = PaintingStyle.fill;
 
-      canvas.drawCircle(
-          new Offset(point.x.toDouble(), point.y.toDouble()), radius, paint);
+      canvas!.drawCircle(
+          new Offset(point.x.toDouble(), point.y.toDouble()), radius!, paint);
     }
 
     // [Canvas.drawCircle] does not support drawing a circle with both a fill
     // and a stroke at this time. Use a separate circle for the stroke.
     if (stroke != null && strokeWidthPx != null && strokeWidthPx > 0.0) {
-      paint.color = new Color.fromARGB(stroke.a, stroke.r, stroke.g, stroke.b);
+      paint!.color = new Color.fromARGB(stroke.a, stroke.r!, stroke.g!, stroke.b!);
       paint.strokeWidth = strokeWidthPx;
       paint.strokeJoin = StrokeJoin.bevel;
       paint.style = PaintingStyle.stroke;
 
-      canvas.drawCircle(
-          new Offset(point.x.toDouble(), point.y.toDouble()), radius, paint);
+      canvas!.drawCircle(
+          new Offset(point.x.toDouble(), point.y.toDouble()), radius!, paint);
     }
   }
 }

@@ -24,16 +24,18 @@ import 'package:charts_common/common.dart' as common
         Series,
         SeriesRendererConfig,
         TimeSeriesChart;
+import 'package:charts_flutter/flutter.dart' show NumericAxis;
+
+import 'base_chart.dart' show LayoutConfig;
+import 'base_chart_state.dart' show BaseChartState;
 import 'behaviors/chart_behavior.dart' show ChartBehavior;
 import 'behaviors/line_point_highlighter.dart' show LinePointHighlighter;
 import 'cartesian_chart.dart' show CartesianChart;
-import 'base_chart.dart' show LayoutConfig;
-import 'base_chart_state.dart' show BaseChartState;
 import 'selection_model_config.dart' show SelectionModelConfig;
 import 'user_managed_state.dart' show UserManagedState;
 
-class TimeSeriesChart extends CartesianChart<DateTime> {
-  final common.DateTimeFactory dateTimeFactory;
+class TimeSeriesChart extends CartesianChart<DateTime?> {
+  final common.DateTimeFactory? dateTimeFactory;
 
   /// Create a [TimeSeriesChart].
   ///
@@ -41,21 +43,21 @@ class TimeSeriesChart extends CartesianChart<DateTime> {
   /// be used for the time axis. If none specified, local date time is used.
   TimeSeriesChart(
     List<common.Series<dynamic, DateTime>> seriesList, {
-    bool animate,
-    Duration animationDuration,
-    common.AxisSpec domainAxis,
-    common.AxisSpec primaryMeasureAxis,
-    common.AxisSpec secondaryMeasureAxis,
-    LinkedHashMap<String, common.NumericAxisSpec> disjointMeasureAxes,
-    common.SeriesRendererConfig<DateTime> defaultRenderer,
-    List<common.SeriesRendererConfig<DateTime>> customSeriesRenderers,
-    List<ChartBehavior> behaviors,
-    List<SelectionModelConfig<DateTime>> selectionModels,
-    LayoutConfig layoutConfig,
+    bool? animate,
+    Duration? animationDuration,
+    common.AxisSpec? domainAxis,
+    common.AxisSpec? primaryMeasureAxis,
+    common.AxisSpec? secondaryMeasureAxis,
+    LinkedHashMap<String, common.NumericAxisSpec>? disjointMeasureAxes,
+    common.SeriesRendererConfig<DateTime>? defaultRenderer,
+    List<common.SeriesRendererConfig<DateTime>>? customSeriesRenderers,
+    List<ChartBehavior>? behaviors,
+    List<SelectionModelConfig<DateTime>>? selectionModels,
+    LayoutConfig? layoutConfig,
     this.dateTimeFactory,
     bool defaultInteractions = true,
-    bool flipVerticalAxis,
-    UserManagedState<DateTime> userManagedState,
+    bool? flipVerticalAxis,
+    UserManagedState<DateTime>? userManagedState,
   }) : super(
           seriesList,
           animate: animate,
@@ -75,14 +77,14 @@ class TimeSeriesChart extends CartesianChart<DateTime> {
         );
 
   @override
-  common.TimeSeriesChart createCommonChart(BaseChartState chartState) {
+  common.TimeSeriesChart createCommonChart(BaseChartState? chartState) {
     // Optionally create primary and secondary measure axes if the chart was
     // configured with them. If no axes were configured, then the chart will
     // use its default types (usually a numeric axis).
     return new common.TimeSeriesChart(
         layoutConfig: layoutConfig?.commonLayoutConfig,
-        primaryMeasureAxis: primaryMeasureAxis?.createAxis(),
-        secondaryMeasureAxis: secondaryMeasureAxis?.createAxis(),
+        primaryMeasureAxis: primaryMeasureAxis?.createAxis() as NumericAxis?,
+        secondaryMeasureAxis: secondaryMeasureAxis?.createAxis() as NumericAxis?,
         disjointMeasureAxes: createDisjointMeasureAxes(),
         dateTimeFactory:
             dateTimeFactory ?? const common.LocalDateTimeFactory());

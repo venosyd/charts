@@ -31,33 +31,33 @@ import 'package:test/test.dart';
 class MockContext extends Mock implements ChartContext {}
 
 class ConcreteChart extends LineChart {
-  LifecycleListener<num> lastListener;
+  LifecycleListener<num?>? lastListener;
 
   final _domainAxis = ConcreteNumericAxis();
 
   final _primaryMeasureAxis = ConcreteNumericAxis();
 
   @override
-  LifecycleListener addLifecycleListener(LifecycleListener listener) {
-    lastListener = listener;
+  LifecycleListener? addLifecycleListener(LifecycleListener? listener) {
+    lastListener = listener as LifecycleListener<num?>?;
     return super.addLifecycleListener(listener);
   }
 
   @override
-  bool removeLifecycleListener(LifecycleListener listener) {
+  bool removeLifecycleListener(LifecycleListener? listener) {
     expect(listener, equals(lastListener));
     lastListener = null;
-    return super.removeLifecycleListener(listener);
+    return super.removeLifecycleListener(listener as LifecycleListener<num>?);
   }
 
   @override
   Axis get domainAxis => _domainAxis;
 
   @override
-  Axis getMeasureAxis({String axisId}) => _primaryMeasureAxis;
+  Axis getMeasureAxis({String? axisId}) => _primaryMeasureAxis;
 }
 
-class ConcreteNumericAxis extends Axis<num> {
+class ConcreteNumericAxis extends Axis<num?> {
   ConcreteNumericAxis()
       : super(
           tickProvider: MockTickProvider(),
@@ -69,29 +69,29 @@ class ConcreteNumericAxis extends Axis<num> {
 class MockTickProvider extends Mock implements NumericTickProvider {}
 
 void main() {
-  Rectangle<int> drawBounds;
-  Rectangle<int> domainAxisBounds;
-  Rectangle<int> measureAxisBounds;
+  Rectangle<int>? drawBounds;
+  Rectangle<int>? domainAxisBounds;
+  Rectangle<int>? measureAxisBounds;
 
-  ConcreteChart _chart;
+  late ConcreteChart _chart;
 
-  Series<MyRow, int> _series1;
+  late Series<MyRow?, int?> _series1;
   final _s1D1 = MyRow(0, 11);
   final _s1D2 = MyRow(1, 12);
   final _s1D3 = MyRow(2, 13);
 
-  Series<MyRow, int> _series2;
+  late Series<MyRow?, int?> _series2;
   final _s2D1 = MyRow(3, 21);
   final _s2D2 = MyRow(4, 22);
   final _s2D3 = MyRow(5, 23);
 
   const _dashPattern = <int>[2, 3];
 
-  List<RangeAnnotationSegment<num>> _annotations1;
+  late List<RangeAnnotationSegment<num>> _annotations1;
 
-  List<RangeAnnotationSegment<num>> _annotations2;
+  late List<RangeAnnotationSegment<num>> _annotations2;
 
-  List<LineAnnotationSegment<num>> _annotations3;
+  late List<LineAnnotationSegment<num>> _annotations3;
 
   ConcreteChart _makeChart() {
     final chart = ConcreteChart();
@@ -107,7 +107,7 @@ void main() {
   /// Initializes the [chart], draws the [seriesList], and configures mock axis
   /// layout bounds.
   void _drawSeriesList(
-      ConcreteChart chart, List<Series<MyRow, int>> seriesList) {
+      ConcreteChart chart, List<Series<MyRow?, int?>> seriesList) {
     _chart.domainAxis.autoViewport = true;
     _chart.domainAxis.resetDomains();
 
@@ -120,7 +120,7 @@ void main() {
 
     _chart.getMeasureAxis().layout(measureAxisBounds, drawBounds);
 
-    _chart.lastListener.onAxisConfigured();
+    _chart.lastListener!.onAxisConfigured!();
   }
 
   setUpAll(() {
@@ -132,14 +132,14 @@ void main() {
   setUp(() {
     _chart = _makeChart();
 
-    _series1 = Series<MyRow, int>(
+    _series1 = Series<MyRow?, int?>(
         id: 's1',
         data: [_s1D1, _s1D2, _s1D3],
         domainFn: (dynamic row, _) => row.campaign,
         measureFn: (dynamic row, _) => row.count,
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault);
 
-    _series2 = Series<MyRow, int>(
+    _series2 = Series<MyRow?, int?>(
         id: 's2',
         data: [_s2D1, _s2D2, _s2D3],
         domainFn: (dynamic row, _) => row.campaign,
@@ -215,7 +215,7 @@ void main() {
           equals(true));
 
       // Verify measure annotations
-      expect(_chart.getMeasureAxis().getLocation(11).round(), equals(33));
+      expect(_chart.getMeasureAxis().getLocation(11)!.round(), equals(33));
       expect(
           tester.doesAnnotationExist(
               startPosition: 0.0,

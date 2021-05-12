@@ -23,7 +23,7 @@ import '../common/series_renderer.dart' show rendererIdKey, SeriesRenderer;
 import '../layout/layout_config.dart' show LayoutConfig, MarginSpec;
 import 'arc_renderer.dart' show ArcRenderer;
 
-class PieChart<D> extends BaseChart<D> {
+class PieChart<D> extends BaseChart<D?> {
   static final _defaultLayoutConfig = LayoutConfig(
     topSpec: MarginSpec.fromPixel(minPixel: 20),
     bottomSpec: MarginSpec.fromPixel(minPixel: 20),
@@ -31,12 +31,12 @@ class PieChart<D> extends BaseChart<D> {
     rightSpec: MarginSpec.fromPixel(minPixel: 20),
   );
 
-  PieChart({LayoutConfig layoutConfig})
+  PieChart({LayoutConfig? layoutConfig})
       : super(layoutConfig: layoutConfig ?? _defaultLayoutConfig);
 
   @override
-  void drawInternal(List<MutableSeries<D>> seriesList,
-      {bool skipAnimation, bool skipLayout}) {
+  void drawInternal(List<MutableSeries<D?>> seriesList,
+      {bool? skipAnimation, bool? skipLayout}) {
     if (seriesList.length > 1) {
       throw ArgumentError('PieChart can only render a single series');
     }
@@ -45,17 +45,17 @@ class PieChart<D> extends BaseChart<D> {
   }
 
   @override
-  SeriesRenderer<D> makeDefaultRenderer() {
+  SeriesRenderer<D?> makeDefaultRenderer() {
     return ArcRenderer<D>()..rendererId = SeriesRenderer.defaultRendererId;
   }
 
   /// Returns a list of datum details from selection model of [type].
   @override
-  List<DatumDetails<D>> getDatumDetails(SelectionModelType type) {
-    final entries = <DatumDetails<D>>[];
+  List<DatumDetails<D?>> getDatumDetails(SelectionModelType type) {
+    final List<DatumDetails<D?>> entries = <DatumDetails<D>>[];
 
     getSelectionModel(type).selectedDatum.forEach((seriesDatum) {
-      final rendererId = seriesDatum.series.getAttr(rendererIdKey);
+      final rendererId = seriesDatum.series!.getAttr(rendererIdKey);
       final renderer = getSeriesRenderer(rendererId);
 
       // This should never happen.
@@ -67,16 +67,16 @@ class PieChart<D> extends BaseChart<D> {
           (renderer as ArcRenderer).getExpandedDatumDetails(seriesDatum);
 
       if (details != null) {
-        entries.add(details);
+        entries.add(details as DatumDetails<D?>);
       }
     });
 
     return entries;
   }
 
-  Rectangle<int> get centerContentBounds {
+  Rectangle<int>? get centerContentBounds {
     if (defaultRenderer is ArcRenderer<D>) {
-      return (defaultRenderer as ArcRenderer<D>).centerContentBounds;
+      return (defaultRenderer as ArcRenderer<D?>).centerContentBounds;
     } else {
       return null;
     }

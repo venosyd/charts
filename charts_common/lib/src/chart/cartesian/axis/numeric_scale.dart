@@ -21,7 +21,7 @@ import 'scale.dart' show MutableScale;
 /// The input represents a continuous numeric domain which maps to a given range
 /// output.  This is used to map the domain's values to the available pixel
 /// range of the chart.
-abstract class NumericScale extends MutableScale<num> {
+abstract class NumericScale extends MutableScale<num?> {
   /// Keeps the scale and translate sane if true (default).
   ///
   /// Setting this to false disables some pan/zoom protections that prevent you
@@ -41,16 +41,16 @@ abstract class NumericScale extends MutableScale<num> {
   /// data so that panning has a start and end point to go between beyond the
   /// received data.  This allows lazy loading of data into the gaps in the
   /// expanded lied about areas.
-  NumericExtents get domainOverride;
-  set domainOverride(NumericExtents extent);
+  NumericExtents? get domainOverride;
+  set domainOverride(NumericExtents? extent);
 
   /// Returns the domain extent visible in the viewport of the drawArea.
-  NumericExtents get viewportDomain;
+  NumericExtents? get viewportDomain;
 
   /// Sets the domain extent visible in the viewport of the drawArea.
   ///
   /// Invalidates the viewportScale & viewportTranslatePx.
-  set viewportDomain(NumericExtents extent);
+  set viewportDomain(NumericExtents? extent);
 
   /// Returns the viewportScaleFactor needed to present the given domainWindow.
   double computeViewportScaleFactor(double domainWindow);

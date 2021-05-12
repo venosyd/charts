@@ -20,15 +20,16 @@
 /// different color from the main series color. The line renderer supports
 /// drawing points with the "includePoints" option, but those points will share
 /// the same color as the line.
-// EXCLUDE_FROM_GALLERY_DOCS_START
 import 'dart:math';
+
 // EXCLUDE_FROM_GALLERY_DOCS_END
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 
 class DateTimeComboLinePointChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, DateTime>> seriesList;
+  final bool? animate;
 
   DateTimeComboLinePointChart(this.seriesList, {this.animate});
 
@@ -78,22 +79,22 @@ class DateTimeComboLinePointChart extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Desktop',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: desktopSalesData,
       ),
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Tablet',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: tableSalesData,
       ),
       new charts.Series<TimeSeriesSales, DateTime>(
           id: 'Mobile',
           colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-          domainFn: (TimeSeriesSales sales, _) => sales.time,
-          measureFn: (TimeSeriesSales sales, _) => sales.sales,
+          domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+          measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
           data: mobileSalesData)
         // Configure our custom point renderer for this series.
         ..setAttribute(charts.rendererIdKey, 'customPoint'),
@@ -115,7 +116,7 @@ class DateTimeComboLinePointChart extends StatelessWidget {
       customSeriesRenderers: [
         new charts.PointRendererConfig(
             // ID used to link series to this renderer.
-            customRendererId: 'customPoint')
+            customRendererId: 'customPoint') as SeriesRendererConfig<DateTime>
       ],
       // Optionally pass in a [DateTimeFactory] used by the chart. The factory
       // should create the same type of [DateTime] as the data provided. If none
@@ -151,22 +152,22 @@ class DateTimeComboLinePointChart extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Desktop',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: desktopSalesData,
       ),
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Tablet',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: tableSalesData,
       ),
       new charts.Series<TimeSeriesSales, DateTime>(
           id: 'Mobile',
           colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-          domainFn: (TimeSeriesSales sales, _) => sales.time,
-          measureFn: (TimeSeriesSales sales, _) => sales.sales,
+          domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+          measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
           data: mobileSalesData)
         // Configure our custom point renderer for this series.
         ..setAttribute(charts.rendererIdKey, 'customPoint'),

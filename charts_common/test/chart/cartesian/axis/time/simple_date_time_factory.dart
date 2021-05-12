@@ -38,5 +38,5 @@ class SimpleDateTimeFactory implements DateTimeFactory {
           year, month, day, hour, minute, second, millisecond, microsecond);
 
   @override
-  DateFormat createDateFormat(String pattern) => DateFormat(pattern);
+  DateFormat createDateFormat(String? pattern) => DateFormat(pattern);
 }

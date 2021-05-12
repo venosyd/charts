@@ -46,11 +46,11 @@ class ScatterPlotChart extends NumericCartesianChart {
   bool get selectOverlappingPoints => true;
 
   ScatterPlotChart(
-      {bool vertical,
-      LayoutConfig layoutConfig,
-      NumericAxis primaryMeasureAxis,
-      NumericAxis secondaryMeasureAxis,
-      LinkedHashMap<String, NumericAxis> disjointMeasureAxes})
+      {bool? vertical,
+      LayoutConfig? layoutConfig,
+      NumericAxis? primaryMeasureAxis,
+      NumericAxis? secondaryMeasureAxis,
+      LinkedHashMap<String, NumericAxis>? disjointMeasureAxes})
       : super(
             vertical: vertical,
             layoutConfig: layoutConfig,
@@ -59,13 +59,13 @@ class ScatterPlotChart extends NumericCartesianChart {
             disjointMeasureAxes: disjointMeasureAxes);
 
   @override
-  SeriesRenderer<num> makeDefaultRenderer() {
+  SeriesRenderer<num?> makeDefaultRenderer() {
     return PointRenderer<num>()..rendererId = SeriesRenderer.defaultRendererId;
   }
 
   @override
   void initDomainAxis() {
-    domainAxis.tickDrawStrategy = GridlineRendererSpec<num>()
+    domainAxis!.tickDrawStrategy = GridlineRendererSpec<num>()
         .createDrawStrategy(context, graphicsFactory);
   }
 }

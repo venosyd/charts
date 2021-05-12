@@ -22,7 +22,7 @@ import 'package:flutter/material.dart';
 
 class TimeSeriesBar extends StatelessWidget {
   final List<charts.Series<TimeSeriesSales, DateTime>> seriesList;
-  final bool animate;
+  final bool? animate;
 
   TimeSeriesBar(this.seriesList, {this.animate});
 
@@ -75,8 +75,8 @@ class TimeSeriesBar extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: data,
       )
     ];
@@ -131,8 +131,8 @@ class TimeSeriesBar extends StatelessWidget {
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales? sales, _) => sales!.time,
+        measureFn: (TimeSeriesSales? sales, _) => sales!.sales,
         data: data,
       )
     ];

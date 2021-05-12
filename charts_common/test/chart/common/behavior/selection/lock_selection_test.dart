@@ -24,16 +24,16 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 class MockChart extends Mock implements BaseChart {
-  GestureListener lastListener;
+  GestureListener? lastListener;
 
   @override
-  GestureListener addGestureListener(GestureListener listener) {
+  GestureListener? addGestureListener(GestureListener? listener) {
     lastListener = listener;
     return listener;
   }
 
   @override
-  void removeGestureListener(GestureListener listener) {
+  void removeGestureListener(GestureListener? listener) {
     expect(listener, equals(lastListener));
     lastListener = null;
   }
@@ -44,9 +44,9 @@ class MockSelectionModel extends Mock implements MutableSelectionModel {
 }
 
 void main() {
-  MockChart _chart;
-  MockSelectionModel _hoverSelectionModel;
-  MockSelectionModel _clickSelectionModel;
+  late MockChart _chart;
+  late MockSelectionModel _hoverSelectionModel;
+  late MockSelectionModel _clickSelectionModel;
 
   LockSelection _makeLockSelectionBehavior(
       SelectionModelType selectionModelType) {
@@ -58,7 +58,7 @@ void main() {
     return behavior;
   }
 
-  void _setupChart({Point<double> forPoint, bool isWithinRenderer}) {
+  void _setupChart({Point<double>? forPoint, bool? isWithinRenderer}) {
     if (isWithinRenderer != null) {
       when(_chart.pointWithinRenderer(forPoint)).thenReturn(isWithinRenderer);
     }
@@ -85,8 +85,8 @@ void main() {
       when(_hoverSelectionModel.hasAnySelection).thenReturn(true);
 
       // Act
-      _chart.lastListener.onTapTest(point);
-      _chart.lastListener.onTap(point);
+      _chart.lastListener!.onTapTest(point);
+      _chart.lastListener!.onTap!(point);
 
       // Validate
       verify(_hoverSelectionModel.hasAnySelection);
@@ -104,16 +104,16 @@ void main() {
       when(_hoverSelectionModel.hasAnySelection).thenReturn(true);
 
       // Act
-      _chart.lastListener.onTapTest(point);
-      _chart.lastListener.onTap(point);
+      _chart.lastListener!.onTapTest(point);
+      _chart.lastListener!.onTap!(point);
 
       // Validate
       verify(_hoverSelectionModel.hasAnySelection);
       expect(_hoverSelectionModel.locked, equals(true));
 
       // Act
-      _chart.lastListener.onTapTest(point);
-      _chart.lastListener.onTap(point);
+      _chart.lastListener!.onTapTest(point);
+      _chart.lastListener!.onTap!(point);
 
       // Validate
       verify(_hoverSelectionModel.clearSelection());
@@ -131,8 +131,8 @@ void main() {
       when(_hoverSelectionModel.hasAnySelection).thenReturn(false);
 
       // Act
-      _chart.lastListener.onTapTest(point);
-      _chart.lastListener.onTap(point);
+      _chart.lastListener!.onTapTest(point);
+      _chart.lastListener!.onTap!(point);
 
       // Validate
       verify(_hoverSelectionModel.hasAnySelection);

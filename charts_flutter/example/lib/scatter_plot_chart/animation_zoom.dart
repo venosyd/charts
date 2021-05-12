@@ -22,8 +22,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class ScatterPlotAnimationZoomChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool? animate;
 
   ScatterPlotAnimationZoomChart(this.seriesList, {this.animate});
 
@@ -61,9 +61,9 @@ class ScatterPlotAnimationZoomChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
         id: 'Sales',
-        colorFn: (LinearSales sales, _) {
+        colorFn: (LinearSales? sales, _) {
           // Color bucket the measure column value into 3 distinct colors.
-          final bucket = sales.sales / maxMeasure;
+          final bucket = sales!.sales / maxMeasure;
 
           if (bucket < 1 / 3) {
             return charts.MaterialPalette.blue.shadeDefault;
@@ -73,9 +73,9 @@ class ScatterPlotAnimationZoomChart extends StatelessWidget {
             return charts.MaterialPalette.green.shadeDefault;
           }
         },
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        radiusPxFn: (LinearSales sales, _) => sales.radius,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
+        radiusPxFn: (LinearSales? sales, _) => sales!.radius,
         data: data,
       )
     ];
@@ -113,9 +113,9 @@ class ScatterPlotAnimationZoomChart extends StatelessWidget {
     return [
       new charts.Series<LinearSales, int>(
         id: 'Sales',
-        colorFn: (LinearSales sales, _) {
+        colorFn: (LinearSales? sales, _) {
           // Color bucket the measure column value into 3 distinct colors.
-          final bucket = sales.sales / maxMeasure;
+          final bucket = sales!.sales / maxMeasure;
 
           if (bucket < 1 / 3) {
             return charts.MaterialPalette.blue.shadeDefault;
@@ -125,9 +125,9 @@ class ScatterPlotAnimationZoomChart extends StatelessWidget {
             return charts.MaterialPalette.green.shadeDefault;
           }
         },
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        radiusPxFn: (LinearSales sales, _) => sales.radius,
+        domainFn: (LinearSales? sales, _) => sales!.year,
+        measureFn: (LinearSales? sales, _) => sales!.sales,
+        radiusPxFn: (LinearSales? sales, _) => sales!.radius,
         data: data,
       )
     ];

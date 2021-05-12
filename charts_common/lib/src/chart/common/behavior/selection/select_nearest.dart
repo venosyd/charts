@@ -58,7 +58,7 @@ import 'selection_trigger.dart' show SelectionTrigger;
 /// Any previous SelectNearest behavior for that selection model will be
 /// removed.
 class SelectNearest<D> implements ChartBehavior<D> {
-  GestureListener _listener;
+  GestureListener? _listener;
 
   /// Type of selection model that should be updated by input events.
   final SelectionModelType selectionModelType;
@@ -80,19 +80,19 @@ class SelectNearest<D> implements ChartBehavior<D> {
 
   /// Whether or not the closest Series itself will be marked as selected in
   /// addition to the datum.
-  final bool selectClosestSeries;
+  final bool? selectClosestSeries;
 
   /// The farthest away a domain value can be from the mouse position on the
   /// domain axis before we'll ignore the datum.
   ///
   /// This allows sparse data to not get selected until the mouse is some
   /// reasonable distance. Defaults to no maximum distance.
-  final int maximumDomainDistancePx;
+  final int? maximumDomainDistancePx;
 
   /// Wait time in milliseconds for when the next event can be called.
-  final int hoverEventDelay;
+  final int? hoverEventDelay;
 
-  BaseChart<D> _chart;
+  BaseChart<D?>? _chart;
 
   bool _delaySelect = false;
 
@@ -139,7 +139,7 @@ class SelectNearest<D> implements ChartBehavior<D> {
             onHover: hoverEventDelay == null
                 ? _onSelect
                 : throttle<Point<double>, bool>(_onSelect,
-                    delay: Duration(milliseconds: hoverEventDelay),
+                    delay: Duration(milliseconds: hoverEventDelay!),
                     defaultReturn: false));
         break;
     }
@@ -148,7 +148,7 @@ class SelectNearest<D> implements ChartBehavior<D> {
   bool _onTapTest(Point<double> chartPoint) {
     // If the tap is within the drawArea, then claim the event from others.
     _delaySelect = eventTrigger == SelectionTrigger.longPressHold;
-    return _chart.pointWithinRenderer(chartPoint);
+    return _chart!.pointWithinRenderer(chartPoint);
   }
 
   bool _onLongPressSelect(Point<double> chartPoint) {
@@ -156,32 +156,32 @@ class SelectNearest<D> implements ChartBehavior<D> {
     return _onSelect(chartPoint);
   }
 
-  bool _onSelect(Point<double> chartPoint, [double ignored]) {
+  bool _onSelect(Point<double> chartPoint, [double? ignored]) {
     // If _chart has not yet been attached, then quit.
     if (_chart == null) return false;
 
     // If the selection is delayed (waiting for long press), then quit early.
     if (_delaySelect) return false;
 
-    var details = _chart.getNearestDatumDetailPerSeries(
+    var details = _chart!.getNearestDatumDetailPerSeries(
         chartPoint, selectAcrossAllSeriesRendererComponents);
 
-    final seriesList = <ImmutableSeries<D>>[];
-    var seriesDatumList = <SeriesDatum<D>>[];
+    final List<ImmutableSeries<D?>?> seriesList = <ImmutableSeries<D>?>[];
+    List<SeriesDatum<D?>>? seriesDatumList = <SeriesDatum<D>>[];
 
     if (details != null && details.isNotEmpty) {
-      details.sort((a, b) => a.domainDistance.compareTo(b.domainDistance));
+      details.sort((a, b) => a.domainDistance!.compareTo(b.domainDistance!));
 
       if (maximumDomainDistancePx == null ||
-          details[0].domainDistance <= maximumDomainDistancePx) {
+          details[0].domainDistance! <= maximumDomainDistancePx!) {
         seriesDatumList = _extractSeriesFromNearestSelection(details);
 
         // Filter out points from overlay series.
-        seriesDatumList
-            .removeWhere((SeriesDatum<D> datum) => datum.series.overlaySeries);
+        seriesDatumList!
+            .removeWhere((SeriesDatum<D?> datum) => datum.series!.overlaySeries!);
 
-        if (selectClosestSeries && seriesList.isEmpty) {
-          if (details.first.series.overlaySeries) {
+        if (selectClosestSeries! && seriesList.isEmpty) {
+          if (details.first.series!.overlaySeries!) {
             // If the closest "details" was from an overlay series, grab the
             // closest remaining series instead. In this case, we need to sort a
             // copy of the list by domain distance because we do not want to
@@ -198,23 +198,23 @@ class SelectNearest<D> implements ChartBehavior<D> {
       }
     }
 
-    return _chart
+    return _chart!
         .getSelectionModel(selectionModelType)
         .updateSelection(seriesDatumList, seriesList);
   }
 
-  List<SeriesDatum<D>> _extractSeriesFromNearestSelection(
-      List<DatumDetails<D>> details) {
+  List<SeriesDatum<D?>>? _extractSeriesFromNearestSelection(
+      List<DatumDetails<D?>> details) {
     switch (selectionMode) {
       case SelectionMode.expandToDomain:
         return _expandToDomain(details.first);
       case SelectionMode.selectOverlapping:
         return details
             .map((datumDetails) =>
-                SeriesDatum<D>(datumDetails.series, datumDetails.datum))
+                SeriesDatum<D?>(datumDetails.series, datumDetails.datum))
             .toList();
       case SelectionMode.single:
-        return [SeriesDatum<D>(details.first.series, details.first.datum)];
+        return [SeriesDatum<D?>(details.first.series, details.first.datum)];
       default:
         return null;
     }
@@ -226,29 +226,29 @@ class SelectNearest<D> implements ChartBehavior<D> {
       return false;
     }
 
-    _chart
+    _chart!
         .getSelectionModel(selectionModelType)
         .updateSelection(<SeriesDatum<D>>[], <ImmutableSeries<D>>[]);
     return false;
   }
 
-  List<SeriesDatum<D>> _expandToDomain(DatumDetails<D> nearestDetails) {
+  List<SeriesDatum<D?>> _expandToDomain(DatumDetails<D?> nearestDetails) {
     // Make sure that the "nearest" datum is at the top of the list.
-    final data = <SeriesDatum<D>>[
+    final data = <SeriesDatum<D?>>[
       SeriesDatum(nearestDetails.series, nearestDetails.datum)
     ];
     final nearestDomain = nearestDetails.domain;
 
-    for (ImmutableSeries<D> series in _chart.currentSeriesList) {
-      final domainFn = series.domainFn;
-      final domainLowerBoundFn = series.domainLowerBoundFn;
-      final domainUpperBoundFn = series.domainUpperBoundFn;
+    for (ImmutableSeries<D?> series in _chart!.currentSeriesList!) {
+      final D? Function(int)? domainFn = series.domainFn;
+      final D? Function(int)? domainLowerBoundFn = series.domainLowerBoundFn;
+      final D? Function(int)? domainUpperBoundFn = series.domainUpperBoundFn;
       final testBounds =
           domainLowerBoundFn != null && domainUpperBoundFn != null;
 
-      for (var i = 0; i < series.data.length; i++) {
-        final datum = series.data[i];
-        final domain = domainFn(i);
+      for (var i = 0; i < series.data!.length; i++) {
+        final datum = series.data![i];
+        final domain = domainFn!(i);
 
         // Don't re-add the nearest details.
         if (nearestDetails.series == series && nearestDetails.datum == datum) {
@@ -258,8 +258,8 @@ class SelectNearest<D> implements ChartBehavior<D> {
         if (domain == nearestDomain) {
           data.add(SeriesDatum(series, datum));
         } else if (testBounds) {
-          final domainLowerBound = domainLowerBoundFn(i);
-          final domainUpperBound = domainUpperBoundFn(i);
+          final domainLowerBound = domainLowerBoundFn!(i);
+          final domainUpperBound = domainUpperBoundFn!(i);
 
           var addDatum = false;
           if (domainLowerBound != null && domainUpperBound != null) {

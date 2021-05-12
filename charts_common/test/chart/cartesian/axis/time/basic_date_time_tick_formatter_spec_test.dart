@@ -28,10 +28,10 @@ void main() {
   final DateTime testDate2 = DateTime.utc(1984, 11, 12);
   final DateTime testDate3 = DateTime.utc(1984, 11, 13);
 
-  BasicDateTimeTickFormatterSpec dateTimeTickSpec;
-  BasicDateTimeTickFormatterSpec dateTimeTickSpecWithDateFormat;
-  DateFormat dateFormat;
-  MockContext mockContext;
+  late BasicDateTimeTickFormatterSpec dateTimeTickSpec;
+  late BasicDateTimeTickFormatterSpec dateTimeTickSpecWithDateFormat;
+  late DateFormat dateFormat;
+  late MockContext mockContext;
 
   String testFormatter(DateTime dateTime) {
     return tickLabel;

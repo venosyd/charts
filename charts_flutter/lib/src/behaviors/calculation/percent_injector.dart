@@ -40,21 +40,21 @@ class PercentInjector extends ChartBehavior<common.PercentInjector> {
   final desiredGestures = new Set<GestureType>();
 
   /// The type of data total to be calculated.
-  final common.PercentInjectorTotalType totalType;
+  final common.PercentInjectorTotalType? totalType;
 
   PercentInjector._internal({this.totalType});
 
   /// Constructs a [PercentInjector].
   ///
   /// [totalType] configures the type of data total to be calculated.
-  factory PercentInjector({common.PercentInjectorTotalType totalType}) {
+  factory PercentInjector({common.PercentInjectorTotalType? totalType}) {
     totalType ??= common.PercentInjectorTotalType.domain;
     return new PercentInjector._internal(totalType: totalType);
   }
 
   @override
   common.PercentInjector<D> createCommonBehavior<D>() =>
-      new common.PercentInjector<D>(totalType: totalType);
+      new common.PercentInjector<D>(totalType: totalType!);
 
   @override
   void updateCommonBehavior(common.PercentInjector commonBehavior) {}

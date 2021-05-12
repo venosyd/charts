@@ -20,18 +20,18 @@ typedef DateTimeFormatterFunction = String Function(DateTime datetime);
 
 /// Formatter that formats all ticks using a single [DateTimeFormatterFunction].
 class SimpleTimeTickFormatter implements TimeTickFormatter {
-  DateTimeFormatterFunction formatter;
+  DateTimeFormatterFunction? formatter;
 
-  SimpleTimeTickFormatter({@required this.formatter});
-
-  @override
-  String formatFirstTick(DateTime date) => formatter(date);
+  SimpleTimeTickFormatter({required this.formatter});
 
   @override
-  String formatSimpleTick(DateTime date) => formatter(date);
+  String formatFirstTick(DateTime date) => formatter!(date);
 
   @override
-  String formatTransitionTick(DateTime date) => formatter(date);
+  String formatSimpleTick(DateTime date) => formatter!(date);
+
+  @override
+  String formatTransitionTick(DateTime date) => formatter!(date);
 
   // Transition fields don't matter here.
   @override

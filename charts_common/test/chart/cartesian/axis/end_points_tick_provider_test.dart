@@ -60,8 +60,8 @@ class FakeDrawStrategy<D> extends BaseTickDrawStrategy<D> {
       : super(null, FakeGraphicsFactory());
 
   @override
-  CollisionReport collides(List<Tick<D>> ticks, _) {
-    final ticksCollide = ticks.length >= collidesAfterTickCount;
+  CollisionReport collides(List<Tick<D>>? ticks, _) {
+    final ticksCollide = ticks!.length >= collidesAfterTickCount;
     final alternateTicksUsed = ticks.length >= alternateRenderingAfterTickCount;
 
     return CollisionReport(
@@ -72,11 +72,11 @@ class FakeDrawStrategy<D> extends BaseTickDrawStrategy<D> {
 
   @override
   void draw(ChartCanvas canvas, Tick<D> tick,
-      {AxisOrientation orientation,
-      Rectangle<int> axisBounds,
-      Rectangle<int> drawAreaBounds,
-      bool isFirst,
-      bool isLast}) {}
+      {AxisOrientation? orientation,
+      Rectangle<int>? axisBounds,
+      Rectangle<int>? drawAreaBounds,
+      bool? isFirst,
+      bool? isLast}) {}
 }
 
 /// A fake [GraphicsFactory] that returns [MockTextStyle] and [MockTextElement].
@@ -85,7 +85,7 @@ class FakeGraphicsFactory extends GraphicsFactory {
   TextStyle createTextPaint() => MockTextStyle();
 
   @override
-  TextElement createTextElement(String text) => MockTextElement();
+  TextElement createTextElement(String? text) => MockTextElement();
 
   @override
   LineStyle createLinePaint() => MockLinePaint();
@@ -101,9 +101,9 @@ class MockChartContext extends Mock implements ChartContext {}
 
 void main() {
   const dateTimeFactory = SimpleDateTimeFactory();
-  FakeGraphicsFactory graphicsFactory;
+  late FakeGraphicsFactory graphicsFactory;
   EndPointsTickProvider tickProvider;
-  ChartContext context;
+  late ChartContext context;
 
   setUp(() {
     graphicsFactory = FakeGraphicsFactory();
@@ -115,7 +115,7 @@ void main() {
     final scale = MockDateTimeScale();
     tickProvider = EndPointsTickProvider<DateTime>();
 
-    final drawStrategy = FakeDrawStrategy<DateTime>(10, 10);
+    final drawStrategy = FakeDrawStrategy<DateTime?>(10, 10);
     when(scale.viewportDomain).thenReturn(DateTimeExtents(
         start: DateTime(2018, 8, 1), end: DateTime(2018, 8, 11)));
     when(scale.rangeWidth).thenReturn(1000);
@@ -140,7 +140,7 @@ void main() {
     final scale = MockNumericScale();
     tickProvider = EndPointsTickProvider<num>();
 
-    final drawStrategy = FakeDrawStrategy<num>(10, 10);
+    final drawStrategy = FakeDrawStrategy<num?>(10, 10);
     when(scale.viewportDomain).thenReturn(NumericExtents(10.0, 70.0));
     when(scale.rangeWidth).thenReturn(1000);
     when(scale.domainStepSize).thenReturn(1000.0);
@@ -168,7 +168,7 @@ void main() {
     scale.addDomain('D');
     tickProvider = EndPointsTickProvider<String>();
 
-    final drawStrategy = FakeDrawStrategy<String>(10, 10);
+    final drawStrategy = FakeDrawStrategy<String?>(10, 10);
 
     final ticks = tickProvider.getTicks(
         context: context,
@@ -189,7 +189,7 @@ void main() {
     final scale = MockDateTimeScale();
     tickProvider = EndPointsTickProvider<DateTime>();
 
-    final drawStrategy = FakeDrawStrategy<DateTime>(10, 10);
+    final drawStrategy = FakeDrawStrategy<DateTime?>(10, 10);
     when(scale.viewportDomain).thenReturn(DateTimeExtents(
         start: DateTime(2018, 8, 1), end: DateTime(2018, 8, 11)));
     when(scale.rangeWidth).thenReturn(1000);
@@ -215,7 +215,7 @@ void main() {
     final scale = MockNumericScale();
     tickProvider = EndPointsTickProvider<num>();
 
-    final drawStrategy = FakeDrawStrategy<num>(10, 10);
+    final drawStrategy = FakeDrawStrategy<num?>(10, 10);
     when(scale.viewportDomain).thenReturn(NumericExtents(10.0, 70.0));
     when(scale.rangeWidth).thenReturn(1000);
 

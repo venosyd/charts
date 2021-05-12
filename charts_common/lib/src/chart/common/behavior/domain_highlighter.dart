@@ -26,12 +26,12 @@ import 'chart_behavior.dart' show ChartBehavior;
 ///
 /// It is used in combination with SelectNearest to update the selection model
 /// and expand selection out to the domain value.
-class DomainHighlighter<D> implements ChartBehavior<D> {
+class DomainHighlighter<D> implements ChartBehavior<D?> {
   final SelectionModelType selectionModelType;
 
-  BaseChart<D> _chart;
+  late BaseChart<D?> _chart;
 
-  LifecycleListener<D> _lifecycleListener;
+  LifecycleListener<D>? _lifecycleListener;
 
   DomainHighlighter([this.selectionModelType = SelectionModelType.info]) {
     _lifecycleListener =
@@ -49,10 +49,10 @@ class DomainHighlighter<D> implements ChartBehavior<D> {
       final origColorFn = series.colorFn;
 
       if (origColorFn != null) {
-        series.colorFn = (int index) {
+        series.colorFn = (int? index) {
           final origColor = origColorFn(index);
           if (selectionModel.isDatumSelected(series, index)) {
-            return origColor.darker;
+            return origColor!.darker;
           } else {
             return origColor;
           }
@@ -62,7 +62,7 @@ class DomainHighlighter<D> implements ChartBehavior<D> {
   }
 
   @override
-  void attachTo(BaseChart<D> chart) {
+  void attachTo(BaseChart<D?> chart) {
     _chart = chart;
     chart.addLifecycleListener(_lifecycleListener);
     chart

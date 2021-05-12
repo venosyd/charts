@@ -17,7 +17,7 @@
 ///
 /// [F] Type of the value in the 'from' units.
 /// [T] Type of the value in 'to' units.
-abstract class UnitConverter<F extends num, T extends num> {
+abstract class UnitConverter<F extends num?, T extends num?> {
   /// Converts 'from' unit value to the 'to' unit value.
   T convert(F value);
 

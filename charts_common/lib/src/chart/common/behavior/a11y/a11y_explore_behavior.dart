@@ -30,7 +30,7 @@ abstract class A11yExploreBehavior<D> implements ChartBehavior<D> {
   ///
   /// Turning on explore mode asks this [A11yExploreBehavior] to generate nodes within
   /// this chart.
-  final ExploreModeTrigger exploreModeTrigger;
+  final ExploreModeTrigger? exploreModeTrigger;
 
   /// Minimum width of the bounding box for the a11y focus.
   ///
@@ -38,18 +38,18 @@ abstract class A11yExploreBehavior<D> implements ChartBehavior<D> {
   final double minimumWidth;
 
   /// Optionally notify the OS when explore mode is enabled.
-  final String exploreModeEnabledAnnouncement;
+  final String? exploreModeEnabledAnnouncement;
 
   /// Optionally notify the OS when explore mode is disabled.
-  final String exploreModeDisabledAnnouncement;
+  final String? exploreModeDisabledAnnouncement;
 
-  BaseChart<D> _chart;
-  GestureListener _listener;
+  late BaseChart<D> _chart;
+  GestureListener? _listener;
   bool _exploreModeOn = false;
 
   A11yExploreBehavior({
     this.exploreModeTrigger = ExploreModeTrigger.pressHold,
-    double minimumWidth,
+    double? minimumWidth,
     this.exploreModeEnabledAnnouncement,
     this.exploreModeDisabledAnnouncement,
   }) : minimumWidth = minimumWidth ?? 1.0 {
@@ -69,12 +69,12 @@ abstract class A11yExploreBehavior<D> implements ChartBehavior<D> {
     if (_exploreModeOn) {
       _exploreModeOn = false;
       // Ask native platform to turn off explore mode.
-      _chart.context.disableA11yExploreMode(
+      _chart.context!.disableA11yExploreMode(
           announcement: exploreModeDisabledAnnouncement);
     } else {
       _exploreModeOn = true;
       // Ask native platform to turn on explore mode.
-      _chart.context.enableA11yExploreMode(createA11yNodes(),
+      _chart.context!.enableA11yExploreMode(createA11yNodes(),
           announcement: exploreModeEnabledAnnouncement);
     }
 

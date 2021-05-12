@@ -29,18 +29,18 @@ abstract class TickDrawStrategy<D> {
   ///
   /// This can be used to further modify ticks after they have been generated
   /// with location data and formatted labels.
-  void decorateTicks(List<Tick<D>> ticks);
+  void decorateTicks(List<Tick<D>?> ticks);
 
   /// Returns a [CollisionReport] indicating if there are any collisions.
-  CollisionReport collides(List<Tick<D>> ticks, AxisOrientation orientation);
+  CollisionReport collides(List<Tick<D>>? ticks, AxisOrientation? orientation);
 
   /// Returns measurement of ticks drawn vertically.
   ViewMeasuredSizes measureVerticallyDrawnTicks(
-      List<Tick<D>> ticks, int maxWidth, int maxHeight);
+      List<Tick<D>?>? ticks, int? maxWidth, int? maxHeight);
 
   /// Returns measurement of ticks drawn horizontally.
   ViewMeasuredSizes measureHorizontallyDrawnTicks(
-      List<Tick<D>> ticks, int maxWidth, int maxHeight);
+      List<Tick<D>?>? ticks, int? maxWidth, int? maxHeight);
 
   /// Draws tick onto [ChartCanvas].
   ///
@@ -48,12 +48,12 @@ abstract class TickDrawStrategy<D> {
   /// [axisBounds] the bounds of the axis.
   /// [drawAreaBounds] the bounds of the chart draw area adjacent to the axis.
   void draw(ChartCanvas canvas, Tick<D> tick,
-      {@required AxisOrientation orientation,
-      @required Rectangle<int> axisBounds,
-      @required Rectangle<int> drawAreaBounds,
-      @required bool isFirst,
-      @required bool isLast});
+      {required AxisOrientation? orientation,
+      required Rectangle<int>? axisBounds,
+      required Rectangle<int>? drawAreaBounds,
+      required bool isFirst,
+      required bool isLast});
 
-  void drawAxisLine(ChartCanvas canvas, AxisOrientation orientation,
-      Rectangle<int> axisBounds);
+  void drawAxisLine(ChartCanvas canvas, AxisOrientation? orientation,
+      Rectangle<int>? axisBounds);
 }

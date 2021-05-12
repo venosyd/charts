@@ -29,11 +29,11 @@ class IconRenderer extends charts.CustomSymbolRenderer {
   IconRenderer(this.iconData);
 
   @override
-  Widget build(BuildContext context, {Size size, Color color, bool enabled}) {
+  Widget build(BuildContext context, {Size? size, Color? color, bool? enabled}) {
     // Lighten the color if the symbol is not enabled
     // Example: If user has tapped on a Series deselecting it.
-    if (!enabled) {
-      color = color.withOpacity(0.26);
+    if (!enabled!) {
+      color = color!.withOpacity(0.26);
     }
 
     return new SizedBox.fromSize(
@@ -42,8 +42,8 @@ class IconRenderer extends charts.CustomSymbolRenderer {
 }
 
 class LegendWithCustomSymbol extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   LegendWithCustomSymbol(this.seriesList, {this.animate});
 
@@ -98,26 +98,26 @@ class LegendWithCustomSymbol extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tabletSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Other',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: otherSalesData,
       )
     ];
@@ -174,26 +174,26 @@ class LegendWithCustomSymbol extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Desktop',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: desktopSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Tablet',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: tabletSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Mobile',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: mobileSalesData,
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Other',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: otherSalesData,
       )
     ];

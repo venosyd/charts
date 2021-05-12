@@ -25,9 +25,9 @@ abstract class BaseTimeStepper implements TimeStepper {
   /// This is needed because Dart's DateTime does not handle time zone.
   /// There is a time zone aware library that we could use that implements the
   /// DateTime interface.
-  final DateTimeFactory dateTimeFactory;
+  final DateTimeFactory? dateTimeFactory;
 
-  _TimeStepIteratorFactoryImpl _stepsIterable;
+  _TimeStepIteratorFactoryImpl? _stepsIterable;
 
   BaseTimeStepper(this.dateTimeFactory);
 
@@ -35,7 +35,7 @@ abstract class BaseTimeStepper implements TimeStepper {
   DateTime getStepTimeBeforeInclusive(DateTime time, int tickIncrement);
 
   /// Get the next step time after [time] from [tickIncrement].
-  DateTime getNextStepTime(DateTime time, int tickIncrement);
+  DateTime getNextStepTime(DateTime? time, int tickIncrement);
 
   @override
   int getStepCountBetween(DateTimeExtents timeExtent, int tickIncrement) {
@@ -53,10 +53,10 @@ abstract class BaseTimeStepper implements TimeStepper {
   }
 
   @override
-  TimeStepIteratorFactory getSteps(DateTimeExtents timeExtent) {
+  TimeStepIteratorFactory? getSteps(DateTimeExtents timeExtent) {
     // Keep the steps iterable unless time extent changes, so the same iterator
     // can be used and reset for different increments.
-    if (_stepsIterable == null || _stepsIterable.timeExtent != timeExtent) {
+    if (_stepsIterable == null || _stepsIterable!.timeExtent != timeExtent) {
       _stepsIterable = _TimeStepIteratorFactoryImpl(timeExtent, this);
     }
     return _stepsIterable;
@@ -83,7 +83,7 @@ class _TimeStepIteratorImpl implements TimeStepIterator {
   final DateTime extentStartTime;
   final DateTime extentEndTime;
   final BaseTimeStepper stepper;
-  DateTime _current;
+  DateTime? _current;
   int _tickIncrement = 1;
 
   _TimeStepIteratorImpl(
@@ -100,11 +100,11 @@ class _TimeStepIteratorImpl implements TimeStepIterator {
       _current = stepper.getNextStepTime(_current, _tickIncrement);
     }
 
-    return _current.compareTo(extentEndTime) <= 0;
+    return _current!.compareTo(extentEndTime) <= 0;
   }
 
   @override
-  DateTime get current => _current;
+  DateTime? get current => _current;
 
   @override
   TimeStepIterator reset(int tickIncrement) {

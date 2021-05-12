@@ -21,8 +21,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class GridlineDashPattern extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, DateTime>> seriesList;
+  final bool? animate;
 
   GridlineDashPattern(this.seriesList, {this.animate});
 
@@ -64,8 +64,8 @@ class GridlineDashPattern extends StatelessWidget {
     return [
       new charts.Series<MyRow, DateTime>(
         id: 'Cost',
-        domainFn: (MyRow row, _) => row.timeStamp,
-        measureFn: (MyRow row, _) => row.cost,
+        domainFn: (MyRow? row, _) => row!.timeStamp,
+        measureFn: (MyRow? row, _) => row!.cost,
         data: data,
       )
     ];
@@ -104,8 +104,8 @@ class GridlineDashPattern extends StatelessWidget {
     return [
       new charts.Series<MyRow, DateTime>(
         id: 'Cost',
-        domainFn: (MyRow row, _) => row.timeStamp,
-        measureFn: (MyRow row, _) => row.cost,
+        domainFn: (MyRow? row, _) => row!.timeStamp,
+        measureFn: (MyRow? row, _) => row!.cost,
         data: data,
       )
     ];

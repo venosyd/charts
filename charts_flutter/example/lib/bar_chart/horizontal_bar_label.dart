@@ -21,8 +21,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class HorizontalBarLabelChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   HorizontalBarLabelChart(this.seriesList, {this.animate});
 
@@ -57,12 +57,12 @@ class HorizontalBarLabelChart extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
           id: 'Sales',
-          domainFn: (OrdinalSales sales, _) => sales.year,
-          measureFn: (OrdinalSales sales, _) => sales.sales,
+          domainFn: (OrdinalSales? sales, _) => sales!.year,
+          measureFn: (OrdinalSales? sales, _) => sales!.sales,
           data: data,
           // Set a label accessor to control the text of the bar label.
-          labelAccessorFn: (OrdinalSales sales, _) =>
-              '${sales.year}: \$${sales.sales.toString()}')
+          labelAccessorFn: (OrdinalSales? sales, _) =>
+              '${sales!.year}: \$${sales.sales.toString()}')
     ];
   }
   // EXCLUDE_FROM_GALLERY_DOCS_END
@@ -104,12 +104,12 @@ class HorizontalBarLabelChart extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
           id: 'Sales',
-          domainFn: (OrdinalSales sales, _) => sales.year,
-          measureFn: (OrdinalSales sales, _) => sales.sales,
+          domainFn: (OrdinalSales? sales, _) => sales!.year,
+          measureFn: (OrdinalSales? sales, _) => sales!.sales,
           data: data,
           // Set a label accessor to control the text of the bar label.
-          labelAccessorFn: (OrdinalSales sales, _) =>
-              '${sales.year}: \$${sales.sales.toString()}')
+          labelAccessorFn: (OrdinalSales? sales, _) =>
+              '${sales!.year}: \$${sales.sales.toString()}')
     ];
   }
 }

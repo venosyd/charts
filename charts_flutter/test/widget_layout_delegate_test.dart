@@ -38,17 +38,17 @@ void main() {
     /// Creates widget for testing.
     Widget createWidget(
         Size chartSize, Size behaviorSize, common.BehaviorPosition position,
-        {common.OutsideJustification outsideJustification,
-        common.InsideJustification insideJustification,
-        Rectangle<int> drawAreaBounds,
+        {common.OutsideJustification? outsideJustification,
+        common.InsideJustification? insideJustification,
+        Rectangle<int>? drawAreaBounds,
         bool isRTL = false}) {
       // Create a mock buildable behavior that returns information about the
       // position and justification desired.
       final behavior = new MockBuildableBehavior();
       when(behavior.position).thenReturn(position);
-      when(behavior.outsideJustification).thenReturn(outsideJustification);
-      when(behavior.insideJustification).thenReturn(insideJustification);
-      when(behavior.drawAreaBounds).thenReturn(drawAreaBounds);
+      when(behavior.outsideJustification).thenReturn(outsideJustification!);
+      when(behavior.insideJustification).thenReturn(insideJustification!);
+      when(behavior.drawAreaBounds).thenReturn(drawAreaBounds!);
 
       // The 'chart' widget that expands to the full size allowed to test that
       // the behavior widget's size affects the size given to the chart.

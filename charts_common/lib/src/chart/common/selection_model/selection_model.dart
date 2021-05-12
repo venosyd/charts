@@ -31,13 +31,13 @@ import '../series_datum.dart' show SeriesDatum, SeriesDatumConfig;
 /// for each datum for a given domain/time, but highlights the closest entry to
 /// match up with highlighting/bolding of the line and legend.
 class SelectionModel<D> {
-  var _selectedDatum = <SeriesDatum<D>>[];
-  var _selectedSeries = <ImmutableSeries<D>>[];
+  List<SeriesDatum<D>>? _selectedDatum = <SeriesDatum<D>>[];
+  List<ImmutableSeries<D>?> _selectedSeries = <ImmutableSeries<D>>[];
 
   /// Create selection model with the desired selection.
   SelectionModel(
-      {List<SeriesDatum<D>> selectedData,
-      List<ImmutableSeries<D>> selectedSeries}) {
+      {List<SeriesDatum<D>>? selectedData,
+      List<ImmutableSeries<D>>? selectedSeries}) {
     if (selectedData != null) {
       _selectedDatum = selectedData;
     }
@@ -48,19 +48,19 @@ class SelectionModel<D> {
 
   /// Create a deep copy of the selection model.
   SelectionModel.fromOther(SelectionModel<D> other) {
-    _selectedDatum = List.from(other._selectedDatum);
+    _selectedDatum = List.from(other._selectedDatum!);
     _selectedSeries = List.from(other._selectedSeries);
   }
 
   /// Create selection model from configuration.
-  SelectionModel.fromConfig(List<SeriesDatumConfig> selectedDataConfig,
-      List<String> selectedSeriesConfig, List<ImmutableSeries<D>> seriesList) {
+  SelectionModel.fromConfig(List<SeriesDatumConfig>? selectedDataConfig,
+      List<String>? selectedSeriesConfig, List<ImmutableSeries<D>> seriesList) {
     final selectedDataMap = <String, List<D>>{};
 
     if (selectedDataConfig != null) {
       for (SeriesDatumConfig config in selectedDataConfig) {
         selectedDataMap[config.seriesId] ??= <D>[];
-        selectedDataMap[config.seriesId].add(config.domainValue);
+        selectedDataMap[config.seriesId]!.add(config.domainValue);
       }
 
       // Add to list of selected series.
@@ -70,13 +70,13 @@ class SelectionModel<D> {
       // Add to list of selected data.
       for (ImmutableSeries<D> series in seriesList) {
         if (selectedDataMap.containsKey(series.id)) {
-          final domainFn = series.domainFn;
+          final D Function(int)? domainFn = series.domainFn;
 
-          for (var i = 0; i < series.data.length; i++) {
-            final datum = series.data[i];
+          for (var i = 0; i < series.data!.length; i++) {
+            final datum = series.data![i];
 
-            if (selectedDataMap[series.id].contains(domainFn(i))) {
-              _selectedDatum.add(SeriesDatum(series, datum));
+            if (selectedDataMap[series.id!]!.contains(domainFn!(i))) {
+              _selectedDatum!.add(SeriesDatum(series, datum));
             }
           }
         }
@@ -95,17 +95,17 @@ class SelectionModel<D> {
   }
 
   /// Returns true if this [SelectionModel] has a selected datum.
-  bool get hasDatumSelection => _selectedDatum.isNotEmpty;
+  bool get hasDatumSelection => _selectedDatum!.isNotEmpty;
 
-  bool isDatumSelected(ImmutableSeries<D> series, int index) {
-    final datum = index == null ? null : series.data[index];
-    return _selectedDatum.contains(SeriesDatum(series, datum));
+  bool isDatumSelected(ImmutableSeries<D> series, int? index) {
+    final datum = index == null ? null : series.data![index];
+    return _selectedDatum!.contains(SeriesDatum(series, datum));
   }
 
   /// Returns the selected [SeriesDatum] for this [SelectionModel].
   ///
   /// This is empty by default.
-  List<SeriesDatum<D>> get selectedDatum => List.unmodifiable(_selectedDatum);
+  List<SeriesDatum<D>> get selectedDatum => List.unmodifiable(_selectedDatum!);
 
   /// Returns true if this [SelectionModel] has a selected series.
   bool get hasSeriesSelection => _selectedSeries.isNotEmpty;
@@ -118,7 +118,7 @@ class SelectionModel<D> {
 
   /// Returns true if this [SelectionModel] has a selected datum or series.
   bool get hasAnySelection =>
-      _selectedDatum.isNotEmpty || selectedSeries.isNotEmpty;
+      _selectedDatum!.isNotEmpty || selectedSeries.isNotEmpty;
 
   @override
   bool operator ==(Object other) {
@@ -163,12 +163,12 @@ class MutableSelectionModel<D> extends SelectionModel<D> {
   /// Updates the selection state. If mouse driven, [datumSelection] should be
   /// ordered by distance from mouse, closest first.
   bool updateSelection(
-      List<SeriesDatum<D>> datumSelection, List<ImmutableSeries<D>> seriesList,
+      List<SeriesDatum<D>>? datumSelection, List<ImmutableSeries<D>?> seriesList,
       {bool notifyListeners = true}) {
     if (_locked) return false;
 
-    final origSelectedDatum = _selectedDatum;
-    final origSelectedSeries = _selectedSeries;
+    final List<SeriesDatum<D>>? origSelectedDatum = _selectedDatum;
+    final List<ImmutableSeries<D>?> origSelectedSeries = _selectedSeries;
 
     _selectedDatum = datumSelection;
     _selectedSeries = seriesList;

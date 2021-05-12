@@ -25,16 +25,16 @@ import 'graphics_factory.dart' show GraphicsFactory;
 ///
 /// If you want to customize the symbol, then use [CustomSymbolRenderer].
 class SymbolRendererCanvas implements SymbolRendererBuilder {
-  final common.SymbolRenderer commonSymbolRenderer;
-  final List<int> dashPattern;
+  final common.SymbolRenderer? commonSymbolRenderer;
+  final List<int>? dashPattern;
 
   SymbolRendererCanvas(this.commonSymbolRenderer, this.dashPattern);
 
   @override
   Widget build(BuildContext context,
-      {Color color, Size size, bool enabled = true}) {
-    if (!enabled) {
-      color = color.withOpacity(0.26);
+      {Color? color, Size? size, bool? enabled = true}) {
+    if (!enabled!) {
+      color = color!.withOpacity(0.26);
     }
 
     return new SizedBox.fromSize(
@@ -55,15 +55,15 @@ abstract class CustomSymbolRenderer extends common.SymbolRenderer
   /// Must override this method to build the custom Widget with the given color
   /// as
   @override
-  Widget build(BuildContext context, {Color color, Size size, bool enabled});
+  Widget build(BuildContext context, {Color? color, Size? size, bool? enabled});
 
   @override
-  void paint(common.ChartCanvas canvas, Rectangle<num> bounds,
-      {List<int> dashPattern,
-      common.Color fillColor,
-      common.FillPatternType fillPattern,
-      common.Color strokeColor,
-      double strokeWidthPx}) {
+  void paint(common.ChartCanvas canvas, Rectangle<num>? bounds,
+      {List<int>? dashPattern,
+      common.Color? fillColor,
+      common.FillPatternType? fillPattern,
+      common.Color? strokeColor,
+      double? strokeWidthPx}) {
     // Intentionally ignored (never called).
   }
 
@@ -76,16 +76,16 @@ abstract class CustomSymbolRenderer extends common.SymbolRenderer
 /// Common interface for [CustomSymbolRenderer] & [SymbolRendererCanvas] for
 /// convenience for [LegendEntryLayout].
 abstract class SymbolRendererBuilder {
-  Widget build(BuildContext context, {Color color, Size size, bool enabled});
+  Widget build(BuildContext context, {Color? color, Size? size, bool? enabled});
 }
 
 /// The Widget which fulfills the guts of [SymbolRendererCanvas] actually
 /// painting the symbol to a canvas using [CustomPainter].
 class _SymbolCustomPaint extends CustomPainter {
   final BuildContext context;
-  final common.SymbolRenderer symbolRenderer;
-  final Color color;
-  final List<int> dashPattern;
+  final common.SymbolRenderer? symbolRenderer;
+  final Color? color;
+  final List<int>? dashPattern;
 
   _SymbolCustomPaint(
       this.context, this.symbolRenderer, this.color, this.dashPattern);
@@ -95,8 +95,8 @@ class _SymbolCustomPaint extends CustomPainter {
     final bounds =
         new Rectangle<num>(0, 0, size.width.toInt(), size.height.toInt());
     final commonColor = new common.Color(
-        r: color.red, g: color.green, b: color.blue, a: color.alpha);
-    symbolRenderer.paint(
+        r: color!.red, g: color!.green, b: color!.blue, a: color!.alpha);
+    symbolRenderer!.paint(
         new ChartCanvas(canvas, GraphicsFactory(context)), bounds,
         fillColor: commonColor,
         strokeColor: commonColor,
@@ -105,6 +105,6 @@ class _SymbolCustomPaint extends CustomPainter {
 
   @override
   bool shouldRepaint(_SymbolCustomPaint oldDelegate) {
-    return symbolRenderer.shouldRepaint(oldDelegate.symbolRenderer);
+    return symbolRenderer!.shouldRepaint(oldDelegate.symbolRenderer!);
   }
 }

@@ -23,7 +23,7 @@ import 'package:flutter/material.dart';
 
 class GaugeChart extends StatelessWidget {
   final List<charts.Series> seriesList;
-  final bool animate;
+  final bool? animate;
 
   GaugeChart(this.seriesList, {this.animate});
 
@@ -58,8 +58,8 @@ class GaugeChart extends StatelessWidget {
     return [
       new charts.Series<GaugeSegment, String>(
         id: 'Segments',
-        domainFn: (GaugeSegment segment, _) => segment.segment,
-        measureFn: (GaugeSegment segment, _) => segment.size,
+        domainFn: (GaugeSegment? segment, _) => segment!.segment,
+        measureFn: (GaugeSegment? segment, _) => segment!.size,
         data: data,
       )
     ];
@@ -89,8 +89,8 @@ class GaugeChart extends StatelessWidget {
     return [
       new charts.Series<GaugeSegment, String>(
         id: 'Segments',
-        domainFn: (GaugeSegment segment, _) => segment.segment,
-        measureFn: (GaugeSegment segment, _) => segment.size,
+        domainFn: (GaugeSegment? segment, _) => segment!.segment,
+        measureFn: (GaugeSegment? segment, _) => segment!.size,
         data: data,
       )
     ];

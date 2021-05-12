@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart' show required;
+import 'base_chart_state.dart';
 import 'chart_canvas.dart' show ChartCanvas;
 import 'chart_state.dart' show ChartState;
 import 'base_chart.dart' show BaseChart;
@@ -41,20 +41,20 @@ import 'user_managed_state.dart' show UserManagedState;
 /// Widget that inflates to a [CustomPaint] that implements common [ChartContext].
 class ChartContainer<D> extends CustomPaint {
   final BaseChart<D> chartWidget;
-  final BaseChart<D> oldChartWidget;
+  final BaseChart<D>? oldChartWidget;
   final ChartState chartState;
   final double animationValue;
   final bool rtl;
-  final common.RTLSpec rtlSpec;
-  final UserManagedState<D> userManagedState;
+  final common.RTLSpec? rtlSpec;
+  final UserManagedState<D>? userManagedState;
 
   ChartContainer(
-      {@required this.oldChartWidget,
-      @required this.chartWidget,
-      @required this.chartState,
-      @required this.animationValue,
-      @required this.rtl,
-      @required this.rtlSpec,
+      {required this.oldChartWidget,
+      required this.chartWidget,
+      required this.chartState,
+      required this.animationValue,
+      required this.rtl,
+      required this.rtlSpec,
       this.userManagedState});
 
   @override
@@ -72,14 +72,14 @@ class ChartContainer<D> extends CustomPaint {
 /// [RenderCustomPaint] that implements common [ChartContext].
 class ChartContainerRenderObject<D> extends RenderCustomPaint
     implements common.ChartContext {
-  common.BaseChart<D> _chart;
-  List<common.Series<dynamic, D>> _seriesList;
-  ChartState _chartState;
+  common.BaseChart<D?>? _chart;
+  List<common.Series<dynamic, D?>>? _seriesList;
+  ChartState? _chartState;
   bool _chartContainerIsRtl = false;
-  common.RTLSpec _rtlSpec;
-  common.DateTimeFactory _dateTimeFactory;
+  common.RTLSpec? _rtlSpec;
+  common.DateTimeFactory? _dateTimeFactory;
   bool _exploreMode = false;
-  List<common.A11yNode> _a11yNodes;
+  List<common.A11yNode>? _a11yNodes;
 
   final Logger _log = new Logger('charts_flutter.charts_container');
 
@@ -92,7 +92,7 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
   /// due to equality checks not being implemented and when a new object is
   /// created inside a new chart widget, a change is detected even if nothing
   /// has changed).
-  DateTime _lastConfigurationChangeTime;
+  DateTime? _lastConfigurationChangeTime;
 
   /// The minimum time required before the next configuration change.
   static const configurationChangeThresholdMs = 500;
@@ -107,16 +107,18 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
 
     if (_chart == null) {
       common.Performance.time('chartsCreate');
-      _chart = config.chartWidget.createCommonChart(_chartState);
-      _chart.init(this, new GraphicsFactory(context));
+      _chart = config.chartWidget
+              .createCommonChart(_chartState as BaseChartState<D>?)
+          as common.BaseChart<D?>?;
+      _chart!.init(this, new GraphicsFactory(context));
       common.Performance.timeEnd('chartsCreate');
     }
     common.Performance.time('chartsConfig');
-    config.chartWidget
-        .updateCommonChart(_chart, config.oldChartWidget, _chartState);
+    config.chartWidget.updateCommonChart(
+        _chart!, config.oldChartWidget, _chartState as BaseChartState<dynamic>);
 
     _rtlSpec = config.rtlSpec ?? const common.RTLSpec();
-    _chartContainerIsRtl = config.rtl ?? false;
+    _chartContainerIsRtl = config.rtl;
 
     common.Performance.timeEnd('chartsConfig');
 
@@ -129,17 +131,17 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
     // is because a behavior is detected to have changed when it has not.
     // A common case is when a setting is passed to a behavior is an object
     // and doesn't override the equality checks.
-    if (_chartState.chartIsDirty) {
+    if (_chartState!.chartIsDirty) {
       final currentTime = DateTime.now();
       final lastConfigurationBelowThreshold = _lastConfigurationChangeTime !=
               null &&
-          currentTime.difference(_lastConfigurationChangeTime).inMilliseconds <
+          currentTime.difference(_lastConfigurationChangeTime!).inMilliseconds <
               configurationChangeThresholdMs;
 
       _lastConfigurationChangeTime = currentTime;
 
       if (lastConfigurationBelowThreshold) {
-        _chartState.resetChartDirtyFlag();
+        _chartState!.resetChartDirtyFlag();
         _log.warning(
             'Chart configuration is changing more frequent than threshold'
             ' of $configurationChangeThresholdMs. Check if your behavior, axis,'
@@ -148,8 +150,8 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
       }
     }
 
-    if (_chartState.chartIsDirty) {
-      _chart.configurationChanged();
+    if (_chartState!.chartIsDirty) {
+      _chart!.configurationChanged();
     }
 
     // If series list changes or other configuration changed that triggered the
@@ -159,27 +161,28 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
     //
     // Series list is considered "changed" based on the instance.
     if (_seriesList != config.chartWidget.seriesList ||
-        _chartState.chartIsDirty) {
-      _chartState.resetChartDirtyFlag();
-      _seriesList = config.chartWidget.seriesList;
+        _chartState!.chartIsDirty) {
+      _chartState!.resetChartDirtyFlag();
+      _seriesList =
+          config.chartWidget.seriesList.cast<common.Series<dynamic, D?>>();
 
       // Clear out the a11y nodes generated.
       _a11yNodes = null;
 
       common.Performance.time('chartsDraw');
-      _chart.draw(_seriesList);
+      _chart!.draw(_seriesList!);
       common.Performance.timeEnd('chartsDraw');
 
       // This is needed because when a series changes we need to reset flutter's
       // animation value from 1.0 back to 0.0.
-      _chart.animationPercent = 0.0;
+      _chart!.animationPercent = 0.0;
       markNeedsLayout();
     } else {
-      _chart.animationPercent = config.animationValue;
+      _chart!.animationPercent = config.animationValue;
       markNeedsPaint();
     }
 
-    _updateUserManagedState(config.userManagedState);
+    _updateUserManagedState(config.userManagedState as UserManagedState<D?>?);
 
     // Set the painter used for calling common chart for paint.
     // This painter is also used to generate semantic nodes for a11y.
@@ -188,7 +191,7 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
 
   /// If user managed state is set, check each setting to see if it is different
   /// than internal chart state and only update if different.
-  _updateUserManagedState(UserManagedState<D> newState) {
+  _updateUserManagedState(UserManagedState<D?>? newState) {
     if (newState == null) {
       return;
     }
@@ -196,14 +199,14 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
     // Only override the selection model if it is different than the existing
     // selection model so update listeners are not unnecessarily triggered.
     for (common.SelectionModelType type in newState.selectionModels.keys) {
-      final model = _chart.getSelectionModel(type);
+      final model = _chart!.getSelectionModel(type);
 
       final userModel =
-          newState.selectionModels[type].getModel(_chart.currentSeriesList);
+          newState.selectionModels[type]!.getModel(_chart!.currentSeriesList!);
 
       if (model != userModel) {
         model.updateSelection(
-            userModel.selectedDatum, userModel.selectedSeries);
+            userModel!.selectedDatum, userModel.selectedSeries);
       }
     }
   }
@@ -211,8 +214,9 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
   @override
   void performLayout() {
     common.Performance.time('chartsLayout');
-    _chart.measure(constraints.maxWidth.toInt(), constraints.maxHeight.toInt());
-    _chart.layout(constraints.maxWidth.toInt(), constraints.maxHeight.toInt());
+    _chart!
+        .measure(constraints.maxWidth.toInt(), constraints.maxHeight.toInt());
+    _chart!.layout(constraints.maxWidth.toInt(), constraints.maxHeight.toInt());
     common.Performance.timeEnd('chartsLayout');
     size = constraints.biggest;
 
@@ -241,16 +245,16 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
   @override
   void requestAnimation(Duration transition) {
     void startAnimationController(_) {
-      _chartState.setAnimation(transition);
+      _chartState!.setAnimation(transition);
     }
 
     // Sometimes chart behaviors try to draw the chart outside of a Flutter draw
     // cycle. Schedule a frame manually to handle these cases.
-    if (!SchedulerBinding.instance.hasScheduledFrame) {
-      SchedulerBinding.instance.scheduleFrame();
+    if (!SchedulerBinding.instance!.hasScheduledFrame) {
+      SchedulerBinding.instance!.scheduleFrame();
     }
 
-    SchedulerBinding.instance.addPostFrameCallback(startAnimationController);
+    SchedulerBinding.instance!.addPostFrameCallback(startAnimationController);
   }
 
   /// Request Flutter to rebuild the widget/container of chart.
@@ -265,7 +269,7 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
   /// the legend to layout and redraw itself.
   void requestRebuild() {
     void doRebuild(_) {
-      _chartState.requestRebuild();
+      _chartState!.requestRebuild();
     }
 
     // Flutter does not allow requesting rebuild during the build cycle, this
@@ -273,7 +277,7 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
     // This is needed to request rebuild after the legend has been added in the
     // post process phase of the chart, which happens during the chart widget's
     // build cycle.
-    SchedulerBinding.instance.addPostFrameCallback(doRebuild);
+    SchedulerBinding.instance!.addPostFrameCallback(doRebuild);
   }
 
   /// When Flutter's markNeedsLayout is called, layout and paint are both
@@ -293,7 +297,7 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
   bool get chartContainerIsRtl => _chartContainerIsRtl;
 
   @override
-  common.RTLSpec get rtlSpec => _rtlSpec;
+  common.RTLSpec get rtlSpec => _rtlSpec!;
 
   @override
   bool get isRtl =>
@@ -301,20 +305,20 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
       _rtlSpec?.axisDirection == common.AxisDirection.reversed;
 
   @override
-  bool get isTappable => _chart.isTappable;
+  bool get isTappable => _chart!.isTappable;
 
   @override
-  common.DateTimeFactory get dateTimeFactory => _dateTimeFactory;
+  common.DateTimeFactory get dateTimeFactory => _dateTimeFactory!;
 
   /// Gets the chart's gesture listener.
-  common.ProxyGestureListener get gestureProxy => _chart.gestureProxy;
+  common.ProxyGestureListener get gestureProxy => _chart!.gestureProxy;
 
   TextDirection get textDirection =>
       _chartContainerIsRtl ? TextDirection.rtl : TextDirection.ltr;
 
   @override
   void enableA11yExploreMode(List<common.A11yNode> nodes,
-      {String announcement}) {
+      {String? announcement}) {
     _a11yNodes = nodes;
     _exploreMode = true;
     _setNewPainter();
@@ -325,7 +329,7 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
   }
 
   @override
-  void disableA11yExploreMode({String announcement}) {
+  void disableA11yExploreMode({String? announcement}) {
     _a11yNodes = [];
     _exploreMode = false;
     _setNewPainter();
@@ -337,7 +341,7 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
 
   void _setNewPainter() {
     painter = new ChartContainerCustomPaint(
-        oldPainter: painter,
+        oldPainter: painter as ChartContainerCustomPaint?,
         chart: _chart,
         exploreMode: _exploreMode,
         a11yNodes: _a11yNodes,
@@ -346,17 +350,17 @@ class ChartContainerRenderObject<D> extends RenderCustomPaint
 }
 
 class ChartContainerCustomPaint extends CustomPainter {
-  final common.BaseChart chart;
-  final bool exploreMode;
-  final List<common.A11yNode> a11yNodes;
-  final TextDirection textDirection;
+  final common.BaseChart? chart;
+  final bool? exploreMode;
+  final List<common.A11yNode>? a11yNodes;
+  final TextDirection? textDirection;
 
   factory ChartContainerCustomPaint(
-      {ChartContainerCustomPaint oldPainter,
-      common.BaseChart chart,
-      bool exploreMode,
-      List<common.A11yNode> a11yNodes,
-      TextDirection textDirection}) {
+      {ChartContainerCustomPaint? oldPainter,
+      common.BaseChart? chart,
+      bool? exploreMode,
+      List<common.A11yNode>? a11yNodes,
+      TextDirection? textDirection}) {
     if (oldPainter != null &&
         oldPainter.exploreMode == exploreMode &&
         oldPainter.a11yNodes == a11yNodes &&
@@ -377,8 +381,8 @@ class ChartContainerCustomPaint extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     common.Performance.time('chartsPaint');
-    final chartsCanvas = new ChartCanvas(canvas, chart.graphicsFactory);
-    chart.paint(chartsCanvas);
+    final chartsCanvas = new ChartCanvas(canvas, chart!.graphicsFactory!);
+    chart!.paint(chartsCanvas);
     common.Performance.timeEnd('chartsPaint');
   }
 
@@ -400,7 +404,7 @@ class ChartContainerCustomPaint extends CustomPainter {
   List<CustomPainterSemantics> _buildSemantics(Size size) {
     final nodes = <CustomPainterSemantics>[];
 
-    for (common.A11yNode node in a11yNodes) {
+    for (common.A11yNode node in a11yNodes!) {
       final rect = new Rect.fromLTWH(
           node.boundingBox.left.toDouble(),
           node.boundingBox.top.toDouble(),

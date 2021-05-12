@@ -21,8 +21,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class HorizontalBarLabelCustomChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool? animate;
 
   HorizontalBarLabelCustomChart(this.seriesList, {this.animate});
 
@@ -57,20 +57,20 @@ class HorizontalBarLabelCustomChart extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Sales',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: data,
         // Set a label accessor to control the text of the bar label.
-        labelAccessorFn: (OrdinalSales sales, _) =>
-            '${sales.year}: \$${sales.sales.toString()}',
-        insideLabelStyleAccessorFn: (OrdinalSales sales, _) {
-          final color = (sales.year == '2014')
+        labelAccessorFn: (OrdinalSales? sales, _) =>
+            '${sales!.year}: \$${sales.sales.toString()}',
+        insideLabelStyleAccessorFn: (OrdinalSales? sales, _) {
+          final color = (sales!.year == '2014')
               ? charts.MaterialPalette.red.shadeDefault
               : charts.MaterialPalette.yellow.shadeDefault.darker;
           return new charts.TextStyleSpec(color: color);
         },
-        outsideLabelStyleAccessorFn: (OrdinalSales sales, _) {
-          final color = (sales.year == '2014')
+        outsideLabelStyleAccessorFn: (OrdinalSales? sales, _) {
+          final color = (sales!.year == '2014')
               ? charts.MaterialPalette.red.shadeDefault
               : charts.MaterialPalette.yellow.shadeDefault.darker;
           return new charts.TextStyleSpec(color: color);
@@ -108,20 +108,20 @@ class HorizontalBarLabelCustomChart extends StatelessWidget {
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Sales',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (OrdinalSales? sales, _) => sales!.year,
+        measureFn: (OrdinalSales? sales, _) => sales!.sales,
         data: data,
         // Set a label accessor to control the text of the bar label.
-        labelAccessorFn: (OrdinalSales sales, _) =>
-            '${sales.year}: \$${sales.sales.toString()}',
-        insideLabelStyleAccessorFn: (OrdinalSales sales, _) {
-          final color = (sales.year == '2014')
+        labelAccessorFn: (OrdinalSales? sales, _) =>
+            '${sales!.year}: \$${sales.sales.toString()}',
+        insideLabelStyleAccessorFn: (OrdinalSales? sales, _) {
+          final color = (sales!.year == '2014')
               ? charts.MaterialPalette.red.shadeDefault
               : charts.MaterialPalette.yellow.shadeDefault.darker;
           return new charts.TextStyleSpec(color: color);
         },
-        outsideLabelStyleAccessorFn: (OrdinalSales sales, _) {
-          final color = (sales.year == '2014')
+        outsideLabelStyleAccessorFn: (OrdinalSales? sales, _) {
+          final color = (sales!.year == '2014')
               ? charts.MaterialPalette.red.shadeDefault
               : charts.MaterialPalette.yellow.shadeDefault.darker;
           return new charts.TextStyleSpec(color: color);

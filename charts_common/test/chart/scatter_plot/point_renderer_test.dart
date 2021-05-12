@@ -28,16 +28,16 @@ class MyRow {
   final String campaignString;
   final int campaign;
   final int clickCount;
-  final double radius;
-  final double boundsRadius;
-  final String shape;
+  final double? radius;
+  final double? boundsRadius;
+  final String? shape;
   MyRow(this.campaignString, this.campaign, this.clickCount, this.radius,
       this.boundsRadius, this.shape);
 }
 
 void main() {
   PointRenderer renderer;
-  List<MutableSeries<int>> numericSeriesList;
+  late List<MutableSeries<int>> numericSeriesList;
 
   setUp(() {
     var myFakeDesktopData = [
@@ -52,11 +52,11 @@ void main() {
     final maxMeasure = 300;
 
     numericSeriesList = [
-      MutableSeries<int>(Series<MyRow, int>(
+      MutableSeries<int>(Series<MyRow?, int>(
           id: 'Desktop',
-          colorFn: (MyRow row, _) {
+          colorFn: (MyRow? row, _) {
             // Color bucket the measure column value into 3 distinct colors.
-            final bucket = row.clickCount / maxMeasure;
+            final bucket = row!.clickCount / maxMeasure;
 
             if (bucket < 1 / 3) {
               return MaterialPalette.blue.shadeDefault;
@@ -66,10 +66,10 @@ void main() {
               return MaterialPalette.green.shadeDefault;
             }
           },
-          domainFn: (MyRow row, _) => row.campaign,
-          measureFn: (MyRow row, _) => row.clickCount,
-          measureOffsetFn: (MyRow row, _) => 0,
-          radiusPxFn: (MyRow row, _) => row.radius,
+          domainFn: (MyRow? row, _) => row!.campaign,
+          measureFn: (MyRow? row, _) => row!.clickCount,
+          measureOffsetFn: (MyRow? row, _) => 0,
+          radiusPxFn: (MyRow? row, _) => row!.radius,
           data: myFakeDesktopData)
         // Define a bounds line radius function.
         ..setAttribute(boundsLineRadiusPxFnKey,
@@ -88,9 +88,9 @@ void main() {
       // Validate Desktop series.
       var series = numericSeriesList[0];
 
-      var keyFn = series.keyFn;
+      String Function(int) keyFn = series.keyFn!;
 
-      var elementsList = series.getAttr(pointElementsKey);
+      var elementsList = series.getAttr(pointElementsKey)!;
       expect(elementsList.length, equals(4));
 
       expect(elementsList[0].index, equals(0));
@@ -134,7 +134,7 @@ void main() {
       // Validate Desktop series.
       var series = numericSeriesList[0];
 
-      var elementsList = series.getAttr(pointElementsKey);
+      var elementsList = series.getAttr(pointElementsKey)!;
       expect(elementsList.length, equals(4));
 
       expect(elementsList[0].radiusPx, equals(2.0));
@@ -152,7 +152,7 @@ void main() {
       renderer = PointRenderer<int>(config: PointRendererConfig());
 
       numericSeriesList[0].setAttr(pointSymbolRendererFnKey,
-          (int index) => numericSeriesList[0].data[index].shape as String);
+          (int index) => numericSeriesList[0].data![index].shape as String?);
 
       renderer.preprocessSeries(numericSeriesList);
 
@@ -161,7 +161,7 @@ void main() {
       // Validate Desktop series.
       var series = numericSeriesList[0];
 
-      var elementsList = series.getAttr(pointElementsKey);
+      var elementsList = series.getAttr(pointElementsKey)!;
       expect(elementsList.length, equals(4));
 
       expect(elementsList[0].symbolRendererId, equals(defaultSymbolRendererId));
@@ -174,7 +174,7 @@ void main() {
       renderer = PointRenderer<int>(config: PointRendererConfig());
 
       numericSeriesList[0].setAttr(pointSymbolRendererFnKey,
-          (int index) => numericSeriesList[0].data[index].shape as String);
+          (int index) => numericSeriesList[0].data![index].shape as String?);
       numericSeriesList[0].setAttr(pointSymbolRendererIdKey, 'shape 0');
 
       renderer.preprocessSeries(numericSeriesList);
@@ -184,7 +184,7 @@ void main() {
       // Validate Desktop series.
       var series = numericSeriesList[0];
 
-      var elementsList = series.getAttr(pointElementsKey);
+      var elementsList = series.getAttr(pointElementsKey)!;
       expect(elementsList.length, equals(4));
 
       expect(elementsList[0].symbolRendererId, equals('shape 0'));

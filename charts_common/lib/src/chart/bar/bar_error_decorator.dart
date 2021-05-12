@@ -48,11 +48,11 @@ class BarErrorDecorator<D> extends BarRendererDecorator<D> {
       this.outlineColor = _defaultOutlineColor});
 
   @override
-  void decorate(Iterable<ImmutableBarRendererElement<D>> barElements,
-      ChartCanvas canvas, GraphicsFactory graphicsFactory,
-      {Rectangle<num> drawBounds,
-      double animationPercent,
-      bool renderingVertically,
+  void decorate(Iterable<ImmutableBarRendererElement<D>?> barElements,
+      ChartCanvas canvas, GraphicsFactory? graphicsFactory,
+      {Rectangle<num>? drawBounds,
+      double? animationPercent,
+      bool? renderingVertically,
       bool rtl = false}) {
     // Only decorate the bars when animation is at 100%.
     if (animationPercent != 1.0) {
@@ -60,37 +60,37 @@ class BarErrorDecorator<D> extends BarRendererDecorator<D> {
     }
 
     for (var element in barElements) {
-      final bounds = element.bounds;
+      final bounds = element!.bounds;
       final datumIndex = element.index;
 
-      final measureLowerBoundFn = element.series.measureLowerBoundFn;
-      final measureUpperBoundFn = element.series.measureUpperBoundFn;
+      final measureLowerBoundFn = element.series!.measureLowerBoundFn;
+      final measureUpperBoundFn = element.series!.measureUpperBoundFn;
 
       if (measureLowerBoundFn != null && measureUpperBoundFn != null) {
-        final measureOffsetFn = element.series.measureOffsetFn;
+        final measureOffsetFn = element.series!.measureOffsetFn;
         final measureAxis =
-            element.series.getAttr(measureAxisKey) as ImmutableAxis<num>;
+            element.series!.getAttr(measureAxisKey) as ImmutableAxis<num>?;
 
-        if (renderingVertically) {
-          final startY = measureAxis.getLocation(
-              measureLowerBoundFn(datumIndex) + measureOffsetFn(datumIndex));
+        if (renderingVertically!) {
+          final startY = measureAxis!.getLocation(
+              measureLowerBoundFn(datumIndex) + measureOffsetFn!(datumIndex)!);
           final endY = measureAxis.getLocation(
-              measureUpperBoundFn(datumIndex) + measureOffsetFn(datumIndex));
+              measureUpperBoundFn(datumIndex) + measureOffsetFn(datumIndex)!);
 
           if (startY != endY) {
-            final barWidth = bounds.right - bounds.left;
+            final barWidth = bounds!.right - bounds.left;
             final x = (bounds.left + bounds.right) / 2;
             final rectWidth = min(strokeWidthPx + 2 * outlineWidthPx, barWidth);
-            final strokeWidth = rectWidth - 2 * outlineWidthPx;
+            final num strokeWidth = rectWidth - 2 * outlineWidthPx;
             final rectEndpointLength =
                 min(endpointLengthPx + 2 * outlineWidthPx, barWidth);
-            final endpointLength = rectEndpointLength - 2 * outlineWidthPx;
+            final num endpointLength = rectEndpointLength - 2 * outlineWidthPx;
 
             if (outlineWidthPx > 0) {
               // Draw rectangle rendering the outline for the vertical line.
               canvas.drawRect(
-                  Rectangle.fromPoints(Point(x - rectWidth / 2, startY),
-                      Point(x + rectWidth / 2, endY)),
+                  Rectangle.fromPoints(Point(x - rectWidth / 2, startY!),
+                      Point(x + rectWidth / 2, endY!)),
                   fill: outlineColor,
                   strokeWidthPx: outlineWidthPx);
 
@@ -113,42 +113,42 @@ class BarErrorDecorator<D> extends BarRendererDecorator<D> {
 
             // Draw vertical whisker line.
             canvas.drawLine(
-                points: [Point(x, startY), Point(x, endY)],
+                points: [Point(x, startY!), Point(x, endY!)],
                 stroke: strokeColor,
-                strokeWidthPx: strokeWidth);
+                strokeWidthPx: strokeWidth as double?);
 
             // Draw horizontal whisker line for the lower bound.
             canvas.drawLine(points: [
               Point(x - endpointLength / 2, startY),
               Point(x + endpointLength / 2, startY)
-            ], stroke: strokeColor, strokeWidthPx: strokeWidth);
+            ], stroke: strokeColor, strokeWidthPx: strokeWidth as double?);
 
             // Draw horizontal whisker line for the upper bound.
             canvas.drawLine(points: [
               Point(x - endpointLength / 2, endY),
               Point(x + endpointLength / 2, endY)
-            ], stroke: strokeColor, strokeWidthPx: strokeWidth);
+            ], stroke: strokeColor, strokeWidthPx: strokeWidth as double?);
           }
         } else {
-          final startX = measureAxis.getLocation(
-              measureLowerBoundFn(datumIndex) + measureOffsetFn(datumIndex));
+          final startX = measureAxis!.getLocation(
+              measureLowerBoundFn(datumIndex) + measureOffsetFn!(datumIndex)!);
           final endX = measureAxis.getLocation(
-              measureUpperBoundFn(datumIndex) + measureOffsetFn(datumIndex));
+              measureUpperBoundFn(datumIndex) + measureOffsetFn(datumIndex)!);
 
           if (startX != endX) {
-            final barWidth = bounds.bottom - bounds.top;
+            final barWidth = bounds!.bottom - bounds.top;
             final y = (bounds.top + bounds.bottom) / 2;
             final rectWidth = min(strokeWidthPx + 2 * outlineWidthPx, barWidth);
-            final strokeWidth = rectWidth - 2 * outlineWidthPx;
+            final num strokeWidth = rectWidth - 2 * outlineWidthPx;
             final rectEndpointLength =
                 min(endpointLengthPx + 2 * outlineWidthPx, barWidth);
-            final endpointLength = rectEndpointLength - 2 * outlineWidthPx;
+            final num endpointLength = rectEndpointLength - 2 * outlineWidthPx;
 
             if (outlineWidthPx > 0) {
               // Draw rectangle rendering the outline for the horizontal line.
               canvas.drawRect(
-                  Rectangle.fromPoints(Point(startX, y - rectWidth / 2),
-                      Point(endX, y + rectWidth / 2)),
+                  Rectangle.fromPoints(Point(startX!, y - rectWidth / 2),
+                      Point(endX!, y + rectWidth / 2)),
                   fill: outlineColor,
                   strokeWidthPx: outlineWidthPx);
 
@@ -171,21 +171,21 @@ class BarErrorDecorator<D> extends BarRendererDecorator<D> {
 
             // Draw horizontal whisker line.
             canvas.drawLine(
-                points: [Point(startX, y), Point(endX, y)],
+                points: [Point(startX!, y), Point(endX!, y)],
                 stroke: strokeColor,
-                strokeWidthPx: strokeWidth);
+                strokeWidthPx: strokeWidth as double?);
 
             // Draw vertical whisker line for the lower bound.
             canvas.drawLine(points: [
               Point(startX, y - endpointLength / 2),
               Point(startX, y + endpointLength / 2)
-            ], stroke: strokeColor, strokeWidthPx: strokeWidth);
+            ], stroke: strokeColor, strokeWidthPx: strokeWidth as double?);
 
             // Draw vertical whisker line for the upper bound.
             canvas.drawLine(points: [
               Point(endX, y - endpointLength / 2),
               Point(endX, y + endpointLength / 2)
-            ], stroke: strokeColor, strokeWidthPx: strokeWidth);
+            ], stroke: strokeColor, strokeWidthPx: strokeWidth as double?);
           }
         }
       }
