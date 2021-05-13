@@ -15,8 +15,6 @@
 
 import 'dart:math' show Point, Rectangle, max;
 
-import 'package:meta/meta.dart' show required;
-
 import 'layout_config.dart' show LayoutConfig;
 import 'layout_manager.dart';
 import 'layout_margin_strategy.dart';
@@ -119,7 +117,7 @@ class LayoutManagerImpl implements LayoutManager {
     final drawableViews =
         _views.where((LayoutView? view) => view!.isSeriesRenderer);
 
-    var componentBounds = drawableViews?.first?.componentBounds;
+    var componentBounds = drawableViews.first?.componentBounds;
 
     if (componentBounds != null) {
       for (LayoutView? view in drawableViews.skip(1)) {

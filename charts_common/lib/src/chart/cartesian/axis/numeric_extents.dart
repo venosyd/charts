@@ -21,7 +21,6 @@ class NumericExtents implements Extents<num> {
   final num max;
 
   /// Precondition: [min] <= [max].
-  // TODO: When initializer list asserts are supported everywhere,
   // add the precondition as an initializer list assert. This is supported in
   // Flutter only.
   const NumericExtents(this.min, this.max);

@@ -86,8 +86,8 @@ class BucketingAxisSpec extends NumericAxisSpec {
             viewport: viewport ?? const NumericExtents(0.0, 1.0));
 
   @override
-  void configure(
-      Axis<num?> axis, ChartContext? context, GraphicsFactory? graphicsFactory) {
+  void configure(Axis<num?> axis, ChartContext? context,
+      GraphicsFactory? graphicsFactory) {
     super.configure(axis, context, graphicsFactory);
 
     if (axis is NumericAxis && viewport != null) {
@@ -98,7 +98,7 @@ class BucketingAxisSpec extends NumericAxisSpec {
       axis.threshold = threshold;
     }
 
-    if (axis is BucketingNumericAxis && showBucket != null) {
+    if (axis is BucketingNumericAxis) {
       axis.showBucket = showBucket;
     }
   }

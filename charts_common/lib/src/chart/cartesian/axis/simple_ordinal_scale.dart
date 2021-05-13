@@ -49,7 +49,6 @@ class SimpleOrdinalScale implements OrdinalScale {
   int? _viewportDataSize;
   String? _viewportStartingDomain;
 
-  // TODO: When there are horizontal bars increasing from where
   // the domain and measure axis intersects but the desired behavior is
   // flipped. The plan is to fix this by fixing code to flip the range in the
   // code.
@@ -295,7 +294,6 @@ class SimpleOrdinalScale implements OrdinalScale {
 
   @override
   int compareDomainValueToViewport(String? domainValue) {
-    // TODO: This currently works because range defaults to 0-1
     // This needs to be looked into further.
     var i = _domain.indexOf(domainValue);
     if (i != null && range != null) {
@@ -359,7 +357,6 @@ class SimpleOrdinalScale implements OrdinalScale {
       case RangeBandType.none:
       default:
         throw StateError('RangeBandType must not be NONE or FIXED_DOMAIN');
-        break;
     }
 
     _updateCachedFields(stepSizePixels, rangeBandPixels, stepSizePixels / 2.0);

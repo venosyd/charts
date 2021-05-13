@@ -14,7 +14,7 @@
 // limitations under the License.
 
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:meta/meta.dart' show required;
+
 import '../../../../common/date_time_factory.dart';
 import 'time_tick_formatter_impl.dart'
     show CalendarField, TimeTickFormatterImpl;

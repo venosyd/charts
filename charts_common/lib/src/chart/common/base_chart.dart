@@ -69,7 +69,8 @@ abstract class BaseChart<D> {
   Set<String?> _usingRenderers = <String?>{};
   Map<String?, List<MutableSeries<D>>>? _rendererToSeriesList;
 
-  final Map<String?, SeriesRenderer<D?>> _seriesRenderers = <String?, SeriesRenderer<D>>{};
+  final Map<String?, SeriesRenderer<D?>> _seriesRenderers =
+      <String?, SeriesRenderer<D>>{};
 
   /// Map of named chart behaviors attached to this chart.
   final _behaviorRoleMap = <String, ChartBehavior<D>>{};
@@ -379,7 +380,7 @@ abstract class BaseChart<D> {
       return false;
     }
 
-    final role = behavior?.role;
+    final role = behavior.role;
     if (role != null && _behaviorRoleMap[role] == behavior) {
       _behaviorRoleMap.remove(role);
     }
@@ -409,7 +410,7 @@ abstract class BaseChart<D> {
 
   /// Tells the chart that this behavior no longer responds to tap events.
   void unregisterTappable(ChartBehavior<D> behavior) {
-    final role = behavior?.role;
+    final role = behavior.role;
     if (role != null && _behaviorTappableMap[role] == behavior) {
       _behaviorTappableMap.remove(role);
     }

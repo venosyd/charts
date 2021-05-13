@@ -37,7 +37,6 @@ class WidgetLayoutDelegate extends MultiChildLayoutDelegate {
 
   @override
   void performLayout(Size size) {
-    // TODO: Change this to a layout manager that supports more
     // than one buildable behavior that changes chart size. Remove assert when
     // this is possible.
     assert(idAndBehavior.keys.isEmpty || idAndBehavior.keys.length == 1);
@@ -83,7 +82,6 @@ class WidgetLayoutDelegate extends MultiChildLayoutDelegate {
 
     // Position buildable behavior.
     if (behaviorID != null) {
-      // TODO: Unable to relayout with new smaller width.
       // In the delegate, all children are required to have layout called
       // exactly once.
       final behaviorOffset = _getBehaviorOffset(idAndBehavior[behaviorID]!,
@@ -95,7 +93,6 @@ class WidgetLayoutDelegate extends MultiChildLayoutDelegate {
 
   @override
   bool shouldRelayout(MultiChildLayoutDelegate oldDelegate) {
-    // TODO: Deep equality check because the instance will not be
     // the same on each build, even if the buildable behavior has not changed.
     return idAndBehavior != (oldDelegate as WidgetLayoutDelegate).idAndBehavior;
   }
@@ -134,6 +131,8 @@ class WidgetLayoutDelegate extends MultiChildLayoutDelegate {
         case _HorizontalJustification.right:
           behaviorOffset =
               new Offset(chartSize!.width - behaviorSize!.width, heightOffset);
+          break;
+        default:
           break;
       }
     } else if (behaviorPosition == common.BehaviorPosition.start ||

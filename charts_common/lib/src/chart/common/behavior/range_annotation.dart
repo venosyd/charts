@@ -47,7 +47,6 @@ import 'chart_behavior.dart' show ChartBehavior;
 /// This is typically used for line charts to call out sections of the data
 /// range.
 ///
-/// TODO: Support labels.
 class RangeAnnotation<D> implements ChartBehavior<D?> {
   static const _defaultLabelAnchor = AnnotationLabelAnchor.end;
   static const _defaultLabelDirection = AnnotationLabelDirection.auto;
@@ -241,9 +240,8 @@ class RangeAnnotation<D> implements ChartBehavior<D?> {
       // Add line annotation settings.
       final dashPattern =
           annotation is LineAnnotationSegment ? annotation.dashPattern : null;
-      final strokeWidthPx = annotation is LineAnnotationSegment
-          ? annotation.strokeWidthPx ?? defaultLabelStyleSpec
-          : 0.0;
+      final strokeWidthPx =
+          annotation is LineAnnotationSegment ? annotation.strokeWidthPx : 0.0;
 
       final isRange = annotation is RangeAnnotationSegment;
 
@@ -283,7 +281,7 @@ class RangeAnnotation<D> implements ChartBehavior<D?> {
             ..labelDirection = labelDirection
             ..labelPosition = labelPosition
             ..labelStyleSpec = labelStyleSpec
-            ..strokeWidthPx = strokeWidthPx as double?);
+            ..strokeWidthPx = strokeWidthPx);
 
         _annotationMap[key] = animatingAnnotation;
       }
@@ -305,7 +303,7 @@ class RangeAnnotation<D> implements ChartBehavior<D?> {
         ..labelDirection = labelDirection
         ..labelPosition = labelPosition
         ..labelStyleSpec = labelStyleSpec
-        ..strokeWidthPx = strokeWidthPx as double?;
+        ..strokeWidthPx = strokeWidthPx;
 
       animatingAnnotation!.setNewTarget(annotationElement);
     });
@@ -485,7 +483,8 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
   }
 
   /// Calculates the bounds of the annotation.
-  Rectangle<num>? _getAnnotationBounds(_AnnotationElement<D> annotationElement) {
+  Rectangle<num>? _getAnnotationBounds(
+      _AnnotationElement<D> annotationElement) {
     Rectangle<num>? bounds;
 
     switch (annotationElement.annotation.axisType) {
@@ -506,6 +505,8 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
             annotationElement.annotation.startPosition! -
                 annotationElement.annotation.endPosition!);
         break;
+      default:
+        break;
     }
 
     return bounds;
@@ -520,15 +521,17 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
       case RangeAnnotationAxisType.domain:
         points.add(Point<num>(
             annotationElement.annotation.startPosition!, _drawAreaBounds!.top));
-        points.add(Point<num>(
-            annotationElement.annotation.endPosition!, _drawAreaBounds!.bottom));
+        points.add(Point<num>(annotationElement.annotation.endPosition!,
+            _drawAreaBounds!.bottom));
         break;
 
       case RangeAnnotationAxisType.measure:
-        points.add(Point<num>(
-            _drawAreaBounds!.left, annotationElement.annotation.startPosition!));
+        points.add(Point<num>(_drawAreaBounds!.left,
+            annotationElement.annotation.startPosition!));
         points.add(Point<num>(
             _drawAreaBounds!.right, annotationElement.annotation.endPosition!));
+        break;
+      default:
         break;
     }
 
@@ -562,7 +565,11 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
 
             case AnnotationLabelAnchor.middle:
               break;
+            default:
+              break;
           }
+          break;
+        default:
           break;
       }
     } else {
@@ -592,11 +599,11 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
       case RangeAnnotationAxisType.domain:
         return _getDomainLabelPosition(
             labelType, bounds, annotationElement, labelElement);
-        break;
 
       case RangeAnnotationAxisType.measure:
         return _getMeasureLabelPosition(
             labelType, bounds, annotationElement, labelElement);
+      default:
         break;
     }
     return null;
@@ -657,13 +664,14 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
               labelPadding;
         }
         break;
+      default:
+        break;
     }
 
     switch (calculatedLabelPosition) {
       case AnnotationLabelPosition.margin:
       case AnnotationLabelPosition.auto:
         throw ArgumentError(_unresolvedAutoMessage);
-        break;
 
       case AnnotationLabelPosition.outside:
         switch (labelType) {
@@ -677,7 +685,8 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
             break;
           case _AnnotationLabelType.middle:
             labelX = bounds!.left +
-                (bounds.width - labelElement.measurement!.horizontalSliceWidth!) /
+                (bounds.width -
+                        labelElement.measurement!.horizontalSliceWidth!) /
                     2;
             break;
         }
@@ -698,13 +707,16 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
             break;
           case _AnnotationLabelType.middle:
             labelX = bounds!.left +
-                (bounds.width - labelElement.measurement!.horizontalSliceWidth!) /
+                (bounds.width -
+                        labelElement.measurement!.horizontalSliceWidth!) /
                     2;
             break;
         }
 
         labelElement.textDirection =
             isRtl ? TextDirection.rtl : TextDirection.ltr;
+        break;
+      default:
         break;
     }
 
@@ -752,13 +764,14 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
               labelPadding;
         }
         break;
+      default:
+        break;
     }
 
     switch (calculatedLabelPosition) {
       case AnnotationLabelPosition.margin:
       case AnnotationLabelPosition.auto:
         throw ArgumentError(_unresolvedAutoMessage);
-        break;
 
       case AnnotationLabelPosition.outside:
         switch (labelType) {
@@ -800,6 +813,8 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
 
         labelElement.textDirection =
             isRtl ? TextDirection.rtl : TextDirection.ltr;
+        break;
+      default:
         break;
     }
 
@@ -871,13 +886,14 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
           }
         }
         break;
+      default:
+        break;
     }
 
     switch (calculatedLabelPosition) {
       case AnnotationLabelPosition.margin:
       case AnnotationLabelPosition.auto:
         throw ArgumentError(_unresolvedAutoMessage);
-        break;
 
       case AnnotationLabelPosition.outside:
         switch (labelType) {
@@ -891,7 +907,8 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
             break;
           case _AnnotationLabelType.middle:
             labelY = bounds!.top +
-                (bounds.height - labelElement.measurement!.verticalSliceWidth!) /
+                (bounds.height -
+                        labelElement.measurement!.verticalSliceWidth!) /
                     2;
             break;
         }
@@ -909,10 +926,13 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
             break;
           case _AnnotationLabelType.middle:
             labelY = bounds!.top +
-                (bounds.height - labelElement.measurement!.verticalSliceWidth!) /
+                (bounds.height -
+                        labelElement.measurement!.verticalSliceWidth!) /
                     2;
             break;
         }
+        break;
+      default:
         break;
     }
 
@@ -973,13 +993,14 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
           }
         }
         break;
+      default:
+        break;
     }
 
     switch (calculatedLabelPosition) {
       case AnnotationLabelPosition.margin:
       case AnnotationLabelPosition.auto:
         throw ArgumentError(_unresolvedAutoMessage);
-        break;
 
       case AnnotationLabelPosition.outside:
         switch (labelType) {
@@ -1017,6 +1038,8 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
                     2;
             break;
         }
+        break;
+      default:
         break;
     }
 
@@ -1178,7 +1201,6 @@ class _AnimatedAnnotation<D> {
   ///
   /// This should be called in place of "setNewTarget" for annotations have been
   /// removed from the list.
-  /// TODO: Needed?
   void animateOut() {
     final newTarget = _currentAnnotation!.clone();
 
@@ -1380,7 +1402,6 @@ enum AnnotationLabelDirection {
   horizontal,
 
   /// Text flows parallel to the y axis.
-  /// TODO[b/112553019]: Implement vertical text rendering of labels.
   vertical,
 }
 

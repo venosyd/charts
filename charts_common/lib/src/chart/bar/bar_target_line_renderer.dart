@@ -237,7 +237,6 @@ class BarTargetLineRenderer<D> extends BaseBarRenderer<D,
     Iterable<_BarTargetLineRendererElement?> barElements,
   ) {
     barElements.forEach((_BarTargetLineRendererElement? bar) {
-      // TODO: Combine common line attributes into
       // GraphicsFactory.lineStyle or similar.
       canvas.drawLine(
           clipBounds: drawBounds,

@@ -136,7 +136,7 @@ class AutoDateTimeTickProviderSpec implements DateTimeTickProviderSpec {
       other is AutoDateTimeTickProviderSpec && includeTime == other.includeTime;
 
   @override
-  int get hashCode => includeTime?.hashCode ?? 0;
+  int get hashCode => includeTime.hashCode;
 }
 
 /// [TickProviderSpec] that sets up time ticks with days increments only.

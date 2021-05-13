@@ -57,7 +57,6 @@ abstract class InitialHintBehavior<D> implements ChartBehavior<D> {
 
   double _maxHintTranslate = 0.0;
 
-  // TODO: Translation animation only works for ordinal axis.
   /// The maximum amount ordinal values to shift the viewport for the the hint
   /// animation.
   ///
@@ -160,7 +159,6 @@ abstract class InitialHintBehavior<D> implements ChartBehavior<D> {
 
       final domainAxis = chart!.domainAxis!;
 
-      // TODO: Translation animation only works for axis with a
       // rangeband type that returns a non zero step size. If two rows have
       // the same domain value, step size could also equal 0.
       assert(domainAxis.stepSize != 0.0);
@@ -205,7 +203,7 @@ abstract class InitialHintBehavior<D> implements ChartBehavior<D> {
     // not to update the location of the measure axes, the measure axis will
     // change during the hint animation and make values jump back and forth.
     _chart!.getMeasureAxis().lockAxis = true;
-    _chart!.getMeasureAxis(axisId: Axis.secondaryMeasureAxisId)?.lockAxis = true;
+    _chart!.getMeasureAxis(axisId: Axis.secondaryMeasureAxisId).lockAxis = true;
   }
 
   /// Stop hint animation
@@ -213,7 +211,7 @@ abstract class InitialHintBehavior<D> implements ChartBehavior<D> {
   void stopHintAnimation() {
     // When panning is completed, unlock the measure axis.
     _chart!.getMeasureAxis().lockAxis = false;
-    _chart!.getMeasureAxis(axisId: Axis.secondaryMeasureAxisId)?.lockAxis =
+    _chart!.getMeasureAxis(axisId: Axis.secondaryMeasureAxisId).lockAxis =
         false;
   }
 

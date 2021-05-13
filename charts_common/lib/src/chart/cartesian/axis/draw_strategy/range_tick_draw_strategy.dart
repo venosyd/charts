@@ -15,7 +15,7 @@
 
 import 'dart:math';
 
-import 'package:meta/meta.dart' show immutable, required;
+import 'package:meta/meta.dart' show immutable;
 
 import '../../../../common/graphics_factory.dart' show GraphicsFactory;
 import '../../../../common/line_style.dart' show LineStyle;
@@ -220,7 +220,6 @@ class RangeTickDrawStrategy<D> extends SmallTickDrawStrategy<D?> {
   @override
   ViewMeasuredSizes measureVerticallyDrawnTicks(
       List<Tick<D?>?>? ticks, int? maxWidth, int? maxHeight) {
-    // TODO: Add spacing to account for the distance between the
     // text and the axis baseline (even if it isn't drawn).
 
     final maxHorizontalSliceWidth = ticks!.fold(0.0, (num prevMax, tick) {
@@ -351,6 +350,8 @@ class RangeTickDrawStrategy<D> extends SmallTickDrawStrategy<D?> {
             rangeShadeHeightPx,
             rangeEndTickStart.y - rangeEndTickStart.y);
         break;
+      default:
+        break;
     }
     canvas.drawRect(rangeShade,
         fill: rangeShadeStyle.color,
@@ -395,7 +396,6 @@ class RangeTickDrawStrategy<D> extends SmallTickDrawStrategy<D?> {
                     2)
             .round();
       }
-      // TODO: add support for orientation left and right.
       canvas.drawText(line, x, y + multiLineLabelOffset);
       multiLineLabelOffset += BaseTickDrawStrategy.multiLineLabelPadding +
           line.measurement!.verticalSliceWidth!.round();

@@ -166,6 +166,8 @@ class PerSeriesLegendEntryGenerator<D> implements LegendEntryGenerator<D> {
           // [calculatedMeasure] intentionally left null, since we do not want
           // to show any measures.
           break;
+        default:
+          break;
       }
 
       seriesAndMeasure[seriesId] = calculatedMeasure?.toDouble();

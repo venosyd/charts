@@ -62,6 +62,8 @@ abstract class A11yExploreBehavior<D> implements ChartBehavior<D> {
       case ExploreModeTrigger.tap:
         _listener = GestureListener(onTap: _toggleExploreMode);
         break;
+      default:
+        break;
     }
   }
 

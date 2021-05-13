@@ -169,7 +169,7 @@ class SelectNearest<D> implements ChartBehavior<D> {
     final List<ImmutableSeries<D?>?> seriesList = <ImmutableSeries<D>?>[];
     List<SeriesDatum<D?>>? seriesDatumList = <SeriesDatum<D>>[];
 
-    if (details != null && details.isNotEmpty) {
+    if (details.isNotEmpty) {
       details.sort((a, b) => a.domainDistance!.compareTo(b.domainDistance!));
 
       if (maximumDomainDistancePx == null ||
@@ -177,8 +177,8 @@ class SelectNearest<D> implements ChartBehavior<D> {
         seriesDatumList = _extractSeriesFromNearestSelection(details);
 
         // Filter out points from overlay series.
-        seriesDatumList!
-            .removeWhere((SeriesDatum<D?> datum) => datum.series!.overlaySeries!);
+        seriesDatumList!.removeWhere(
+            (SeriesDatum<D?> datum) => datum.series!.overlaySeries!);
 
         if (selectClosestSeries! && seriesList.isEmpty) {
           if (details.first.series!.overlaySeries!) {
@@ -295,7 +295,6 @@ class SelectNearest<D> implements ChartBehavior<D> {
     _chart = chart;
     chart.addGestureListener(_listener);
 
-    // TODO: Update this dynamically based on tappable location.
     switch (eventTrigger) {
       case SelectionTrigger.tap:
       case SelectionTrigger.tapAndDrag:

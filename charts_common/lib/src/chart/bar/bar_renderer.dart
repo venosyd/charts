@@ -325,7 +325,6 @@ class BarRenderer<D>
         : barStack.fullStackRect!.top < componentBounds!.top ||
             barStack.fullStackRect!.bottom > componentBounds!.bottom;
 
-    // TODO: When we have initial viewport, add image test for
     // clipping.
     if (barOutsideBounds) {
       final clipBounds = _getBarStackBounds(barStack.fullStackRect);
@@ -398,7 +397,6 @@ class BarRenderer<D>
       double? barGroupWeight,
       List<double>? allBarGroupWeights,
       int numBarGroups) {
-    // TODO: Investigate why this is negative for a DateTime domain
     // in RTL mode.
     domainWidth = domainWidth.abs();
 
@@ -575,7 +573,6 @@ class AnimatedBar<D> extends BaseAnimatedBar<D, BarRendererElement<D>> {
     final BarRendererElement localTarget =
         target as BarRendererElement<dynamic>;
 
-    // TODO: Animate out bars in the middle of a stack.
     localTarget.bounds = Rectangle<int>(
         localTarget.bounds!.left + (localTarget.bounds!.width / 2).round(),
         localTarget.measureAxisPosition!.round(),

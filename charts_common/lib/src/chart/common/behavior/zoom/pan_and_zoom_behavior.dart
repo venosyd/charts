@@ -49,7 +49,6 @@ class PanAndZoomBehavior<D> extends PanBehavior<D> {
   /// Maximum scalingFactor to prevent zooming in so far that no data is
   /// visible.
   ///
-  /// TODO: Dynamic max based on data range?
   final _maxScalingFactor = 5.0;
 
   @override

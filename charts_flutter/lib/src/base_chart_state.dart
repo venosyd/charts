@@ -107,8 +107,8 @@ class BaseChartState<D> extends State<BaseChart<D>>
     final desiredGestures = widget.getDesiredGestures(this);
     if (desiredGestures.isNotEmpty) {
       _chartGestureDetector ??= new ChartGestureDetector();
-      return _chartGestureDetector!.makeWidget(
-          context, chartContainer, desiredGestures);
+      return _chartGestureDetector!
+          .makeWidget(context, chartContainer, desiredGestures);
     } else {
       return chartContainer;
     }
@@ -148,7 +148,7 @@ class BaseChartState<D> extends State<BaseChart<D>>
   void dispose() {
     _animationController.dispose();
     _behaviorAnimationControllers
-        .forEach((_, controller) => controller?.dispose());
+        .forEach((_, controller) => controller.dispose());
     _behaviorAnimationControllers.clear();
     super.dispose();
   }

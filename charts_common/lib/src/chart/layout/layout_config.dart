@@ -72,7 +72,7 @@ class MarginSpec {
   /// [pixels] if set must be greater than or equal to 0.
   factory MarginSpec.fixedPixel(int pixels) {
     // Require require or higher setting if set
-    assert(pixels == null || pixels >= 0);
+    assert(pixels >= 0);
 
     return MarginSpec._internal(pixels, pixels, null, null);
   }

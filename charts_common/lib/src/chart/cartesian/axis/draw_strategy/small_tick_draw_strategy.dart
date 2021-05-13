@@ -15,7 +15,7 @@
 
 import 'dart:math';
 
-import 'package:meta/meta.dart' show immutable, required;
+import 'package:meta/meta.dart' show immutable;
 
 import '../../../../common/graphics_factory.dart' show GraphicsFactory;
 import '../../../../common/line_style.dart' show LineStyle;
@@ -183,6 +183,8 @@ class SmallTickDrawStrategy<D> extends BaseTickDrawStrategy<D> {
 
         tickStart = Point(axisBounds!.right - tickLength!, y);
         tickEnd = Point(axisBounds.right, y);
+        break;
+      default:
         break;
     }
     return [tickStart, tickEnd];

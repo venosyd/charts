@@ -15,6 +15,7 @@
 
 import 'dart:math';
 
+import 'package:charts_common/src/chart/scatter_plot/point_renderer.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../common/graphics_factory.dart' show GraphicsFactory;
@@ -405,6 +406,8 @@ class _ChartTitleLayoutView<D> extends LayoutView {
             ? min(_drawAreaBounds!.height, maxHeight!)
             : maxHeight!;
         break;
+      default:
+        break;
     }
 
     // Reset the cached text elements used during the paint step.
@@ -548,6 +551,8 @@ class _ChartTitleLayoutView<D> extends LayoutView {
         case BehaviorPosition.start:
           resolvedTitleDirection = ChartTitleDirection.vertical;
           break;
+        default:
+          break;
       }
     }
 
@@ -573,15 +578,15 @@ class _ChartTitleLayoutView<D> extends LayoutView {
       case BehaviorPosition.top:
         return _getHorizontalLabelPosition(isPrimaryTitle, bounds,
             titleDirection, textElement, titleHeight, subTitleHeight);
-        break;
 
       case BehaviorPosition.start:
       case BehaviorPosition.end:
         return _getVerticalLabelPosition(isPrimaryTitle, bounds, titleDirection,
             textElement, titleHeight, subTitleHeight);
-        break;
 
       case BehaviorPosition.inside:
+        break;
+      default:
         break;
     }
     return null;
@@ -601,8 +606,9 @@ class _ChartTitleLayoutView<D> extends LayoutView {
     switch (_config!.titleOutsideJustification) {
       case OutsideJustification.middle:
       case OutsideJustification.middleDrawArea:
-        final textWidth =
-            (isRtl ? 1 : -1) * textElement!.measurement!.horizontalSliceWidth! / 2;
+        final textWidth = (isRtl ? 1 : -1) *
+            textElement!.measurement!.horizontalSliceWidth! /
+            2;
         labelX = (bounds!.left + bounds.width / 2 + textWidth).round();
 
         textElement.textDirection =
@@ -638,6 +644,8 @@ class _ChartTitleLayoutView<D> extends LayoutView {
           textElement!.textDirection = TextDirection.rtl;
         }
         break;
+      default:
+        break;
     }
 
     // labelY is always relative to the component bounds.
@@ -649,9 +657,10 @@ class _ChartTitleLayoutView<D> extends LayoutView {
     } else {
       var padding = 0.0 + _config!.innerPadding!;
       if (isPrimaryTitle) {
-        padding +=
-            (subTitleHeight! > 0 ? _config!.titlePadding! + subTitleHeight : 0) +
-                titleHeight!;
+        padding += (subTitleHeight! > 0
+                ? _config!.titlePadding! + subTitleHeight
+                : 0) +
+            titleHeight!;
       } else {
         padding += subTitleHeight!;
       }
@@ -676,8 +685,9 @@ class _ChartTitleLayoutView<D> extends LayoutView {
     switch (_config!.titleOutsideJustification) {
       case OutsideJustification.middle:
       case OutsideJustification.middleDrawArea:
-        final textWidth =
-            (isRtl ? -1 : 1) * textElement!.measurement!.horizontalSliceWidth! / 2;
+        final textWidth = (isRtl ? -1 : 1) *
+            textElement!.measurement!.horizontalSliceWidth! /
+            2;
         labelY = (bounds!.top + bounds.height / 2 + textWidth).round();
 
         textElement.textDirection =
@@ -713,6 +723,8 @@ class _ChartTitleLayoutView<D> extends LayoutView {
           textElement!.textDirection = TextDirection.rtl;
         }
         break;
+      default:
+        break;
     }
 
     // labelX is always relative to the component bounds.
@@ -726,7 +738,9 @@ class _ChartTitleLayoutView<D> extends LayoutView {
       final padding = _config!.outerPadding! +
           titleHeight! +
           (isPrimaryTitle
-              ? (subTitleHeight! > 0 ? _config!.titlePadding! + subTitleHeight : 0)
+              ? (subTitleHeight! > 0
+                  ? _config!.titlePadding! + subTitleHeight
+                  : 0)
               : 0.0);
 
       labelX = (bounds!.right - padding).round();

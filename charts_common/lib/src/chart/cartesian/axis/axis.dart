@@ -181,7 +181,7 @@ abstract class Axis<D> extends ImmutableAxis<D?> implements LayoutView {
   /// For bars to be renderer properly the RangeBandConfig must be set and
   /// type must not be RangeBandType.none.
   bool get hasValidBarChartRangeBandConfig =>
-      (mutableScale?.rangeBandConfig?.type ?? RangeBandType.none) !=
+      (mutableScale?.rangeBandConfig.type ?? RangeBandType.none) !=
       RangeBandType.none;
 
   void addDomainValue(D domain) {
@@ -215,7 +215,6 @@ abstract class Axis<D> extends ImmutableAxis<D?> implements LayoutView {
     // list also changes. So this is a round about way to also clear the
     // tick formatter cache.
     //
-    // TODO: Measure formatter should be changed from a typedef to
     // a concrete class to force users to create a new tick formatter when
     // formatting is different, so we can recognize when the tick formatter is
     // changed and then clear cache accordingly.
@@ -231,7 +230,6 @@ abstract class Axis<D> extends ImmutableAxis<D?> implements LayoutView {
       scale!.resetViewportSettings();
     }
 
-    // TODO: Reset rangeband and step size when we port over config
     //scale.rangeBandConfig = get range band config
     //scale.stepSizeConfig = get step size config
   }
@@ -281,7 +279,6 @@ abstract class Axis<D> extends ImmutableAxis<D?> implements LayoutView {
       return;
     }
 
-    // TODO: Ensure that tick providers take manually configured
     // viewport settings into account, so that we still get the right number.
     _providedTicks = tickProvider!.getTicks(
         context: context,
@@ -303,9 +300,10 @@ abstract class Axis<D> extends ImmutableAxis<D?> implements LayoutView {
     final providedTicks = List.from(_providedTicks ?? []);
 
     for (AxisTicks<D?> animatedTick in _axisTicks) {
-      final tick = providedTicks?.firstWhere(
-          (t) => t.value == animatedTick.value,
-          orElse: () => null);
+      final tick = providedTicks.firstWhere(
+        (t) => t.value == animatedTick.value,
+        orElse: () => null,
+      );
 
       if (tick != null) {
         // Swap out the text element only if the settings are different.
@@ -330,7 +328,7 @@ abstract class Axis<D> extends ImmutableAxis<D?> implements LayoutView {
     }
 
     // Add new ticks
-    providedTicks?.forEach((tick) {
+    providedTicks.forEach((tick) {
       AxisTicks animatedTick;
       if (tick is RangeTick) {
         animatedTick = RangeAxisTicks<D>(tick as RangeTick<D>);
@@ -449,6 +447,8 @@ abstract class Axis<D> extends ImmutableAxis<D?> implements LayoutView {
         break;
       case AxisOrientation.left:
         position = LayoutPosition.Left;
+        break;
+      default:
         break;
     }
 
@@ -570,8 +570,10 @@ class OrdinalAxis extends Axis<String?> {
     TickProvider? tickProvider,
     TickFormatter? tickFormatter,
   }) : super(
-          tickProvider: tickProvider as TickProvider<String?>? ?? const OrdinalTickProvider(),
-          tickFormatter: tickFormatter as TickFormatter<String>? ?? const OrdinalTickFormatter(),
+          tickProvider: tickProvider as TickProvider<String?>? ??
+              const OrdinalTickProvider(),
+          tickFormatter: tickFormatter as TickFormatter<String>? ??
+              const OrdinalTickFormatter(),
           scale: SimpleOrdinalScale(),
         );
 

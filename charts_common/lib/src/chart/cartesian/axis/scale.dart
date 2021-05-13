@@ -312,5 +312,4 @@ class StepSizeConfig {
         size = domainSize;
 }
 
-// TODO: make other extent subclasses plural.
 abstract class Extents<D> {}

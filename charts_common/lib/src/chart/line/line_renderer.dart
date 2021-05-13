@@ -169,7 +169,6 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
         if (styleKey != previousSegmentKey) {
           // If we have a repeated style segment, update the repeat index and
           // create a new key.
-          // TODO: Paint repeated styles with multiple clip regions.
           if (usedKeys.isNotEmpty && usedKeys.contains(styleKey)) {
             styleSegmentsIndex++;
 
@@ -350,7 +349,6 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
       // the data is very small. Doing this after [preProcess] handles invalid
       // data (e.g. null measure) at the ends of the series data.
       //
-      // TODO: Handle ordinal axes by looking at the next domains.
       if (styleSegments.isNotEmpty && !(domainAxis is OrdinalAxis)) {
         final startPx =
             (isRtl ? drawBounds!.right : drawBounds!.left).toDouble();
@@ -457,7 +455,6 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
 
           // Add a new animated line if we have more segments in this draw cycle
           // than we did in the previous chart draw cycle.
-          // TODO: Nicer animations for incoming segments.
           if (index >= animatingElements.lines!.length) {
             animatingElements.lines!.add(_AnimatedLine<D>(
                 key: lineElement.styleKey,
@@ -472,7 +469,6 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
 
             // Add a new animated area if we have more segments in this draw
             // cycle than we did in the previous chart draw cycle.
-            // TODO: Nicer animations for incoming segments.
             if (index >= animatingElements.areas!.length) {
               animatingElements.areas!.add(_AnimatedArea<D>(
                   key: areaElement.styleKey,
@@ -488,7 +484,6 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
 
             // Add a new animated bound if we have more segments in this draw
             // cycle than we did in the previous chart draw cycle.
-            // TODO: Nicer animations for incoming segments.
             if (index >= animatingElements.bounds!.length) {
               animatingElements.bounds!.add(_AnimatedArea<D>(
                   key: boundElement.styleKey,
@@ -685,7 +680,6 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
     for (var index = 0; index < series.data!.length; index++) {
       final datum = series.data![index];
 
-      // TODO: Animate from the nearest lines in the stack.
       var measure = measureFn!(index);
       if (measure != null && initializeFromZero) {
         measure = 0.0;
@@ -945,7 +939,7 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
                     animatingElement.areas)
             .expand<_AnimatedArea<D>>((List<_AnimatedArea<D>>? areas) => areas!)
             .map<_AreaRendererElement<D>?>((_AnimatedArea<D> animatingArea) =>
-                animatingArea?.getCurrentArea(animationPercent))
+                animatingArea.getCurrentArea(animationPercent))
             .forEach((_AreaRendererElement? area) {
           if (area != null) {
             canvas.drawPolygon(
@@ -964,7 +958,7 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
             .expand<_AnimatedArea<D>>(
                 (List<_AnimatedArea<D>>? bounds) => bounds!)
             .map<_AreaRendererElement<D>?>((_AnimatedArea<D> animatingBounds) =>
-                animatingBounds?.getCurrentArea(animationPercent))
+                animatingBounds.getCurrentArea(animationPercent))
             .forEach((_AreaRendererElement? bound) {
           if (bound != null) {
             canvas.drawPolygon(
@@ -982,7 +976,7 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
                     animatingElement.lines)
             .expand<_AnimatedLine<D>>((List<_AnimatedLine<D>>? lines) => lines!)
             .map<_LineRendererElement<D>?>((_AnimatedLine<D> animatingLine) =>
-                animatingLine?.getCurrentLine(animationPercent))
+                animatingLine.getCurrentLine(animationPercent))
             .forEach((_LineRendererElement? line) {
           if (line != null) {
             canvas.drawLine(
@@ -1218,7 +1212,6 @@ class _LineRendererElement<D> {
 
       // If we have more points than the previous line, animate in the new point
       // by starting its measure position at the last known official point.
-      // TODO: Can this be done in setNewTarget instead?
       _DatumPoint<D?> previousPoint;
       if (previous.points!.length - 1 >= pointIndex) {
         previousPoint = previous.points![pointIndex] as _DatumPoint<D?>;
@@ -1292,7 +1285,6 @@ class _AnimatedLine<D> {
     var newTarget = _currentLine!.clone();
 
     // Set the target measure value to the axis position for all points.
-    // TODO: Animate to the nearest lines in the stack.
     List<_DatumPoint<D?>> newPoints = <_DatumPoint<D>>[];
     for (var index = 0; index < newTarget.points!.length; index++) {
       var targetPoint = newTarget.points![index];
@@ -1368,7 +1360,6 @@ class _AreaRendererElement<D> {
 
       // If we have more points than the previous line, animate in the new point
       // by starting its measure position at the last known official point.
-      // TODO: Can this be done in setNewTarget instead?
       _DatumPoint<D?> previousPoint;
       if (previous.points!.length - 1 >= pointIndex) {
         previousPoint = previous.points![pointIndex] as _DatumPoint<D?>;

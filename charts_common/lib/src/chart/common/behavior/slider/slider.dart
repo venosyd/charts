@@ -190,7 +190,6 @@ class Slider<D> implements ChartBehavior<D> {
       default:
         throw ArgumentError('Slider does not support the event trigger '
             '"$eventTrigger"');
-        break;
     }
 
     // Set up chart draw cycle listeners.
@@ -247,7 +246,7 @@ class Slider<D> implements ChartBehavior<D> {
     // instead of the mouse point.
     if (snapToDatum) {
       final details = _chart!.getNearestDatumDetailPerSeries(chartPoint, true);
-      if (details.isNotEmpty && details[0].chartPosition!.x != null) {
+      if (details.isNotEmpty) {
         // Only trigger an animating draw cycle if we need to move the slider.
         if (_domainValue != details[0].domain) {
           _moveSliderToDomain(details[0].domain);
@@ -313,8 +312,7 @@ class Slider<D> implements ChartBehavior<D> {
 
   /// Fires a [SliderListenerDragState] change event if needed.
   void _fireChangeEvent(_) {
-    if (SliderListenerDragState == null ||
-        _sliderEventListener.onChange == null) {
+    if (_sliderEventListener.onChange == null) {
       return;
     }
 

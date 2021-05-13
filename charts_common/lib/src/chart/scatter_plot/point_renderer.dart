@@ -17,7 +17,7 @@ import 'dart:collection' show LinkedHashMap;
 import 'dart:math' show min, Point, Rectangle;
 
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:meta/meta.dart' show protected, required;
+import 'package:meta/meta.dart' show protected;
 import 'package:vector_math/vector_math.dart' show Vector2;
 
 import '../../common/color.dart' show Color;

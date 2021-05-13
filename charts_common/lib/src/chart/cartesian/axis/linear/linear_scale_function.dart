@@ -133,7 +133,6 @@ class LinearScaleFunction {
       case RangeBandType.none:
         return 0.0;
     }
-    return 0.0;
   }
 
   /// Calculates and Stores the current step size and scale factor together,
@@ -157,8 +156,7 @@ class LinearScaleFunction {
         case StepSizeType.autoDetect:
           double minimumDetectedDomainStep =
               domainInfo.minimumDetectedDomainStep.toDouble();
-          if (minimumDetectedDomainStep != null &&
-              minimumDetectedDomainStep.isFinite) {
+          if (minimumDetectedDomainStep.isFinite) {
             scalingFactor = viewportSettings.scalingFactor! *
                 (rangeDiff /
                     (domainDiff +

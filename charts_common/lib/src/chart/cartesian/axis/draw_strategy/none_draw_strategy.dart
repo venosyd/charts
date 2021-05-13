@@ -15,7 +15,7 @@
 
 import 'dart:math';
 
-import 'package:meta/meta.dart' show immutable, required;
+import 'package:meta/meta.dart' show immutable;
 
 import '../../../../common/color.dart' show Color;
 import '../../../../common/graphics_factory.dart' show GraphicsFactory;
@@ -102,6 +102,8 @@ class NoneDrawStrategy<D> implements TickDrawStrategy<D> {
       case AxisOrientation.left:
         start = axisBounds!.topRight;
         end = axisBounds.bottomRight;
+        break;
+      default:
         break;
     }
 

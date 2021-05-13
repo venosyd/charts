@@ -15,7 +15,7 @@
 
 import 'dart:math';
 
-import 'package:meta/meta.dart' show immutable, protected, required;
+import 'package:meta/meta.dart' show immutable, protected;
 
 import '../../../../common/graphics_factory.dart' show GraphicsFactory;
 import '../../../../common/line_style.dart' show LineStyle;
@@ -164,7 +164,6 @@ abstract class BaseTickDrawStrategy<D> implements TickDrawStrategy<D> {
 
   @override
   CollisionReport collides(List<Tick<D>>? ticks, AxisOrientation? orientation) {
-    // TODO: Collision analysis for rotated labels are not
     // supported yet.
 
     // If there are no ticks, they do not collide.
@@ -262,7 +261,6 @@ abstract class BaseTickDrawStrategy<D> implements TickDrawStrategy<D> {
   @override
   ViewMeasuredSizes measureVerticallyDrawnTicks(
       List<Tick<D>?>? ticks, int? maxWidth, int? maxHeight) {
-    // TODO: Add spacing to account for the distance between the
     // text and the axis baseline (even if it isn't drawn).
 
     final maxHorizontalSliceWidth = ticks!.fold(0.0, (double prevMax, tick) {
@@ -324,6 +322,8 @@ abstract class BaseTickDrawStrategy<D> implements TickDrawStrategy<D> {
       case AxisOrientation.left:
         start = axisBounds!.topRight;
         end = axisBounds.bottomRight;
+        break;
+      default:
         break;
     }
 

@@ -15,7 +15,7 @@
 
 import 'dart:math' show Point, Rectangle;
 
-import 'package:meta/meta.dart' show protected, required;
+import 'package:meta/meta.dart' show protected;
 
 import '../../common/graphics_factory.dart' show GraphicsFactory;
 import '../../common/symbol_renderer.dart';
